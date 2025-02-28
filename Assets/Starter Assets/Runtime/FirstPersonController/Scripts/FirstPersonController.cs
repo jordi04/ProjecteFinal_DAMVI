@@ -162,13 +162,6 @@ namespace StarterAssets
                 // clamp pitch rotation
                 _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
 
-                // Only rotate the horse with the camera when the special key is pressed
-                if (Input.GetKey(TurnWithCameraKey))
-                {
-                    transform.Rotate(Vector3.up * yawDelta);
-                    // Since we're manually rotating the horse, update the reference again
-                    _horsePreviousRotation = transform.rotation;
-                }
             }
 
             // Update camera target rotation (this is in world space)

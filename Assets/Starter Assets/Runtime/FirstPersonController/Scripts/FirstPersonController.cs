@@ -53,19 +53,23 @@ namespace StarterAssets
         [Tooltip("How far in degrees can you move the camera down")]
         public float BottomClamp = -90.0f;
 
+        [Header("Camera-Horse Controls")]
+        [Tooltip("Key to press to make horse turn with camera")]
+        public KeyCode TurnWithCameraKey = KeyCode.LeftShift;
+
         // cinemachine
         private float _cinemachineTargetPitch;
+        private float _cinemachineTargetYaw;
+        private Quaternion _horsePreviousRotation;
 
         // player
         private float _speed;
-        private float _rotationVelocity;
         private float _verticalVelocity;
         private float _terminalVelocity = 53.0f;
 
         // timeout deltatime
         private float _jumpTimeoutDelta;
         private float _fallTimeoutDelta;
-
 
 #if ENABLE_INPUT_SYSTEM
         private PlayerInput _playerInput;
@@ -110,6 +114,11 @@ namespace StarterAssets
             // reset our timeouts on start
             _jumpTimeoutDelta = JumpTimeout;
             _fallTimeoutDelta = FallTimeout;
+
+            // Initialize camera values
+            _cinemachineTargetPitch = 0f;
+            _cinemachineTargetYaw = 0f;
+            _horsePreviousRotation = transform.rotation;
         }
 
         private void Update()
@@ -133,24 +142,37 @@ namespace StarterAssets
 
         private void CameraRotation()
         {
-            // if there is an input
+            // Handle horse rotation changes (make camera follow horse rotation)
+            Quaternion deltaRotation = Quaternion.Inverse(_horsePreviousRotation) * transform.rotation;
+            _cinemachineTargetYaw += deltaRotation.eulerAngles.y;
+
+            // Update the reference for next frame
+            _horsePreviousRotation = transform.rotation;
+
+            // if there is look input
             if (_input.look.sqrMagnitude >= _threshold)
             {
                 //Don't multiply mouse input by Time.deltaTime
                 float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
 
                 _cinemachineTargetPitch += _input.look.y * CameraRotationSpeed * deltaTimeMultiplier;
-                _rotationVelocity = _input.look.x * CameraRotationSpeed * deltaTimeMultiplier;
+                float yawDelta = _input.look.x * CameraRotationSpeed * deltaTimeMultiplier;
+                _cinemachineTargetYaw += yawDelta;
 
-                // clamp our pitch rotation
+                // clamp pitch rotation
                 _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
 
-                // Update Cinemachine camera target pitch
-                CinemachineCameraTarget.transform.localRotation = Quaternion.Euler(_cinemachineTargetPitch, 0.0f, 0.0f);
-
-                // rotate the player left and right
-                transform.Rotate(Vector3.up * _rotationVelocity);
+                // Only rotate the horse with the camera when the special key is pressed
+                if (Input.GetKey(TurnWithCameraKey))
+                {
+                    transform.Rotate(Vector3.up * yawDelta);
+                    // Since we're manually rotating the horse, update the reference again
+                    _horsePreviousRotation = transform.rotation;
+                }
             }
+
+            // Update camera target rotation (this is in world space)
+            CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch, _cinemachineTargetYaw, 0.0f);
         }
 
         private void Move()
@@ -176,6 +198,7 @@ namespace StarterAssets
                 // Rotate the horse based on horizontal input using HorseRotationSpeed
                 float turnAmount = _input.move.x * HorseRotationSpeed * Time.deltaTime;
                 transform.Rotate(Vector3.up * turnAmount);
+                // Note: Camera will follow this rotation in the next LateUpdate
             }
 
             // A reference to the horse's current horizontal velocity

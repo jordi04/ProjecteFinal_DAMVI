@@ -27,9 +27,15 @@ public class PlayerController : MonoBehaviour
     //Singleton References
     private UserInput userInput;
 
-    private void Awake()
+    private void Start()
     {
         userInput = UserInput.instance;
+        if (userInput == null)
+        {
+            userInput = FindObjectOfType<UserInput>();
+            Debug.LogWarning("Had to find UserInput through FindObjectOfType");
+        }
+
         InitializeAbilityMap();
     }
 
@@ -50,6 +56,11 @@ public class PlayerController : MonoBehaviour
 
     private void HandleAbilityInput()
     {
+        if (userInput == null)
+        {
+            Debug.LogError("UserInput instance is null");
+            return;
+        }
         HandleAbilityState(AbilityType.Fireball, userInput.ability1Pressed, userInput.ability1Holded, userInput.ability1Released);
         HandleAbilityState(AbilityType.Shield, userInput.ability2Pressed, userInput.ability2Holded, userInput.ability2Released);
         HandleAbilityState(AbilityType.Swap, userInput.ability3Pressed, userInput.ability3Holded, userInput.ability3Released);

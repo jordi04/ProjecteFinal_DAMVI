@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shieldDuration: 3
   manaCost: 15
-  damageReduction: 0.5
+  damageReduction: 1
   shieldPrefab: {fileID: 7684234639566761584, guid: f67ec1f0fe2af194eac313166285a4bf,
     type: 3}

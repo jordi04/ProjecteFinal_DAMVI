@@ -12,3 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3344cc30ff2f8a748b1f0f4b2ec0a1c2, type: 3}
   m_Name: Shield Ability
   m_EditorClassIdentifier: 
+  shieldDuration: 3
+  manaCost: 15
+  damageReduction: 0.5
+  shieldPrefab: {fileID: 7684234639566761584, guid: f67ec1f0fe2af194eac313166285a4bf,
+    type: 3}

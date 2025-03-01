@@ -15,21 +15,13 @@ public class PlayerAbility_Shield : PlayerAbility
 
     public override void Use(AbilityUseType useType)
     {
-        switch (useType)
+        if(useType == AbilityUseType.Pressed)
         {
-            case AbilityUseType.Pressed:
-                if (ManaSystem.Instance.TryConsumeMana(manaCost))
-                {
-                    ActivateShield();
-                }
-                break;
-            case AbilityUseType.Held:
-                // Update shield effect if needed
-                break;
-            case AbilityUseType.Released:
-                // Could be used to trigger a shield bash effect
-                break;
-        }
+            if (ManaSystem.Instance.TryConsumeMana(manaCost))
+            {
+                ActivateShield();
+            }
+        }  
     }
 
     private void ActivateShield()

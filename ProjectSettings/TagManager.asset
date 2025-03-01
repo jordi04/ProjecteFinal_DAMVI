@@ -6,6 +6,8 @@ TagManager:
   tags:
   - CinemachineTarget
   - Swapable
+  - FireBall
+  - Enemy
   layers:
   - Default
   - TransparentFX

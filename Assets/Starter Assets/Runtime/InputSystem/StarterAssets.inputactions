@@ -2,7 +2,7 @@
     "name": "StarterAssets",
     "maps": [
         {
-            "name": "Player",
+            "name": "InGame",
             "id": "f62a4b92-ef5e-4175-8f4c-c9075429d32c",
             "actions": [
                 {
@@ -320,7 +320,7 @@
                 {
                     "name": "",
                     "id": "e655b34f-c6d8-41fe-a855-8f057788fe82",
-                    "path": "<Keyboard>/escape",
+                    "path": "<Keyboard>/p",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -336,6 +336,34 @@
                     "processors": "",
                     "groups": "",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Menu",
+            "id": "31426f97-c65d-4822-a539-f4703d55d816",
+            "actions": [
+                {
+                    "name": "PauseMenu",
+                    "type": "Button",
+                    "id": "084e1080-e51d-4a9f-a716-48037849e72e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "57faa8ef-80b4-4842-9ccd-2c2c1b6472fb",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PauseMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

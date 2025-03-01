@@ -56,7 +56,7 @@ public class EnemyMovement : MonoBehaviour
     {
         if (Time.time > nextFireTime)
         {
-            Shoot();
+            //Shoot();
             nextFireTime = Time.time + 1f / fireRate;
         }
     }

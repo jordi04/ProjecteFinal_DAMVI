@@ -33,6 +33,9 @@ public class UserInput : MonoBehaviour
 
 
     [SerializeField]private PlayerInput PlayerInput;
+    
+    InputActionMap inGameMap;
+    InputActionMap menuMap;
 
     private InputAction move_Action;
     private InputAction pauseMenu_Action;
@@ -47,6 +50,8 @@ public class UserInput : MonoBehaviour
         {
             instance = this;
         }
+
+        inGameMap = gameObject.GetComponent<InputActionMap>();
 
         setInputActions();
     }

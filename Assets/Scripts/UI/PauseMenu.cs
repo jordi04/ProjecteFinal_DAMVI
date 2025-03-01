@@ -1,3 +1,4 @@
+using Cinemachine;
 using UnityEngine;
 
 public class PauseMenu : MonoBehaviour
@@ -17,9 +18,17 @@ public class PauseMenu : MonoBehaviour
         {  
             pauseMenu_Canvas.SetActive(!pauseMenu_Canvas.activeSelf);
             if (pauseMenu_Canvas.activeSelf)
+            {
                 Time.timeScale = 0;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
             else
+            {
                 Time.timeScale = 1;
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }       
         }
     }
 }

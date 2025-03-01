@@ -172,8 +172,8 @@ GameObject:
   m_Component:
   - component: {fileID: 91324728}
   - component: {fileID: 91324727}
-  - component: {fileID: 91324730}
   - component: {fileID: 91324729}
+  - component: {fileID: 91324730}
   m_Layer: 0
   m_Name: SingletonGameManager
   m_TagString: Untagged

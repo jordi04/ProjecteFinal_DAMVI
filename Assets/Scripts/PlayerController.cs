@@ -30,12 +30,6 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         userInput = UserInput.instance;
-        if (userInput == null)
-        {
-            userInput = FindObjectOfType<UserInput>();
-            Debug.LogWarning("Had to find UserInput through FindObjectOfType");
-        }
-
         InitializeAbilityMap();
     }
 

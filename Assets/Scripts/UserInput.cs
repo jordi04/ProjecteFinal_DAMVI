@@ -10,8 +10,8 @@ public class UserInput : MonoBehaviour
 
     #region Actions States
     public Vector2 movementInput { get; private set; }
+    public bool pauseMenuPressed { get; private set; }
 
-    public bool menuOpenClosePressed { get; private set; }
 
     public bool ability1Pressed { get; private set; }
     public bool ability1Holded { get; private set; }
@@ -28,13 +28,14 @@ public class UserInput : MonoBehaviour
     public bool ability4Pressed { get; private set; }
     public bool ability4Holded { get; private set; }
     public bool ability4Released { get; private set; }
+
     #endregion
 
 
     [SerializeField]private PlayerInput PlayerInput;
 
     private InputAction move_Action;
-    private InputAction menuOpenClose_Action;
+    private InputAction pauseMenu_Action;
     private InputAction ability1_Action;
     private InputAction ability2_Action;
     private InputAction ability3_Action;
@@ -59,7 +60,7 @@ public class UserInput : MonoBehaviour
     private void setInputActions()
     {
         //move_Action = PlayerInput.actions["Move"];
-        //menuOpenClose_Action = PlayerInput.actions["MenuOpenClose"];
+        pauseMenu_Action = PlayerInput.actions["PauseMenu"];
         ability1_Action = PlayerInput.actions["Ability1"];
         ability2_Action = PlayerInput.actions["Ability2"];
         ability3_Action = PlayerInput.actions["Ability3"];
@@ -69,7 +70,7 @@ public class UserInput : MonoBehaviour
     {
         //movementInput = move_Action.ReadValue<Vector2>();
 
-        //menuOpenClosePressed = menuOpenClose_Action.WasPressedThisFrame();
+        pauseMenuPressed = pauseMenu_Action.WasPressedThisFrame();
 
 
         ability1Pressed =   ability1_Action.WasPressedThisFrame();

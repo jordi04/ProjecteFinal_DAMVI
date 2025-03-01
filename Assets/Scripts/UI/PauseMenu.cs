@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -6,6 +8,21 @@ public class PauseMenu : MonoBehaviour
     private UserInput userInput;
     private bool isPaused = false;
     private bool canToggle = true;
+
+    [SerializeField] Button exitButton;
+    [SerializeField] Button resumeButton;
+
+    private void OnEnable()
+    {
+        exitButton.onClick.AddListener(ReturnToMainMenu);
+        resumeButton.onClick.AddListener(TogglePauseMenu);
+    }
+
+    private void OnDisable()
+    {
+        exitButton.onClick.RemoveListener(ReturnToMainMenu);
+        resumeButton.onClick.RemoveListener(TogglePauseMenu);
+    }
 
     void Start()
     {
@@ -44,5 +61,10 @@ public class PauseMenu : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
+    }
+
+    private void ReturnToMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 }

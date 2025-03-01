@@ -4043,7 +4043,7 @@ PrefabInstance:
         type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 1074180565}
+      objectReference: {fileID: 1333893351}
     - target: {fileID: 8869368744825787288, guid: 8b8df63c52c354443846cbb5509bb878,
         type: 3}
       propertyPath: shootPoint
@@ -4545,6 +4545,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6e7f2e65bace6c242a22ea34689c69e3, type: 3}
+--- !u!114 &931034015 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8435650467763920439, guid: d20181841ce88e148b96a6bedcead9dc,
+    type: 3}
+  m_PrefabInstance: {fileID: 5428241741693027697}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &938862014
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5887,6 +5899,12 @@ PrefabInstance:
 --- !u!1 &1333893350 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2946972346110833075, guid: afb410a06f09e3b45a0b8f35f11b5693,
+    type: 3}
+  m_PrefabInstance: {fileID: 316347878}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1333893351 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -6388373718900500896, guid: afb410a06f09e3b45a0b8f35f11b5693,
     type: 3}
   m_PrefabInstance: {fileID: 316347878}
   m_PrefabAsset: {fileID: 0}
@@ -7712,6 +7730,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 777386364}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2031971456 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 83753657644199080, guid: d20181841ce88e148b96a6bedcead9dc,
+    type: 3}
+  m_PrefabInstance: {fileID: 5428241741693027697}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2050692920
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8284,6 +8314,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2657498537159524662, guid: d20181841ce88e148b96a6bedcead9dc,
+        type: 3}
+      propertyPath: exitButton
+      value: 
+      objectReference: {fileID: 931034015}
+    - target: {fileID: 2657498537159524662, guid: d20181841ce88e148b96a6bedcead9dc,
+        type: 3}
+      propertyPath: resumeButton
+      value: 
+      objectReference: {fileID: 2031971456}
     - target: {fileID: 2668353131792147937, guid: d20181841ce88e148b96a6bedcead9dc,
         type: 3}
       propertyPath: m_LocalPosition.x

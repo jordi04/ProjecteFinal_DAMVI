@@ -36,7 +36,7 @@ public class UserInput : MonoBehaviour
     #endregion
 
 
-    [SerializeField]private PlayerInput PlayerInput;
+    [SerializeField] private PlayerInput PlayerInput;
     
     InputActionMap inGameMap;
     InputActionMap inMenuMap;

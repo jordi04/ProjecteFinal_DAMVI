@@ -1,12 +1,12 @@
-using Cinemachine;
 using UnityEngine;
 
 public class PauseMenu : MonoBehaviour
 {
-
     [SerializeField] GameObject pauseMenu_Canvas;
-
     private UserInput userInput;
+    private bool isPaused = false;
+    private bool canToggle = true;
+
     void Start()
     {
         userInput = UserInput.instance;
@@ -14,21 +14,35 @@ public class PauseMenu : MonoBehaviour
 
     void Update()
     {
-        if(userInput.pauseMenuPressed)
-        {  
-            pauseMenu_Canvas.SetActive(!pauseMenu_Canvas.activeSelf);
-            if (pauseMenu_Canvas.activeSelf)
-            {
-                Time.timeScale = 0;
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-            }
-            else
-            {
-                Time.timeScale = 1;
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-            }       
+        if (userInput.pauseMenuPressed && canToggle)
+        {
+            TogglePauseMenu();
+            canToggle = false;
+        }
+        else if (!userInput.pauseMenuPressed)
+        {
+            canToggle = true;
+        }
+    }
+
+    private void TogglePauseMenu()
+    {
+        isPaused = !isPaused;
+        pauseMenu_Canvas.SetActive(isPaused);
+
+        if (isPaused)
+        {
+            userInput.switchActionMap(UserInput.ActionMap.InMenu);
+            Time.timeScale = 0;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else
+        {
+            userInput.switchActionMap(UserInput.ActionMap.InGame);
+            Time.timeScale = 1;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
     }
 }

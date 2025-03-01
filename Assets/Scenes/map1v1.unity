@@ -172,8 +172,8 @@ GameObject:
   m_Component:
   - component: {fileID: 91324728}
   - component: {fileID: 91324727}
-  - component: {fileID: 91324730}
   - component: {fileID: 91324729}
+  - component: {fileID: 91324730}
   m_Layer: 0
   m_Name: SingletonGameManager
   m_TagString: Untagged
@@ -195,6 +195,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1074180564}
   mainCamera: {fileID: 1934032540}
+  spawnPoint: {fileID: 0}
 --- !u!4 &91324728
 Transform:
   m_ObjectHideFlags: 0
@@ -2530,6 +2531,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PlayerCapsule
+      objectReference: {fileID: 0}
+    - target: {fileID: 8616685848737228376, guid: c5efc39a8aaf6e64ea40e9ad573e9b47,
+        type: 3}
+      propertyPath: m_DefaultActionMap
+      value: f62a4b92-ef5e-4175-8f4c-c9075429d32c
+      objectReference: {fileID: 0}
+    - target: {fileID: 8616685848737228376, guid: c5efc39a8aaf6e64ea40e9ad573e9b47,
+        type: 3}
+      propertyPath: m_NeverAutoSwitchControlSchemes
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47,
         type: 3}
@@ -8268,6 +8279,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PauseMenu
       objectReference: {fileID: 0}
+    - target: {fileID: 1248586782816101777, guid: d20181841ce88e148b96a6bedcead9dc,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2668353131792147937, guid: d20181841ce88e148b96a6bedcead9dc,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8321,7 +8337,7 @@ PrefabInstance:
     - target: {fileID: 8085684001556813704, guid: d20181841ce88e148b96a6bedcead9dc,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Animations;
 
 public class EnemyMovement : MonoBehaviour
 {
@@ -7,14 +8,15 @@ public class EnemyMovement : MonoBehaviour
     private NavMeshAgent enemy;
 
     [SerializeField] float stoppingDistance = 5f;
+    private float distanceToPlayer;
     [SerializeField] float velocityThreshold = 0.1f;
 
     private bool isEnemyStopped = false;
+    private bool inRange = false;
 
     // Variables para el disparo
     [SerializeField] GameObject bulletPrefab;
     [SerializeField] Transform shootPoint;
-    [SerializeField] GameObject targetObject; // Objeto al que apuntar
     [SerializeField] float fireRate = 1f;
     [SerializeField] float bulletSpeed = 1f;
     private float nextFireTime = 0f;
@@ -30,14 +32,20 @@ public class EnemyMovement : MonoBehaviour
         enemy.SetDestination(player.position);
         CheckIfStopped();
 
-        if (isEnemyStopped)
+        
+
+        if (isEnemyStopped && inRange)
         {
             TryToShoot();
+            Debug.Log("disparo");
         }
     }
 
     void CheckIfStopped()
     {
+        distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        inRange = distanceToPlayer <= stoppingDistance + 1f;
+
         if (enemy.remainingDistance <= enemy.stoppingDistance)
         {
             if (!isEnemyStopped)
@@ -56,17 +64,17 @@ public class EnemyMovement : MonoBehaviour
     {
         if (Time.time > nextFireTime)
         {
-            //Shoot();
+            Shoot();
             nextFireTime = Time.time + 1f / fireRate;
         }
     }
 
     void Shoot()
     {
-        if (bulletPrefab != null && shootPoint != null && targetObject != null)
+        if (bulletPrefab != null && shootPoint != null && player != null)
         {
             // Calcula la dirección hacia el objetivo
-            Vector3 directionToTarget = (targetObject.transform.position - shootPoint.position).normalized;
+            Vector3 directionToTarget = (player.transform.position - shootPoint.position).normalized;
 
             // Crea la bala y oriéntala hacia el objetivo
             GameObject bullet = Instantiate(bulletPrefab, shootPoint.position, Quaternion.LookRotation(directionToTarget));

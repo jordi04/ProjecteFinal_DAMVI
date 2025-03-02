@@ -10,7 +10,7 @@ public class LoboIA : MonoBehaviour
 
     private NavMeshAgent agente;
     private Rigidbody rb;
-    private Transform jugador;
+    private GameObject playerObject;
     private bool puedeSaltar = true;
     private bool estaVivo = true;
     private LoboSpawner spawner;
@@ -31,18 +31,18 @@ public class LoboIA : MonoBehaviour
             yield return null; 
         }
 
-        agente.SetDestination(jugador.position);
+        agente.SetDestination(playerObject.transform.position);
     }
 
     void Update()
     {
         if (!estaVivo) return;
 
-        float distancia = Vector3.Distance(transform.position, jugador.position);
+        float distancia = Vector3.Distance(transform.position, playerObject.transform.position);
 
         if (agente.isOnNavMesh)
         {
-            agente.SetDestination(jugador.position);
+            agente.SetDestination(playerObject.transform.position);
         }
         
         if (distancia <= rangoSalto && puedeSaltar)
@@ -56,7 +56,7 @@ public class LoboIA : MonoBehaviour
         puedeSaltar = false;
         agente.isStopped = true;
 
-        Vector3 direccionSalto = (jugador.position - transform.position).normalized;
+        Vector3 direccionSalto = (playerObject.transform.position - transform.position).normalized;
         direccionSalto.y = 1f;
         rb.AddForce(direccionSalto * fuerzaSalto, ForceMode.Impulse);
 
@@ -84,8 +84,8 @@ public class LoboIA : MonoBehaviour
         Destroy(gameObject, 2f); 
     }
 
-    public void SetPlayer(Transform player)
+    public void SetPlayer(GameObject player)
     {
-        jugador = player;
+           playerObject = player;
     }
 }

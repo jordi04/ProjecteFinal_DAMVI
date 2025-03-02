@@ -49,7 +49,7 @@ public class LoboSpawner : MonoBehaviour
                 if (NavMesh.SamplePosition(punto.position, out hit, 2f, NavMesh.AllAreas))
                 {
                     GameObject nuevoLobo = Instantiate(loboPrefab, hit.position, Quaternion.identity);
-                    nuevoLobo.GetComponent<LoboIA>().SetPlayer(player);
+                    nuevoLobo.GetComponent<LoboIA>().SetPlayer(player.gameObject);
                     lobosEnEscena.Add(nuevoLobo);
                     lobosSpawneados++;
                 }

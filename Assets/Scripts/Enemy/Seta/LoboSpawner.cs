@@ -10,7 +10,9 @@ public class LoboSpawner : MonoBehaviour
     public int cantidadLobosPorSpawn = 3;
     public int maxLobosTotales = 10;
     public float tiempoEntreSpawns = 5f;
-    public float delayEntreLobos = 0.5f; 
+    public float delayEntreLobos = 0.5f;
+
+    [SerializeField] Transform player;
 
     private int lobosSpawneados = 0;
     private List<GameObject> lobosEnEscena = new List<GameObject>();
@@ -47,6 +49,7 @@ public class LoboSpawner : MonoBehaviour
                 if (NavMesh.SamplePosition(punto.position, out hit, 2f, NavMesh.AllAreas))
                 {
                     GameObject nuevoLobo = Instantiate(loboPrefab, hit.position, Quaternion.identity);
+                    nuevoLobo.GetComponent<LoboIA>().SetPlayer(player);
                     lobosEnEscena.Add(nuevoLobo);
                     lobosSpawneados++;
                 }

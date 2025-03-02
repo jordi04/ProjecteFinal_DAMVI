@@ -2,9 +2,9 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Animations;
 
-public class EnemyMovement : MonoBehaviour
+public class BeeMovement : MonoBehaviour
 {
-    [SerializeField] Transform player;
+    Transform player;
     private NavMeshAgent enemy;
 
     [SerializeField] float stoppingDistance = 5f;
@@ -26,6 +26,7 @@ public class EnemyMovement : MonoBehaviour
     {
         enemy = GetComponent<NavMeshAgent>();
         enemy.stoppingDistance = stoppingDistance;
+        GetComponentInChildren<BeeLifeController>().SetPlayer(player);
     }
 
     void Update()
@@ -91,5 +92,10 @@ public class EnemyMovement : MonoBehaviour
         {
             Debug.LogWarning("Falta asignar el prefab de la bala, el punto de disparo o el objetivo");
         }
+    }
+
+    public void SetPlayer(Transform player)
+    {
+        this.player = player;
     }
 }

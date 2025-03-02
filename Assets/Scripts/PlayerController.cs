@@ -74,4 +74,9 @@ public class PlayerController : MonoBehaviour
                 ability.Use(AbilityUseType.Released);
         }
     }
+
+    public PlayerAbility GetAbility()
+    {
+        return fireBall;
+    }
 }

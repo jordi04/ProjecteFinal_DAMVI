@@ -19,7 +19,6 @@ public class LoboIA : MonoBehaviour
     {
         agente = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody>();
-        jugador = GameObject.FindGameObjectWithTag("Player").transform;
         spawner = FindObjectOfType<LoboSpawner>();
 
         StartCoroutine(EsperarNavMesh());
@@ -83,5 +82,10 @@ public class LoboIA : MonoBehaviour
         }
 
         Destroy(gameObject, 2f); 
+    }
+
+    public void SetPlayer(Transform player)
+    {
+        jugador = player;
     }
 }

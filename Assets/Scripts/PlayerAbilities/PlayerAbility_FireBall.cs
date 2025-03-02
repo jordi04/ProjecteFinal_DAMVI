@@ -70,4 +70,9 @@ public class PlayerAbility_FireBall : PlayerAbility
             rb.velocity = spawnPoint.forward * fireballSpeed;
         }
     }
+
+    public uint GetDamage()
+    {
+        return damage;
+    }
 }

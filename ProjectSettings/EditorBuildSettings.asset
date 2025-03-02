@@ -12,6 +12,12 @@ EditorBuildSettings:
     path: Assets/Scenes/map1v1.unity
     guid: f0f94f1948f73e340b0225df77f4e3f3
   - enabled: 1
+    path: Assets/Scenes/Lose.unity
+    guid: 2b9d3a5956bdf0e41bdae1306dfda063
+  - enabled: 1
+    path: Assets/Scenes/Win.unity
+    guid: e1160446099b9c14384f621ca2c0e6e3
+  - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 0e779b335c729bf47851f26e6299a460
   m_configObjects: {}

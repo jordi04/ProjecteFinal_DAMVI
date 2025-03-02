@@ -164,6 +164,7 @@ MonoBehaviour:
   lookConstraint: {fileID: 9021841205167402874}
   parent: {fileID: 3139664427377110825}
   life: 20
+  flashDuration: 0.2
 --- !u!1 &3139664427377110825
 GameObject:
   m_ObjectHideFlags: 0
@@ -175,9 +176,9 @@ GameObject:
   - component: {fileID: 1751131134756718667}
   - component: {fileID: 272221723234570241}
   - component: {fileID: 8869368744825787288}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bee
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -162,7 +162,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lookConstraint: {fileID: 9021841205167402874}
-  player: {fileID: 0}
   parent: {fileID: 3139664427377110825}
   life: 20
 --- !u!1 &3139664427377110825
@@ -233,7 +232,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74b2ba23d015d4647b1ba7f98f530da6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   stoppingDistance: 5
   velocityThreshold: 0.1
   bulletPrefab: {fileID: 7968971157999502322, guid: 444360b1de66de348b65796f88d5e670,
@@ -241,4 +239,4 @@ MonoBehaviour:
   shootPoint: {fileID: 549460697936172840}
   fireRate: 1
   bulletSpeed: 50
-  shootRange: 0
+  shootRange: 8

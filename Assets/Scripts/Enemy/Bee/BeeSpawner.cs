@@ -10,7 +10,7 @@ public class BeeSpawner : MonoBehaviour
     public int maxBeesQuantities = 3;
     public int maxTotalBees = 10;
     public float spawnInterval = 5f;
-    public float delay = 0.5f;
+    public float delay = 1f;
 
     [SerializeField] Transform player;
 

@@ -8,6 +8,7 @@ TagManager:
   - Swapable
   - FireBall
   - Enemy
+  - Shield
   layers:
   - Default
   - TransparentFX

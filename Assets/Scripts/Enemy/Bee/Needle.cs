@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Needle : MonoBehaviour
 {
-    [SerializeField] float damage = 100;
+    [SerializeField] float damage;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -13,6 +13,8 @@ public class Needle : MonoBehaviour
         {
             ManaSystem.instance.TakeDamage(damage);
             Destroy(gameObject);
-        }        
+        }
+        if(other.gameObject.CompareTag("Shield"))
+            Destroy(gameObject);
     }
 }

@@ -39,21 +39,19 @@ public class BeeMovement : MonoBehaviour
         if (isEnemyStopped && inRange)
         {
             TryToShoot();
-            //Debug.Log("disparo");
         }
     }
 
     void CheckIfStopped()
     {
         distanceToPlayer = Vector3.Distance(transform.position, player.position);
-        inRange = distanceToPlayer <= stoppingDistance + shootRange;
+        inRange = distanceToPlayer <= shootRange;
 
         if (enemy.remainingDistance <= enemy.stoppingDistance)
         {
             if (!isEnemyStopped)
             {
                 isEnemyStopped = true;
-                Debug.Log("El enemigo se ha detenido");
             }
         }
         else

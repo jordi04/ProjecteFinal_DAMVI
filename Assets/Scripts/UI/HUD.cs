@@ -7,13 +7,13 @@ public class HUD : MonoBehaviour
 
     private void OnEnable()
     {
-        ManaSystem.Instance.OnManaChanged += UpdateManaBar;
+        ManaSystem.instance.OnManaChanged += UpdateManaBar;
     }
 
     private void OnDisable()
     {
-        if (ManaSystem.Instance != null)
-            ManaSystem.Instance.OnManaChanged -= UpdateManaBar;
+        if (ManaSystem.instance != null)
+            ManaSystem.instance.OnManaChanged -= UpdateManaBar;
     }
 
     private void UpdateManaBar(float manaRatio)

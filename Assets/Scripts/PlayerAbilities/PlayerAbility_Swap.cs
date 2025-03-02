@@ -14,13 +14,13 @@ public class PlayerAbility_Swap : PlayerAbility
         switch(useType)
         {
             case AbilityUseType.Held:
-                if(ManaSystem.Instance.HasManaAmount(manaCost))
+                if(ManaSystem.instance.HasManaAmount(manaCost))
                     PerformRaycast();
                 break;
             case AbilityUseType.Released:
                 if (lastHitObject != null)
                 {
-                    if (ManaSystem.Instance.TryConsumeMana(manaCost))
+                    if (ManaSystem.instance.TryConsumeMana(manaCost))
                         SwapWithObject();
                 }
                 ResetLastHitObject();
@@ -30,7 +30,7 @@ public class PlayerAbility_Swap : PlayerAbility
 
     private void PerformRaycast()
     {
-        Ray ray = GameManager.Instance.mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        Ray ray = GameManager.instance.mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
 
         RaycastHit hit;
 
@@ -82,11 +82,11 @@ public class PlayerAbility_Swap : PlayerAbility
     {
 
 
-        Vector3 playerPos = GameManager.Instance.player.transform.position;
+        Vector3 playerPos = GameManager.instance.player.transform.position;
         Vector3 objectPos = lastHitObject.transform.position;
 
-        Rigidbody playerRb = GameManager.Instance.player.GetComponent<Rigidbody>();
-        CharacterController playerCC = GameManager.Instance.player.GetComponent<CharacterController>();
+        Rigidbody playerRb = GameManager.instance.player.GetComponent<Rigidbody>();
+        CharacterController playerCC = GameManager.instance.player.GetComponent<CharacterController>();
         bool wasKinematic = false;
 
         if (playerRb != null)
@@ -101,7 +101,7 @@ public class PlayerAbility_Swap : PlayerAbility
         }
 
         // Perform the swap
-        GameManager.Instance.player.transform.position = objectPos;
+        GameManager.instance.player.transform.position = objectPos;
         lastHitObject.transform.position = playerPos;
 
         // Re-enable physics components

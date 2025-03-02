@@ -14,7 +14,7 @@ public class PlayerAbility_FireBall : PlayerAbility
     {
         if (useType == AbilityUseType.Pressed)
         {
-            if (ManaSystem.Instance.TryConsumeMana(manaCost))
+            if (ManaSystem.instance.TryConsumeMana(manaCost))
                 ThrowFireBall();
             else
                 HandleInsufficientMana();
@@ -28,7 +28,7 @@ public class PlayerAbility_FireBall : PlayerAbility
 
     private void ThrowFireBall()
     {
-        Transform spawnPoint = GameManager.Instance.mainCamera.transform;
+        Transform spawnPoint = GameManager.instance.mainCamera.transform;
         //Dont instantiate Use a pool
         GameObject fireball = Instantiate(fireballPrefab, spawnPoint.position, spawnPoint.rotation);
 

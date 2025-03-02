@@ -38,7 +38,7 @@ public class CheckPoint : MonoBehaviour
 
     private void Update()
     {
-        if (Physics.Raycast(GameManager.Instance.mainCamera.transform.position, GameManager.Instance.mainCamera.transform.forward, out RaycastHit hit, interactionDistance))
+        if (Physics.Raycast(GameManager.instance.mainCamera.transform.position, GameManager.instance.mainCamera.transform.forward, out RaycastHit hit, interactionDistance))
         {
             if (hit.collider.gameObject == gameObject)
             {

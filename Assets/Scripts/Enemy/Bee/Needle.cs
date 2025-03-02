@@ -11,7 +11,7 @@ public class Needle : MonoBehaviour
 
         if (player)
         {
-            ManaSystem.Instance.TakeDamage(damage);
+            ManaSystem.instance.TakeDamage(damage);
             Destroy(gameObject);
         }        
     }

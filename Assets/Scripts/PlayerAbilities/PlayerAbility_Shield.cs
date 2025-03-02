@@ -17,7 +17,7 @@ public class PlayerAbility_Shield : PlayerAbility
     {
         if(useType == AbilityUseType.Pressed)
         {
-            if (ManaSystem.Instance.TryConsumeMana(manaCost))
+            if (ManaSystem.instance.TryConsumeMana(manaCost))
             {
                 ActivateShield();
             }
@@ -34,9 +34,9 @@ public class PlayerAbility_Shield : PlayerAbility
         {
             // Instantiate the shield prefab and parent it to the player
             shieldInstance = Instantiate(shieldPrefab,
-                                        GameManager.Instance.player.transform.position,
+                                        GameManager.instance.player.transform.position,
                                         Quaternion.identity);
-            shieldInstance.transform.parent = GameManager.Instance.player.transform;
+            shieldInstance.transform.parent = GameManager.instance.player.transform;
             shieldInstance.transform.localPosition = Vector3.zero;
 
             // You can still adjust material properties if needed
@@ -57,7 +57,7 @@ public class PlayerAbility_Shield : PlayerAbility
         // You'd need to implement a damage system first
 
         // Start shield timer
-        MonoBehaviour monoBehaviour = GameManager.Instance.player.GetComponent<MonoBehaviour>();
+        MonoBehaviour monoBehaviour = GameManager.instance.player.GetComponent<MonoBehaviour>();
         monoBehaviour.StartCoroutine(ShieldTimer());
     }
 

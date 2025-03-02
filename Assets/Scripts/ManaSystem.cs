@@ -3,7 +3,7 @@ using System;
 
 public class ManaSystem : MonoBehaviour
 {
-    public static ManaSystem Instance { get; private set; }
+    public static ManaSystem instance { get; private set; }
 
     public event Action<float> OnManaChanged;
     public event Action OnManaDepleted;
@@ -15,13 +15,15 @@ public class ManaSystem : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
+        if (instance != null && instance != this)
         {
             Destroy(gameObject);
-            return;
         }
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
 
         currentMana = maxMana;
         InvokeRepeating(nameof(RegenerateMana), 1f, 1f);

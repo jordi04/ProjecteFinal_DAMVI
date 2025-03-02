@@ -21,6 +21,8 @@ public class MainMenu : MonoBehaviour
 
     void Play()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         SceneManager.LoadScene("map1v1");
     }
 

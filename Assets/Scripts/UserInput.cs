@@ -16,6 +16,10 @@ public class UserInput : MonoBehaviour
     public Vector2 movementInput { get; private set; }
     public bool pauseMenuPressed { get; private set; }
 
+    public bool interactPressed { get; private set; }
+    //If needed: public bool interactHolded { get; private set; }
+    //If needed: public bool interactReleased { get; private set; }
+
 
     public bool ability1Pressed { get; private set; }
     public bool ability1Holded { get; private set; }
@@ -45,6 +49,7 @@ public class UserInput : MonoBehaviour
     //InGame Actions
     private InputAction move_Action;
     private InputAction pauseMenu_Action;
+    private InputAction interact_Action;
     private InputAction ability1_Action;
     private InputAction ability2_Action;
     private InputAction ability3_Action;
@@ -80,6 +85,7 @@ public class UserInput : MonoBehaviour
         //InGame Actions
         //move_Action = inGameMap.FindAction("Move");
         pauseMenu_Action = inGameMap.FindAction("PauseMenu");
+        interact_Action = inGameMap.FindAction("Interact");
         ability1_Action = inGameMap.FindAction("Ability1");
         ability2_Action = inGameMap.FindAction("Ability2");
         ability3_Action = inGameMap.FindAction("Ability3");
@@ -94,6 +100,7 @@ public class UserInput : MonoBehaviour
         {
             //movementInput = move_Action.ReadValue<Vector2>();
             pauseMenuPressed = pauseMenu_Action.WasPressedThisFrame();
+            interactPressed = interact_Action.WasPressedThisFrame();
 
             ability1Pressed = ability1_Action.WasPressedThisFrame();
             ability1Holded = ability1_Action.IsPressed();

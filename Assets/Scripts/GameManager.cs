@@ -6,7 +6,6 @@ public class GameManager : MonoBehaviour
 
     public GameObject player;
     public Camera mainCamera;
-    public Transform spawnPoint;
 
     private void Awake()
     {

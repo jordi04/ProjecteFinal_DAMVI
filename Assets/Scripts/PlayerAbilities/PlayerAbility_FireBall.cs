@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "Fireball Ability", menuName = "Player Ability/Fireball")]
 public class PlayerAbility_FireBall : PlayerAbility
@@ -8,16 +9,35 @@ public class PlayerAbility_FireBall : PlayerAbility
     [SerializeField] private uint manaCost = 10;
     [SerializeField] private GameObject fireballPrefab;
     [SerializeField] private float fireballSpeed = 10f;
-    [SerializeField] private float fireballLifetime = 3f; // How many seconds the fireball exists before disappearing
+    [SerializeField] private float fireballLifetime = 3f;
+
+    [Header("UI")]
+    [SerializeField] private Sprite normalIcon;
+    [SerializeField] private Sprite cooldownIcon;
+
+    private void OnEnable()
+    {
+        abilityType = AbilityType.Fireball;
+    }
 
     public override void Use(AbilityUseType useType)
     {
-        if (useType == AbilityUseType.Pressed)
+        if (useType == AbilityUseType.Pressed && CanUse())
         {
-            if (ManaSystem.instance.TryConsumeMana(manaCost))
+            // Only check mana if the ability is not on cooldown
+            if (ManaSystem.instance.HasManaAmount(manaCost))
+            {
+                // Consume mana first
+                ManaSystem.instance.TryConsumeMana(manaCost);
+                // Then throw fireball and start cooldown
                 ThrowFireBall();
+                // Start cooldown
+                AbilityManager.instance.StartCooldown(this, cooldownTime, abilityType);
+            }
             else
+            {
                 HandleInsufficientMana();
+            }
         }
     }
 
@@ -29,41 +49,25 @@ public class PlayerAbility_FireBall : PlayerAbility
     private void ThrowFireBall()
     {
         Transform spawnPoint = GameManager.instance.mainCamera.transform;
-        //Dont instantiate Use a pool
-        GameObject fireball = Instantiate(fireballPrefab, spawnPoint.position, spawnPoint.rotation);
-
-        // Add a lifetime component to the fireball
-        FireballLifetime lifetime = fireball.AddComponent<FireballLifetime>();
+        // Using Object Pooling instead of Instantiate
+        GameObject fireball = ObjectPool.GetPooledObject(fireballPrefab);
+        if (fireball == null)
+        {
+            fireball = Instantiate(fireballPrefab, spawnPoint.position, spawnPoint.rotation);
+        }
+        else
+        {
+            fireball.transform.position = spawnPoint.position;
+            fireball.transform.rotation = spawnPoint.rotation;
+            fireball.SetActive(true);
+        }
+        // Add or get a FireballLifetime component
+        FireballLifetime lifetime = fireball.GetComponent<FireballLifetime>() ?? fireball.AddComponent<FireballLifetime>();
         lifetime.SetLifetime(fireballLifetime);
-
-        //Dont instantiate Use a pool
         Rigidbody rb = fireball.GetComponent<Rigidbody>();
         if (rb != null)
         {
             rb.velocity = spawnPoint.forward * fireballSpeed;
-        }
-    }
-}
-
-// Simple component to handle the fireball's lifetime
-public class FireballLifetime : MonoBehaviour
-{
-    private float _lifetime = 3f;
-    private float _timer = 0f;
-
-    public void SetLifetime(float lifetime)
-    {
-        _lifetime = lifetime;
-    }
-
-    private void Update()
-    {
-        _timer += Time.deltaTime;
-
-        if (_timer >= _lifetime)
-        {
-            // You might want to add some VFX here before destroying
-            Destroy(gameObject);
         }
     }
 }

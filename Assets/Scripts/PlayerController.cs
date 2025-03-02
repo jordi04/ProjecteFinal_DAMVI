@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum AbilityType
 {
@@ -15,21 +16,19 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerAbility shield;
     [SerializeField] private PlayerAbility swap;
 
-    
-
-    //Change this to a configuration option and the confirmation key to a inputSystem action
     [Header("Ability Confirmation")]
     [SerializeField] private bool requireConfirmation = false;
     [SerializeField] private KeyCode confirmationKey = KeyCode.Space;
 
     private Dictionary<AbilityType, PlayerAbility> abilityMap;
-    
+
     //Singleton References
     private UserInput userInput;
 
     private void Start()
     {
         userInput = UserInput.instance;
+
         InitializeAbilityMap();
     }
 
@@ -42,6 +41,7 @@ public class PlayerController : MonoBehaviour
             { AbilityType.Swap, swap }
         };
     }
+
 
     private void Update()
     {
@@ -64,13 +64,13 @@ public class PlayerController : MonoBehaviour
     {
         if (abilityMap.TryGetValue(abilityType, out PlayerAbility ability))
         {
-            if (isPressed){
-                if (!requireConfirmation || (requireConfirmation && Input.GetKeyDown(confirmationKey)))//Does not work
-                    ability.Use(AbilityUseType.Pressed);
-            }
-            else if (isHeld)
+            bool confirmationMet = !requireConfirmation || (requireConfirmation && Input.GetKey(confirmationKey));
+
+            if (isPressed && confirmationMet && ability.CanUse())
+                ability.Use(AbilityUseType.Pressed);
+            else if (isHeld && ability.CanUse())
                 ability.Use(AbilityUseType.Held);
-            else if (isReleased)
+            else if (isReleased && ability.CanUse())
                 ability.Use(AbilityUseType.Released);
         }
     }

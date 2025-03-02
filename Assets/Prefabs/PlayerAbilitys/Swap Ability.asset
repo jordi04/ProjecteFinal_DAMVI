@@ -12,3 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92273885819ab1946a59d81ecbddf2f3, type: 3}
   m_Name: Swap Ability
   m_EditorClassIdentifier: 
+  cooldownTime: 8
+  abilityType: 0
+  raycastDistance: 100
+  manaCost: 20

@@ -15,13 +15,15 @@ public class PlayerAbility_Shield : PlayerAbility
 
     public override void Use(AbilityUseType useType)
     {
-        if(useType == AbilityUseType.Pressed)
+        if (useType == AbilityUseType.Pressed)
         {
-            if (ManaSystem.instance.TryConsumeMana(manaCost))
+            if (CanUse() && ManaSystem.instance.TryConsumeMana(manaCost))
             {
                 ActivateShield();
+                // Start cooldown after successful activation
+                AbilityManager.instance.StartCooldown(this, cooldownTime, AbilityType.Shield);
             }
-        }  
+        }
     }
 
     private void ActivateShield()

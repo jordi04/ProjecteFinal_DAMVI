@@ -19,6 +19,7 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] Transform shootPoint;
     [SerializeField] float fireRate = 1f;
     [SerializeField] float bulletSpeed = 1f;
+    [SerializeField] float shootRange = 0f;
     private float nextFireTime = 0f;
 
     private void Start()
@@ -37,14 +38,14 @@ public class EnemyMovement : MonoBehaviour
         if (isEnemyStopped && inRange)
         {
             TryToShoot();
-            Debug.Log("disparo");
+            //Debug.Log("disparo");
         }
     }
 
     void CheckIfStopped()
     {
         distanceToPlayer = Vector3.Distance(transform.position, player.position);
-        inRange = distanceToPlayer <= stoppingDistance + 1f;
+        inRange = distanceToPlayer <= stoppingDistance + shootRange;
 
         if (enemy.remainingDistance <= enemy.stoppingDistance)
         {

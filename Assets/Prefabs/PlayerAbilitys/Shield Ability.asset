@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3344cc30ff2f8a748b1f0f4b2ec0a1c2, type: 3}
   m_Name: Shield Ability
   m_EditorClassIdentifier: 
+  cooldownTime: 6
+  abilityType: 0
   shieldDuration: 3
   manaCost: 15
   damageReduction: 1

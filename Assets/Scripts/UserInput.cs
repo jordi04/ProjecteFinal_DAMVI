@@ -133,14 +133,53 @@ public class UserInput : MonoBehaviour
         }
     }
 
+    public ActionMap CurrentActionMap
+    {
+        get
+        {
+            if (PlayerInput.currentActionMap.name == "InGame")
+                return ActionMap.InGame;
+            else if (PlayerInput.currentActionMap.name == "InMenu")
+                return ActionMap.InMenu;
+            else
+                return ActionMap.InGame; // Default to InGame if unknown
+        }
+    }
+
+    public bool IsInGameMode => CurrentActionMap == ActionMap.InGame;
+    public bool IsInMenuMode => CurrentActionMap == ActionMap.InMenu;
+
     public void switchActionMap(ActionMap map)
     {
         string mapName = map.ToString();
         if (PlayerInput.currentActionMap.name != mapName)
         {
-            Debug.Log("Switching to " + mapName);
             PlayerInput.SwitchCurrentActionMap(mapName);
+            ResetInputs(); // Llamar a ResetInputs() al cambiar de mapa
         }
+    }
 
+    // Nueva función para resetear inputs
+    private void ResetInputs()
+    {
+        movementInput = Vector2.zero;
+        pauseMenuPressed = false;
+        interactPressed = false;
+
+        ability1Pressed = false;
+        ability1Holded = false;
+        ability1Released = false;
+
+        ability2Pressed = false;
+        ability2Holded = false;
+        ability2Released = false;
+
+        ability3Pressed = false;
+        ability3Holded = false;
+        ability3Released = false;
+
+        ability4Pressed = false;
+        ability4Holded = false;
+        ability4Released = false;
     }
 }

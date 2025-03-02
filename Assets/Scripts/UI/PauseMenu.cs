@@ -7,7 +7,7 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] GameObject pauseMenu_Canvas;
     private UserInput userInput;
     private bool isPaused = false;
-    private bool canToggle = true;
+    public bool otherMenuOpen = false;
 
     [SerializeField] Button exitButton;
     [SerializeField] Button resumeButton;
@@ -31,14 +31,9 @@ public class PauseMenu : MonoBehaviour
 
     void Update()
     {
-        if (userInput.pauseMenuPressed && canToggle)
+        if (userInput.pauseMenuPressed && !otherMenuOpen)
         {
             TogglePauseMenu();
-            canToggle = false;
-        }
-        else if (!userInput.pauseMenuPressed)
-        {
-            canToggle = true;
         }
     }
 

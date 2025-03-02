@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CheckPointManager : MonoBehaviour
@@ -28,7 +29,7 @@ public class CheckPointManager : MonoBehaviour
         if(!checkPoints.Contains(checkPoint))
         {
             checkPoints.Add(checkPoint);
-            if (checkPoint.GetCheckPointData().name == firstCheckPointName)
+            if (checkPoint.GetCheckPointData().checkpointName == firstCheckPointName)
             {
                 checkPoint.GetCheckPointData().isVisited = true;
                 SetCurrentCheckpoint(checkPoint.GetCheckPointData());
@@ -49,16 +50,16 @@ public class CheckPointManager : MonoBehaviour
         Debug.Log($"New current checkpoint: {currentCheckpoint.checkpointName}");
     }
 
+    public List<CheckPointSO> GetAllCheckpoints()
+    {
+        return checkPoints.Select(cp => cp.GetCheckPointData()).ToList();
+    }
+    public List<CheckPointSO> GetUnvisitedCheckpoints()
+    {
+        return checkPoints.Where(cp => !cp.GetCheckPointData().isVisited).Select(cp => cp.GetCheckPointData()).ToList();
+    }
     public List<CheckPointSO> GetVisitedCheckpoints()
     {
-        List<CheckPointSO> visitedCheckpoints = new List<CheckPointSO>();
-        foreach (CheckPoint cp in checkPoints)
-        {
-            if (cp.GetCheckPointData().isVisited)
-            {
-                visitedCheckpoints.Add(cp.GetCheckPointData());
-            }
-        }
-        return visitedCheckpoints;
+        return checkPoints.Where(cp => cp.GetCheckPointData().isVisited).Select(cp => cp.GetCheckPointData()).ToList();
     }
 }

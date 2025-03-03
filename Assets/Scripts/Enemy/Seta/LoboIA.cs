@@ -13,12 +13,13 @@ public class LoboIA : MonoBehaviour
     private GameObject playerObject;
     private bool puedeSaltar = true;
     private bool estaVivo = true;
-    public LoboSpawner spawner;
+    private LoboSpawner spawner;
 
     void Start()
     {
         agente = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody>();
+        spawner = FindObjectOfType<LoboSpawner>();
 
         StartCoroutine(EsperarNavMesh());
     }
@@ -79,6 +80,8 @@ public class LoboIA : MonoBehaviour
         {
             spawner.LoboEliminado(gameObject);
         }
+
+        Destroy(gameObject, 2f); 
     }
 
     public void SetPlayer(GameObject player)

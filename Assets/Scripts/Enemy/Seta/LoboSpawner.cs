@@ -40,7 +40,7 @@ public class LoboSpawner : MonoBehaviour
         {
             for (int i = 0; i < cantidadLobosPorSpawn; i++)
             {
-                if (lobosEnEscena.Count >= maxLobosTotales)
+                if (lobosSpawneados >= maxLobosTotales)
                 {
                     yield break; 
                 }
@@ -50,8 +50,8 @@ public class LoboSpawner : MonoBehaviour
                 {
                     GameObject nuevoLobo = Instantiate(loboPrefab, hit.position, Quaternion.identity);
                     nuevoLobo.GetComponent<LoboIA>().SetPlayer(player.gameObject);
-                    nuevoLobo.GetComponent<LoboIA>().spawner = this;
                     lobosEnEscena.Add(nuevoLobo);
+                    lobosSpawneados++;
                 }
                 else
                 {

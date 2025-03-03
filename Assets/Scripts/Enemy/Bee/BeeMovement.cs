@@ -21,7 +21,6 @@ public class BeeMovement : MonoBehaviour
     [SerializeField] float bulletSpeed = 1f;
     [SerializeField] float shootRange = 0f;
     private float nextFireTime = 0f;
-    public BeeSpawner spawner;
 
     private void Start()
     {
@@ -91,10 +90,6 @@ public class BeeMovement : MonoBehaviour
         {
             Debug.LogWarning("Falta asignar el prefab de la bala, el punto de disparo o el objetivo");
         }
-    }
-    private void OnDestroy()
-    {
-        spawner.BeeEliminated(this.gameObject);
     }
 
     public void SetPlayer(Transform player)

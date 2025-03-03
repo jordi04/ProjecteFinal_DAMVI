@@ -14,6 +14,7 @@ public class BeeSpawner : MonoBehaviour
 
     [SerializeField] Transform player;
 
+    private int spawnedBees = 0;
     private List<GameObject> beesInScene = new List<GameObject>();
 
     void Start()
@@ -23,7 +24,7 @@ public class BeeSpawner : MonoBehaviour
 
     void StartSpawnBees()
     {
-        if (beesInScene.Count < maxTotalBees)
+        if (spawnedBees < maxTotalBees)
         {
             StartCoroutine(SpawnBeesWithDelay());
         }
@@ -39,7 +40,7 @@ public class BeeSpawner : MonoBehaviour
         {
             for (int i = 0; i < maxBeesQuantities; i++)
             {
-                if (beesInScene.Count >= maxTotalBees)
+                if (spawnedBees >= maxTotalBees)
                 {
                     yield break;
                 }
@@ -49,8 +50,12 @@ public class BeeSpawner : MonoBehaviour
                 {
                     GameObject newBee = Instantiate(beePrefab, hit.position, Quaternion.identity);
                     newBee.GetComponent<BeeMovement>().SetPlayer(player);
-                    newBee.GetComponent<BeeMovement>().spawner = this;
                     beesInScene.Add(newBee);
+                    spawnedBees++;
+                }
+                else
+                {
+                    Debug.LogWarning("No se encontró un NavMesh cercano para spawnear un lobo en " + punto.position);
                 }
 
                 yield return new WaitForSeconds(delay);
@@ -63,6 +68,7 @@ public class BeeSpawner : MonoBehaviour
         if (beesInScene.Contains(bee))
         {
             beesInScene.Remove(bee);
+            Destroy(bee);
         }
     }
 }

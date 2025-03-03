@@ -9,6 +9,8 @@ public class MainMenu : MonoBehaviour
 
     private void OnEnable()
     {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         playButton.onClick.AddListener(Play);
         exitButton.onClick.AddListener(ExitGame);
     }

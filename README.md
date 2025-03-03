@@ -1,4 +1,4 @@
-# 🧙‍♂️🏇 Joc del Mag i el Cavall
+# 🧙‍♂️🏇 The Last HIHO
 
 Benvinguts al nostre projecte en grup! 🎮 Aquest joc 3D en primera persona, desenvolupat en Unity, posa els jugadors en la pell d'un mag que cavalca pel món en una missió per salvar el seu fidel company. ✨
 

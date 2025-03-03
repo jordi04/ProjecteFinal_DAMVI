@@ -122,7 +122,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objetivo: {fileID: 0}
-  proyectilVenenoPrefab: {fileID: 0}
+  proyectilVenenoPrefab: {fileID: 9058237785712177519, guid: e38bcd030f6ada5409649e32ec9cd8b3,
+    type: 3}
   puntoDisparo: {fileID: 4566826870244750805}
   tiempoEntreAtaques: 5
   rangoMordida: 5
@@ -133,7 +134,7 @@ MonoBehaviour:
   tiempoCharcoVeneno: 5
   life: 50
   flashDuration: 0.2
-  snakeRenderer: {fileID: 0}
+  snakeRenderer: {fileID: 5020119318829996281}
 --- !u!1 &7933983329638312208
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CheckPointManager : MonoBehaviour
 {
@@ -21,36 +22,37 @@ public class CheckPointManager : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        ClearCheckpoints();
+    }
+
+
+    public void ClearCheckpoints()
+    {
+        checkPoints.Clear();
+        currentCheckpoint = null;
     }
 
     public void RegisterCheckPoint(CheckPoint checkPoint)
     {
-        if (!checkPoints.Contains(checkPoint))
+        CheckPointSO newCheckPointData = checkPoint.GetCheckPointData();
+
+        checkPoints.Add(checkPoint);
+        checkPoints.Sort((a, b) => a.GetCheckPointData().order.CompareTo(b.GetCheckPointData().order));
+
+        if (newCheckPointData.checkpointName == firstCheckPointName)
         {
-            // Check if the order is already taken
-            if (checkPoints.Exists(cp => cp.GetCheckPointData().order == checkPoint.GetCheckPointData().order))
-            {
-                Debug.LogWarning($"Checkpoint {checkPoint.GetCheckPointData().checkpointName} has a duplicate order {checkPoint.GetCheckPointData().order}. It will be added to the end.");
-                checkPoint.GetCheckPointData().order = checkPoints.Count > 0 ? checkPoints.Max(cp => cp.GetCheckPointData().order) + 1 : 0;
-            }
-
-            checkPoints.Add(checkPoint);
-            checkPoints.Sort((a, b) => a.GetCheckPointData().order.CompareTo(b.GetCheckPointData().order)); // Sort the list by order
-
-            if (checkPoint.GetCheckPointData().checkpointName == firstCheckPointName)
-            {
-                checkPoint.GetCheckPointData().isVisited = true;
-                SetCurrentCheckpoint(checkPoint.GetCheckPointData());
-            }
+            newCheckPointData.isVisited = true;
+            SetCurrentCheckpoint(newCheckPointData);
         }
     }
 
-    public void UpdateCheckpointStatus(CheckPointSO updatedCheckPoint)
-    {
-        Debug.Log($"Checkpoint {updatedCheckPoint.checkpointName} visited.");
-        // Add any additional logic for when a checkpoint is visited
-    }
+
 
     public void SetCurrentCheckpoint(CheckPointSO newCurrentCheckpoint)
     {

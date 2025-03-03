@@ -11,7 +11,10 @@ public class FireballLifetime : MonoBehaviour
         _lifetime = lifetime;
         _timer = 0f; // Reset timer when reusing from pool
     }
-
+    public float GetLifetime()
+    {
+        return _lifetime;
+    }
     private void Update()
     {
         _timer += Time.deltaTime;

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
-	<object class="AudioFile" id="{70058058-f7f6-4eab-88c8-920d3e126544}">
+	<object class="AudioFile" id="{2844d490-d3c4-433e-b940-7ac3628516fb}">
 		<property name="assetPath">
-			<value>horse-footsteps.mp3</value>
+			<value>shield.mp3</value>
 		</property>
 		<property name="frequencyInKHz">
-			<value>44.0999985</value>
+			<value>24</value>
 		</property>
 		<property name="channelCount">
 			<value>2</value>
 		</property>
 		<property name="length">
-			<value>4.1534693877551021</value>
+			<value>3.7919999999999998</value>
 		</property>
 		<relationship name="masterAssetFolder">
 			<destination>{5db00d7f-9a43-4969-a955-341b3d6a35aa}</destination>

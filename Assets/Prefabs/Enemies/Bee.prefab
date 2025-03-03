@@ -176,6 +176,7 @@ GameObject:
   - component: {fileID: 1751131134756718667}
   - component: {fileID: 272221723234570241}
   - component: {fileID: 8869368744825787288}
+  - component: {fileID: 7977801779386473267}
   m_Layer: 6
   m_Name: Bee
   m_TagString: Enemy
@@ -241,3 +242,34 @@ MonoBehaviour:
   fireRate: 1
   bulletSpeed: 50
   shootRange: 8
+--- !u!114 &7977801779386473267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3139664427377110825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -1176075512
+      Data2: 1119710032
+      Data3: 1347136385
+      Data4: -49847083
+    Path: event:/bee-flying
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20

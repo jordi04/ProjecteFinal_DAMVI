@@ -121,10 +121,10 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: 1251583657
-      Data2: 1089491848
-      Data3: -1718283625
-      Data4: -2103892609
+      Data1: 1672996892
+      Data2: 1200600190
+      Data3: 48515722
+      Data4: -151106996
     Path: event:/shield
   Event: 
   EventPlayTrigger: 1

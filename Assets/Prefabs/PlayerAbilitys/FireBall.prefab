@@ -176,10 +176,10 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: -1422744249
-      Data2: 1148500106
-      Data3: -918442860
-      Data4: 459749014
+      Data1: 1554393332
+      Data2: 1231125558
+      Data3: -2081558614
+      Data4: 1392034484
     Path: event:/fireball-whoosh
   Event: 
   EventPlayTrigger: 1

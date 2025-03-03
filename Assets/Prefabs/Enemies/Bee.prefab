@@ -176,7 +176,7 @@ GameObject:
   - component: {fileID: 1751131134756718667}
   - component: {fileID: 272221723234570241}
   - component: {fileID: 8869368744825787288}
-  - component: {fileID: 7977801779386473267}
+  - component: {fileID: -3236950066719242638}
   m_Layer: 6
   m_Name: Bee
   m_TagString: Enemy
@@ -242,7 +242,8 @@ MonoBehaviour:
   fireRate: 1
   bulletSpeed: 50
   shootRange: 8
---- !u!114 &7977801779386473267
+  spawner: {fileID: 0}
+--- !u!114 &-3236950066719242638
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -257,10 +258,10 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: -1176075512
-      Data2: 1119710032
-      Data3: 1347136385
-      Data4: -49847083
+      Data1: -1648509623
+      Data2: 1108700872
+      Data3: 359864763
+      Data4: -778109431
     Path: event:/bee-flying
   Event: 
   EventPlayTrigger: 1

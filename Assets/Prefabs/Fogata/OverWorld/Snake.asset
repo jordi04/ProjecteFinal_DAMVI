@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Snake
   m_EditorClassIdentifier: 
   checkpointName: Snake
-  checkPointImage: {fileID: 21300000, guid: b56693a1303cbc748a617a65fcb525b5, type: 3}
+  checkPointImage: {fileID: 21300000, guid: de59b6c238916b34d88c05e42c6bfb41, type: 3}
   map: 0
   order: 2
   isVisited: 0

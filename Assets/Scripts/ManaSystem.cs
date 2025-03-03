@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
+using TMPro;
 
 public class ManaSystem : MonoBehaviour
 {
@@ -14,8 +16,11 @@ public class ManaSystem : MonoBehaviour
 
 
     [Header("Respawn UI")]
-    [SerializeField] private GameObject respawnUI;
-    [SerializeField] private TMPro.TextMeshProUGUI loadingText;
+    [SerializeField] private GameObject respawnUIPrefab;
+
+    private GameObject respawnUIInstance;
+    private TextMeshProUGUI loadingText;
+
 
 
     private float lastManaRatio = -1f;
@@ -31,6 +36,7 @@ public class ManaSystem : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
+
         }
         currentMana = maxMana;
     }
@@ -51,6 +57,7 @@ public class ManaSystem : MonoBehaviour
             }
         }
     }
+
 
     public bool TryConsumeMana(float amount)
     {
@@ -84,8 +91,19 @@ public class ManaSystem : MonoBehaviour
     private IEnumerator HandleDeath()
     {
         isDead = true;
-        Time.timeScale = 0; // Pausar el juego
-        respawnUI.SetActive(true); // Mostrar la UI de respawn
+        Time.timeScale = 0; // Pause the game
+
+        // Instantiate the respawn UI
+        respawnUIInstance = Instantiate(respawnUIPrefab, Vector3.zero, Quaternion.identity);
+        respawnUIInstance.transform.SetParent(Canvas.FindObjectOfType<Canvas>().transform, false);
+
+        // Find the loading text component
+        loadingText = respawnUIInstance.GetComponentInChildren<TextMeshProUGUI>();
+        if (loadingText == null)
+        {
+            Debug.LogError("Loading text not found in respawn UI prefab");
+            yield break;
+        }
 
         float elapsedTime = 0f;
         string[] loadingStates = { ".", "..", "..." };
@@ -100,9 +118,13 @@ public class ManaSystem : MonoBehaviour
         RespawnPlayer();
     }
 
+
     private void RespawnPlayer()
     {
-        respawnUI.SetActive(false);
+        if (respawnUIInstance != null)
+        {
+            Destroy(respawnUIInstance);
+        }
         ResetMana();
         Time.timeScale = 1;
 

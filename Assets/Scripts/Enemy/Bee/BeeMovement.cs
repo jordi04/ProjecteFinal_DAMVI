@@ -30,7 +30,7 @@ public class BeeMovement : MonoBehaviour
         GetComponentInChildren<BeeLifeController>().SetPlayer(player);
     }
 
-    void Update()
+    void FixedUpdate()
     {
         enemy.SetDestination(player.position);
         CheckIfStopped();
@@ -65,9 +65,14 @@ public class BeeMovement : MonoBehaviour
     {
         if (Time.time > nextFireTime)
         {
-            Shoot();
+            if (Random.Range(0, 100) < 30)
+            {
+                Shoot();
+                nextFireTime = Time.time + 1f / fireRate;
+            }
             nextFireTime = Time.time + 1f / fireRate;
         }
+        
     }
 
     void Shoot()

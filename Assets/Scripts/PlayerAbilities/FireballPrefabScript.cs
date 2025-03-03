@@ -167,7 +167,6 @@ public class FireballPrefabScript : MonoBehaviour
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, explosionRadius, enemyLayer);
         foreach (Collider hitCollider in hitColliders)
         {
-            // Check for bee enemy
             BeeLifeController beeLife = hitCollider.GetComponent<BeeLifeController>();
             LoboIA mushroom = hitCollider.GetComponent<LoboIA>();
             SerpienteBoss snake = hitCollider.GetComponent<SerpienteBoss>();
@@ -184,6 +183,15 @@ public class FireballPrefabScript : MonoBehaviour
             else if (snake != null)
             {
                 snake.TakeDamage(damage);
+            }
+            else if (hitCollider.CompareTag("Player")   )
+            {
+                // Apply damage to player
+                ManaSystem playerHealth = hitCollider.GetComponent<ManaSystem>();
+                if (playerHealth != null)
+                {
+                    playerHealth.TakeDamage(damage*4f);
+                }
             }
             //else () PER COMPROVAR ALTRES ENEMICS EN UN FUTUR
         }

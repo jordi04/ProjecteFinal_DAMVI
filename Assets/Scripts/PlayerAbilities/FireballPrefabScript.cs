@@ -169,10 +169,16 @@ public class FireballPrefabScript : MonoBehaviour
         {
             // Check for bee enemy
             BeeLifeController beeLife = hitCollider.GetComponent<BeeLifeController>();
+            LoboIA mushroom = hitCollider.GetComponent<LoboIA>();
+
             if (beeLife != null)
             {
                 // Call the TakeDamage method instead of relying on trigger
                 beeLife.TakeDamage(damage);
+            }
+            else if(mushroom != null)
+            {
+                mushroom.TakeDamage(damage);
             }
             //else () PER COMPROVAR ALTRES ENEMICS EN UN FUTUR
         }

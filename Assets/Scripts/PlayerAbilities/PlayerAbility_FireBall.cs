@@ -14,6 +14,9 @@ public class PlayerAbility_FireBall : PlayerAbility
     [SerializeField] private float fireballLifetime = 3f;
     [SerializeField] private float momentumFactor = 0.5f; // How much player momentum affects the fireball (0-1)
 
+    // Static reference to the most recently thrown fireball
+    public static GameObject mostRecentFireball = null;
+
     private void OnEnable()
     {
         abilityType = AbilityType.Fireball;
@@ -62,6 +65,9 @@ public class PlayerAbility_FireBall : PlayerAbility
             fireball.transform.rotation = spawnPoint.rotation;
             fireball.SetActive(true);
         }
+
+        // Set this as the most recent fireball
+        mostRecentFireball = fireball;
 
         // Add or get a FireballLifetime component
         FireballLifetime lifetime = fireball.GetComponent<FireballLifetime>() ?? fireball.AddComponent<FireballLifetime>();

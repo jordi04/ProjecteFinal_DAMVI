@@ -116,6 +116,12 @@ public class FireballPrefabScript : MonoBehaviour
 
     private void ApplyCurving()
     {
+        // Only curve if this is the most recent fireball
+        if (this.gameObject != PlayerAbility_FireBall.mostRecentFireball)
+        {
+            return; // Skip curving for older fireballs
+        }
+
         // Get camera direction and current velocity direction
         Vector3 cameraDirection = cameraTransform.forward;
         Vector3 currentDirection = rb.velocity.normalized;
@@ -171,7 +177,23 @@ public class FireballPrefabScript : MonoBehaviour
             //else () PER COMPROVAR ALTRES ENEMICS EN UN FUTUR
         }
 
+        // If this was the most recent fireball, clear the reference
+        if (this.gameObject == PlayerAbility_FireBall.mostRecentFireball)
+        {
+            PlayerAbility_FireBall.mostRecentFireball = null;
+        }
+
         Destroy(gameObject);
+    }
+
+    // Handle destruction to clear the static reference
+    private void OnDestroy()
+    {
+        // If this was the most recent fireball, clear the reference
+        if (this.gameObject == PlayerAbility_FireBall.mostRecentFireball)
+        {
+            PlayerAbility_FireBall.mostRecentFireball = null;
+        }
     }
 
     // Visualization for debugging

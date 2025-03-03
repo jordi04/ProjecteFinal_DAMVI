@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8530808678049011028}
   - component: {fileID: 2635052888740415741}
   - component: {fileID: 8313735386931390420}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Needle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -146,4 +146,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59d56b73379e33141a18e9e628ad6432, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 25
+  damage: 10

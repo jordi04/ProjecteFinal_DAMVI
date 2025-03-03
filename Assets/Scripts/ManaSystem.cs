@@ -78,7 +78,7 @@ public class ManaSystem : MonoBehaviour
         if (isDead) return; // Evitar múltiples muertes seguidas
 
         currentMana -= amount;
-        if (currentMana <= 0)
+        if (currentMana < 1)
         {
             currentMana = 0;
             OnManaDepleted?.Invoke();

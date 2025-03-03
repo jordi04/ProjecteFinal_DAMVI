@@ -27,7 +27,6 @@ public class GameManager : MonoBehaviour
         FindPlayerAndCamera();
     }
 
-
     private void FindPlayerAndCamera()
     {
         player = GameObject.FindGameObjectWithTag("Player");

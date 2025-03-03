@@ -234,14 +234,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74b2ba23d015d4647b1ba7f98f530da6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stoppingDistance: 5
+  stoppingDistance: 10
   velocityThreshold: 0.1
   bulletPrefab: {fileID: 7968971157999502322, guid: 444360b1de66de348b65796f88d5e670,
     type: 3}
   shootPoint: {fileID: 549460697936172840}
-  fireRate: 1
-  bulletSpeed: 50
-  shootRange: 8
+  fireRate: 0.5
+  bulletSpeed: 25
+  shootRange: 15
   spawner: {fileID: 0}
 --- !u!114 &-3236950066719242638
 MonoBehaviour:

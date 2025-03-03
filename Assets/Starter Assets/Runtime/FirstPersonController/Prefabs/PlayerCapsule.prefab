@@ -442,7 +442,6 @@ GameObject:
   - component: {fileID: 5420857361349278248}
   - component: {fileID: 8616685848737228376}
   - component: {fileID: 1836411535889987826}
-  - component: {fileID: 6088841043626042311}
   - component: {fileID: 3699395289701579674}
   m_Layer: 8
   m_Name: PlayerCapsule
@@ -676,28 +675,6 @@ MonoBehaviour:
   fireBall: {fileID: 11400000, guid: 213bd61142f02be4ea59782cd8af5d1f, type: 2}
   shield: {fileID: 11400000, guid: f02a6f7f0102738419429080d82015ff, type: 2}
   swap: {fileID: 11400000, guid: 4f29592c2dc11e247adbf77a57bff4d9, type: 2}
-  requireConfirmation: 0
-  confirmationKey: 32
---- !u!114 &6088841043626042311
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8616685848737228372}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30bba1983f9d5254a985f602b08d5e0e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  abilityIcons:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  cooldownOverlays:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!136 &3699395289701579674
 CapsuleCollider:
   m_ObjectHideFlags: 0

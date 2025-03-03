@@ -101,6 +101,11 @@ public class UserInput : MonoBehaviour
     }
     private void UpdateInputs()
     {
+        if(PlayerInput == null)
+        {
+            return;
+        }
+
         if (PlayerInput.currentActionMap.name == "InGame")
         {
             //movementInput = move_Action.ReadValue<Vector2>();

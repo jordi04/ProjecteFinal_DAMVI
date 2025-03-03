@@ -170,6 +170,7 @@ public class FireballPrefabScript : MonoBehaviour
             // Check for bee enemy
             BeeLifeController beeLife = hitCollider.GetComponent<BeeLifeController>();
             LoboIA mushroom = hitCollider.GetComponent<LoboIA>();
+            SerpienteBoss snake = hitCollider.GetComponent<SerpienteBoss>();
 
             if (beeLife != null)
             {
@@ -179,6 +180,10 @@ public class FireballPrefabScript : MonoBehaviour
             else if(mushroom != null)
             {
                 mushroom.TakeDamage(damage);
+            }
+            else if (snake != null)
+            {
+                snake.TakeDamage(damage);
             }
             //else () PER COMPROVAR ALTRES ENEMICS EN UN FUTUR
         }

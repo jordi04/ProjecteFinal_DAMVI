@@ -214,7 +214,7 @@ PrefabInstance:
     - target: {fileID: 4228803412502354055, guid: 8d588d109da1bc24985653a49a98bd4b,
         type: 3}
       propertyPath: m_AgentTypeID
-      value: -334000983
+      value: -1372625422
       objectReference: {fileID: 0}
     - target: {fileID: 4228803412502354055, guid: 8d588d109da1bc24985653a49a98bd4b,
         type: 3}
@@ -1456,17 +1456,17 @@ PrefabInstance:
     - target: {fileID: 9005220659476430818, guid: 2d3a85ecde41a8246a79669975912b74,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 9005220659476430818, guid: 2d3a85ecde41a8246a79669975912b74,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 9005220659476430818, guid: 2d3a85ecde41a8246a79669975912b74,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 9005220659476430818, guid: 2d3a85ecde41a8246a79669975912b74,
         type: 3}
@@ -3219,6 +3219,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -717368781136080596, guid: af9ec46bf98507346b9485bca5484f59,
         type: 3}
+      propertyPath: spawnInterval
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -717368781136080596, guid: af9ec46bf98507346b9485bca5484f59,
+        type: 3}
       propertyPath: spawnPoints.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -4224,8 +4229,8 @@ SceneRoots:
   m_Roots:
   - {fileID: 482365861}
   - {fileID: 1459105275}
-  - {fileID: 482770848}
   - {fileID: 1391040616}
+  - {fileID: 482770848}
   - {fileID: 91324728}
   - {fileID: 611212935}
   - {fileID: 23064844}

@@ -133,7 +133,7 @@ MonoBehaviour:
   tiempoCharcoVeneno: 5
   life: 50
   flashDuration: 0.2
-  snakeRenderer: {fileID: 0}
+  snakeRenderer: {fileID: 5020119318829996281}
 --- !u!1 &7933983329638312208
 GameObject:
   m_ObjectHideFlags: 0

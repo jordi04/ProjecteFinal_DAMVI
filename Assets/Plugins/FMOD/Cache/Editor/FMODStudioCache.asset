@@ -78,7 +78,7 @@ MonoBehaviour:
   - {fileID: 557109491724218155}
   StringsBanks:
   - {fileID: 3013371581036214418}
-  cacheTime: 638766275823905264
+  cacheTime: 638766298970310553
   cacheVersion: 131846
 --- !u!114 &557109491724218155
 MonoBehaviour:
@@ -95,10 +95,10 @@ MonoBehaviour:
   Path: The_Last_HiHo_Fmod/The_Last_HiHo/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638766275823860129
+  lastModified: 638766298970300548
   FileSizes:
   - Name: Desktop
-    Value: 126688
+    Value: 126656
   Exists: 1
 --- !u!114 &3013371581036214418
 MonoBehaviour:
@@ -115,7 +115,7 @@ MonoBehaviour:
   Path: The_Last_HiHo_Fmod/The_Last_HiHo/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638766275823905264
+  lastModified: 638766298970310553
   FileSizes:
   - Name: Desktop
     Value: 866

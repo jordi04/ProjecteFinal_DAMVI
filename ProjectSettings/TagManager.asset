@@ -11,6 +11,7 @@ TagManager:
   - Shield
   - Death UI
   - Respawning
+  - Terrain
   layers:
   - Default
   - TransparentFX

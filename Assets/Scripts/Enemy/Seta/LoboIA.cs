@@ -31,6 +31,8 @@ public class LoboIA : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         StartCoroutine(EsperarNavMesh());
+        materialPropertyBlock = new MaterialPropertyBlock();
+        originalColor = mushroomRenderer.material.color;
     }
 
     IEnumerator EsperarNavMesh()
@@ -81,13 +83,10 @@ public class LoboIA : MonoBehaviour
     {
         if (isDead) return;
 
-
         if (other.CompareTag("FireBall"))
         {
             // Try to get the damage amount from the fireball
             FireballPrefabScript fireball = other.GetComponent<FireballPrefabScript>();
-
-
 
             // If we can't get the fireball script, use default damage
             if (fireball == null)
@@ -117,6 +116,7 @@ public class LoboIA : MonoBehaviour
         if (isDead) return;
 
         life -= damageAmount;
+        Debug.Log(life);
         // Flash on every hit
         StartCoroutine(DamageFlash());
 

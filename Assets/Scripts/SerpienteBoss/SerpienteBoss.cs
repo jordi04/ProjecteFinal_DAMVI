@@ -30,6 +30,9 @@ public class SerpienteBoss : MonoBehaviour
         if (objetivo == null) return;
         float distancia = Vector3.Distance(transform.position, objetivo.position);
 
+        materialPropertyBlock = new MaterialPropertyBlock();
+        originalColor = snakeRenderer.material.color;
+
         if (puedeAtacar)
         {
             if (distancia <= rangoMordida)

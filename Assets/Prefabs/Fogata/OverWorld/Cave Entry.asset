@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc62ac8de8f53e8458bdbffdeb603af3, type: 3}
   m_Name: Cave Entry
   m_EditorClassIdentifier: 
-  checkpointName: OverWorld 3
+  checkpointName: Cave Entry
   checkPointImage: {fileID: 21300000, guid: e61534650305cff4e973463f9fc910f6, type: 3}
   map: 0
   order: 3

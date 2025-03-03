@@ -14,7 +14,7 @@ public class ManaSystem : MonoBehaviour
 
 
     [Header("Respawn UI")]
-    [SerializeField] private GameObject respawnUI;
+    [SerializeField] private GameObject respawnUI;             
     [SerializeField] private TMPro.TextMeshProUGUI loadingText;
 
 

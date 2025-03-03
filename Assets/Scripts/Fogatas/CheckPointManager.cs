@@ -26,16 +26,24 @@ public class CheckPointManager : MonoBehaviour
 
     public void RegisterCheckPoint(CheckPoint checkPoint)
     {
-        if(!checkPoints.Contains(checkPoint))
+        if (!checkPoints.Contains(checkPoint))
         {
+            // Check if the order is already taken
+            if (checkPoints.Exists(cp => cp.GetCheckPointData().order == checkPoint.GetCheckPointData().order))
+            {
+                Debug.LogWarning($"Checkpoint {checkPoint.GetCheckPointData().checkpointName} has a duplicate order {checkPoint.GetCheckPointData().order}. It will be added to the end.");
+                checkPoint.GetCheckPointData().order = checkPoints.Count > 0 ? checkPoints.Max(cp => cp.GetCheckPointData().order) + 1 : 0;
+            }
+
             checkPoints.Add(checkPoint);
+            checkPoints.Sort((a, b) => a.GetCheckPointData().order.CompareTo(b.GetCheckPointData().order)); // Sort the list by order
+
             if (checkPoint.GetCheckPointData().checkpointName == firstCheckPointName)
             {
                 checkPoint.GetCheckPointData().isVisited = true;
                 SetCurrentCheckpoint(checkPoint.GetCheckPointData());
             }
         }
-            
     }
 
     public void UpdateCheckpointStatus(CheckPointSO updatedCheckPoint)

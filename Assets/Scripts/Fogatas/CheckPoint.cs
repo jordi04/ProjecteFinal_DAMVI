@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class CheckPoint : MonoBehaviour
@@ -27,7 +27,6 @@ public class CheckPoint : MonoBehaviour
 
     [Header("UI Travel")]
     [SerializeField] private GameObject travel_Panel;
-    [SerializeField] private TextMeshProUGUI travelTitle;
     [SerializeField] private Transform mapListParent;
     [SerializeField] private Transform checkpointListParent;
     [SerializeField] private GameObject mapButtonPrefab;
@@ -207,15 +206,41 @@ public class CheckPoint : MonoBehaviour
             buttonText.color = checkpoint.isVisited ? visitedColor : unvisitedColor;
 
             button.interactable = checkpoint.isVisited;
-            button.onClick.AddListener(() => SelectCheckpoint(checkpoint));
+            button.onClick.AddListener(() => TravelToCheckpoint(checkpoint));
+
+            // Add hover listener to show image
+            EventTrigger trigger = buttonObj.AddComponent<EventTrigger>();
+            EventTrigger.Entry entry = new EventTrigger.Entry();
+            entry.eventID = EventTriggerType.PointerEnter;
+            entry.callback.AddListener((data) => { SelectCheckpoint(checkpoint); });
+            trigger.triggers.Add(entry);
+
+            // Add hover exit listener to hide image
+            EventTrigger.Entry exitEntry = new EventTrigger.Entry();
+            exitEntry.eventID = EventTriggerType.PointerExit;
+            exitEntry.callback.AddListener((data) => { HideCheckpointImage(); });
+            trigger.triggers.Add(exitEntry);
         }
     }
 
     private void SelectCheckpoint(CheckPointSO checkpoint)
     {
-        selectedCheckpointImage.sprite = checkpoint.checkPointImage;
-        selectedCheckpointImage.gameObject.SetActive(true);
+        if (checkpoint.isVisited)
+        {
+            selectedCheckpointImage.sprite = checkpoint.checkPointImage;
+            selectedCheckpointImage.gameObject.SetActive(true);
+        }
+        else
+        {
+            selectedCheckpointImage.gameObject.SetActive(false);
+        }
     }
+
+    private void HideCheckpointImage()
+    {
+        selectedCheckpointImage.gameObject.SetActive(false);
+    }
+
 
     private void TravelToCheckpoint(CheckPointSO checkpoint)
     {
@@ -267,4 +292,5 @@ public class CheckPoint : MonoBehaviour
 
 //TODO:Particulas paradas en el menu.
 //TODO:El fuego se activa al salir del menu deveria ser al entrar
-//TODO:Lista de checkpoints visitados y no visitados no funciona correctamente
+//TODO:Ordenar mapas y checkpoints por orden de aparicion
+//TODO:Bloquear mapas no visitados

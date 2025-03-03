@@ -14,6 +14,7 @@ public class CheckPointSO : ScriptableObject
     public string checkpointName;
     public Sprite checkPointImage;
     public Map map;
+    public int order;
 
     [Header("!Prohibido llenar!")]
     public bool isVisited;

@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc62ac8de8f53e8458bdbffdeb603af3, type: 3}
-  m_Name: Checkpoint Serpiente
+  m_Name: OverWorld 1
   m_EditorClassIdentifier: 
-  checkpointName: Snake
-  checkPointImage: {fileID: 21300000, guid: b74c31d447d2f5d41a61081bdf5e7126, type: 3}
-  map: 1
-  isVisited: 0
+  checkpointName: Village
+  checkPointImage: {fileID: 21300000, guid: 394439d59f9950440a842a9a2ec2a1e3, type: 3}
+  map: 0
+  order: 1
+  isVisited: 1
   checkPointTransform: {fileID: 0}

@@ -69,7 +69,6 @@ public class LoboSpawner : MonoBehaviour
         if (lobosEnEscena.Contains(lobo))
         {
             lobosEnEscena.Remove(lobo);
-            Destroy(lobo);
         }
     }
 }

@@ -9,6 +9,8 @@ TagManager:
   - FireBall
   - Enemy
   - Shield
+  - Death UI
+  - Respawning
   layers:
   - Default
   - TransparentFX

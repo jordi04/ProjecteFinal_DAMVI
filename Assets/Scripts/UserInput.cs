@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class UserInput : MonoBehaviour
 {
@@ -63,11 +64,35 @@ public class UserInput : MonoBehaviour
         if (instance != null && instance != this)
         {
             Destroy(gameObject);
+            return;
         }
-        else
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        FindPlayerInput();
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        FindPlayerInput();
+    }
+
+    private void FindPlayerInput()
+    {
+        if (PlayerInput == null)
         {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
+            PlayerInput = FindObjectOfType<PlayerInput>();
+            if (PlayerInput == null)
+            {
+                Debug.LogWarning("PlayerInput not found in the scene.");
+                return;
+            }
         }
 
         inGameMap = PlayerInput.actions.FindActionMap("InGame", true);

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8735670898194717997}
   - component: {fileID: 838845245646086638}
   - component: {fileID: -5090186774907854255}
+  - component: {fileID: -4241205755046229595}
   m_Layer: 7
   m_Name: FireBall
   m_TagString: FireBall
@@ -160,3 +161,34 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!114 &-4241205755046229595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5713934225956739484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -1422744249
+      Data2: 1148500106
+      Data3: -918442860
+      Data4: 459749014
+    Path: event:/fireball-whoosh
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20

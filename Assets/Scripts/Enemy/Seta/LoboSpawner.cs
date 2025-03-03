@@ -20,6 +20,7 @@ public class LoboSpawner : MonoBehaviour
     void Start()
     {
         InvokeRepeating("IniciarSpawnLobos", 0f, tiempoEntreSpawns);
+        player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     void IniciarSpawnLobos()

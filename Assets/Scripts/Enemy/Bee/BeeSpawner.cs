@@ -19,6 +19,7 @@ public class BeeSpawner : MonoBehaviour
     void Start()
     {
         InvokeRepeating("StartSpawnBees", 0f, spawnInterval);
+        player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     void StartSpawnBees()

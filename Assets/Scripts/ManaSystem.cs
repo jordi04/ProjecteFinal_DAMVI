@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using System;
 
@@ -11,10 +12,14 @@ public class ManaSystem : MonoBehaviour
     [SerializeField] private float regenRate = 5f; // Mana per second
     [SerializeField] private float currentMana;
 
-    // Optional: Add this if you want to control when regeneration happens
-    [SerializeField] private bool shouldRegenerate = true;
 
-    private float lastManaRatio = -1f; // Used to only invoke events when the value actually changes
+    [Header("Respawn UI")]
+    [SerializeField] private GameObject respawnUI;
+    [SerializeField] private TMPro.TextMeshProUGUI loadingText;
+
+
+    private float lastManaRatio = -1f;
+    private bool isDead = false;
 
     private void Awake()
     {
@@ -32,7 +37,7 @@ public class ManaSystem : MonoBehaviour
 
     private void Update()
     {
-        if (shouldRegenerate && currentMana < maxMana)
+        if (currentMana < maxMana)
         {
             // Smooth regeneration based on delta time
             currentMana = Mathf.Min(currentMana + (regenRate * Time.deltaTime), maxMana);
@@ -63,14 +68,59 @@ public class ManaSystem : MonoBehaviour
 
     public void TakeDamage(float amount)
     {
+        if (isDead) return; // Evitar múltiples muertes seguidas
+
         currentMana -= amount;
         if (currentMana <= 0)
         {
             currentMana = 0;
             OnManaDepleted?.Invoke();
+            StartCoroutine(HandleDeath());
         }
         OnManaChanged?.Invoke(currentMana / maxMana);
         lastManaRatio = currentMana / maxMana;
+    }
+
+    private IEnumerator HandleDeath()
+    {
+        isDead = true;
+        Time.timeScale = 0; // Pausar el juego
+        respawnUI.SetActive(true); // Mostrar la UI de respawn
+
+        float elapsedTime = 0f;
+        string[] loadingStates = { ".", "..", "..." };
+
+        while (elapsedTime < 3f)
+        {
+            loadingText.text = "Respawning" + loadingStates[(int)(elapsedTime % loadingStates.Length)];
+            yield return new WaitForSecondsRealtime(0.5f);
+            elapsedTime += 0.5f;
+        }
+
+        RespawnPlayer();
+    }
+
+    private void RespawnPlayer()
+    {
+        respawnUI.SetActive(false);
+        ResetMana();
+        Time.timeScale = 1;
+
+        //Tp to spawn point
+        CharacterController characterController = GameManager.instance.player.GetComponent<CharacterController>();
+        if (characterController != null)
+        {
+            characterController.enabled = false;
+            GameManager.instance.player.transform.position = CheckPointManager.instance.currentCheckpoint.checkPointTransform.position;
+            characterController.enabled = true;
+        }
+        else
+        {
+            GameManager.instance.player.transform.position = CheckPointManager.instance.currentCheckpoint.checkPointTransform.position;
+        }
+
+
+        isDead = false;
     }
 
     public void ResetMana()
@@ -86,11 +136,5 @@ public class ManaSystem : MonoBehaviour
         return TryConsumeMana(drainAmount * Time.deltaTime);
     }
 
-    // Remove the RegenerateMana method as we're now using Update()
-
     public float GetManaRatio() => currentMana / maxMana;
-
-    // Optional: Methods to enable/disable regeneration
-    public void EnableRegeneration() => shouldRegenerate = true;
-    public void DisableRegeneration() => shouldRegenerate = false;
 }

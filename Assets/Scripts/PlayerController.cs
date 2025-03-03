@@ -16,10 +16,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerAbility shield;
     [SerializeField] private PlayerAbility swap;
 
-    [Header("Ability Confirmation")]
-    [SerializeField] private bool requireConfirmation = false;
-    [SerializeField] private KeyCode confirmationKey = KeyCode.Space;
-
     private Dictionary<AbilityType, PlayerAbility> abilityMap;
 
     //Singleton References
@@ -64,9 +60,8 @@ public class PlayerController : MonoBehaviour
     {
         if (abilityMap.TryGetValue(abilityType, out PlayerAbility ability))
         {
-            bool confirmationMet = !requireConfirmation || (requireConfirmation && Input.GetKey(confirmationKey));
 
-            if (isPressed && confirmationMet && ability.CanUse())
+            if (isPressed && ability.CanUse())
                 ability.Use(AbilityUseType.Pressed);
             else if (isHeld && ability.CanUse())
                 ability.Use(AbilityUseType.Held);

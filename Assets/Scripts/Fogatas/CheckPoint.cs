@@ -246,29 +246,18 @@ public class CheckPoint : MonoBehaviour
     {
         if (checkpoint.isVisited)
         {
-            Debug.Log($"Traveling to {checkpoint.checkpointName}");
-
-            // Get the player's CharacterController if it exists
             CharacterController characterController = GameManager.instance.player.GetComponent<CharacterController>();
-
             if (characterController != null)
             {
-                // Disable the CharacterController temporarily
                 characterController.enabled = false;
-
-                // Set the player's position
                 GameManager.instance.player.transform.position = checkpoint.checkPointTransform.position;
-
-                // Re-enable the CharacterController
                 characterController.enabled = true;
             }
             else
             {
-                // If there's no CharacterController, just set the position directly
                 GameManager.instance.player.transform.position = checkpoint.checkPointTransform.position;
             }
 
-            // Update the current checkpoint
             CheckPointManager.instance.SetCurrentCheckpoint(checkpoint);
 
             // Close UI panels

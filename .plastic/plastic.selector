@@ -1,4 +1,0 @@
-repository "ProjecteMedieval3D@a23jorrocbon@cloud"
-  path "/"
-    br "/main"
-    co "/main"

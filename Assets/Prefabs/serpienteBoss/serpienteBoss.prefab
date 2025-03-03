@@ -122,7 +122,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objetivo: {fileID: 0}
-  proyectilVenenoPrefab: {fileID: 0}
+  proyectilVenenoPrefab: {fileID: 9058237785712177519, guid: e38bcd030f6ada5409649e32ec9cd8b3,
+    type: 3}
   puntoDisparo: {fileID: 4566826870244750805}
   tiempoEntreAtaques: 5
   rangoMordida: 5

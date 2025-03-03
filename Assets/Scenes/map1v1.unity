@@ -3269,11 +3269,14 @@ PrefabInstance:
     - target: {fileID: -717368781136080596, guid: af9ec46bf98507346b9485bca5484f59,
         type: 3}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       propertyPath: spawnInterval
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -717368781136080596, guid: af9ec46bf98507346b9485bca5484f59,
         type: 3}
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
       propertyPath: spawnPoints.Array.size

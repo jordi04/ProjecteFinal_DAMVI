@@ -9,7 +9,7 @@ public class CheckPointManager : MonoBehaviour
     [SerializeField] private string firstCheckPointName;
     public static CheckPointManager instance { get; private set; }
 
-    private List<CheckPoint> checkPoints = new List<CheckPoint>();
+    [SerializeField]private List<CheckPointSO> checkPoints = new List<CheckPointSO>();
     public CheckPointSO currentCheckpoint { get; private set; }
 
     private void Awake()
@@ -22,37 +22,8 @@ public class CheckPointManager : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
-            SceneManager.sceneLoaded += OnSceneLoaded;
         }
     }
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        ClearCheckpoints();
-    }
-
-
-    public void ClearCheckpoints()
-    {
-        checkPoints.Clear();
-        currentCheckpoint = null;
-    }
-
-    public void RegisterCheckPoint(CheckPoint checkPoint)
-    {
-        CheckPointSO newCheckPointData = checkPoint.GetCheckPointData();
-
-        checkPoints.Add(checkPoint);
-        checkPoints.Sort((a, b) => a.GetCheckPointData().order.CompareTo(b.GetCheckPointData().order));
-
-        if (newCheckPointData.checkpointName == firstCheckPointName)
-        {
-            newCheckPointData.isVisited = true;
-            SetCurrentCheckpoint(newCheckPointData);
-        }
-    }
-
-
 
     public void SetCurrentCheckpoint(CheckPointSO newCurrentCheckpoint)
     {
@@ -62,14 +33,14 @@ public class CheckPointManager : MonoBehaviour
 
     public List<CheckPointSO> GetAllCheckpoints()
     {
-        return checkPoints.Select(cp => cp.GetCheckPointData()).ToList();
+        return checkPoints.Select(cp => cp).ToList();
     }
     public List<CheckPointSO> GetUnvisitedCheckpoints()
     {
-        return checkPoints.Where(cp => !cp.GetCheckPointData().isVisited).Select(cp => cp.GetCheckPointData()).ToList();
+        return checkPoints.Where(cp => !cp.isVisited).Select(cp => cp).ToList();
     }
     public List<CheckPointSO> GetVisitedCheckpoints()
     {
-        return checkPoints.Where(cp => cp.GetCheckPointData().isVisited).Select(cp => cp.GetCheckPointData()).ToList();
+        return checkPoints.Where(cp => cp.isVisited).Select(cp => cp).ToList();
     }
 }

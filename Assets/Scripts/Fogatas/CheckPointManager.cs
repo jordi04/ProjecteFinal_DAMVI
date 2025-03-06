@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class CheckPointManager : MonoBehaviour
 {
@@ -44,3 +43,10 @@ public class CheckPointManager : MonoBehaviour
         return checkPoints.Where(cp => cp.isVisited).Select(cp => cp).ToList();
     }
 }
+
+
+//Crear VAO
+//Bindear VAO
+
+//Crear VBO
+//Bindear VBO

@@ -47,11 +47,8 @@ public class CheckPoint : MonoBehaviour
 
     private void Start()
     {
-        // Before adding a checkpoint, check if a checkpoint with the same name already exists if it does remove that and insert the new one
         checkPointData.checkPointTransform = spawnPoint;
-        CheckPointManager.instance.RegisterCheckPoint(this);
 
-        checkPointName.text = checkPointData.checkpointName;
         fireVFX.SetActive(checkPointData.isVisited);
     }
 

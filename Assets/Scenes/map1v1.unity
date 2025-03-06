@@ -1337,6 +1337,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firstCheckPointName: Village
+  checkPoints:
+  - {fileID: 11400000, guid: e513131a1af463840af580c097c6f157, type: 2}
+  - {fileID: 11400000, guid: ca22f4d68736b9940bbec9c320befa49, type: 2}
+  - {fileID: 11400000, guid: 2d1cd8a8522aeda4f8ce053a6a4807f1, type: 2}
+  - {fileID: 11400000, guid: a86e23be3eb3d324d8666bf1ee336184, type: 2}
+  - {fileID: 11400000, guid: f0c5c80931d1c3b49be33829c1460fec, type: 2}
+  - {fileID: 11400000, guid: d8336f7a7db38bf4c919e87bc36aaaad, type: 2}
+  - {fileID: 11400000, guid: 89d2a4ee6e340094994764f5fee971f3, type: 2}
+  - {fileID: 11400000, guid: 19c28aafc8afe8949b81330fb1d84948, type: 2}
+  - {fileID: 11400000, guid: ddb150bba2988224c9ab8a39154339a5, type: 2}
 --- !u!114 &91324733
 MonoBehaviour:
   m_ObjectHideFlags: 0

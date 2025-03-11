@@ -3,7 +3,7 @@ using UnityEngine.AI;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-public class LoboIA : MonoBehaviour
+public class MushroomAI : MonoBehaviour
 {
     public float rangoSalto = 3f;
     public float fuerzaSalto = 8f;
@@ -79,7 +79,7 @@ public class LoboIA : MonoBehaviour
     }
 
 
-    private void OnTriggerEnter(Collider other)
+   private void OnTriggerEnter(Collider other)
     {
         if (isDead) return;
 
@@ -87,6 +87,7 @@ public class LoboIA : MonoBehaviour
         {
             // Try to get the damage amount from the fireball
             FireballPrefabScript fireball = other.GetComponent<FireballPrefabScript>();
+
 
             // If we can't get the fireball script, use default damage
             if (fireball == null)
@@ -116,7 +117,6 @@ public class LoboIA : MonoBehaviour
         if (isDead) return;
 
         life -= damageAmount;
-        Debug.Log(life);
         // Flash on every hit
         StartCoroutine(DamageFlash());
 
@@ -129,7 +129,7 @@ public class LoboIA : MonoBehaviour
 
     private IEnumerator DamageFlash()
     {
-        SetColor(Color.red);
+        SetColor(Color.yellow);
         yield return new WaitForSeconds(flashDuration);
         if (!isDead) ResetColor();
     }

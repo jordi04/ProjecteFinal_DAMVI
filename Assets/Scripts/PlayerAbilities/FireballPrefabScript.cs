@@ -168,7 +168,7 @@ public class FireballPrefabScript : MonoBehaviour
         foreach (Collider hitCollider in hitColliders)
         {
             BeeLifeController beeLife = hitCollider.GetComponent<BeeLifeController>();
-            LoboIA mushroom = hitCollider.GetComponent<LoboIA>();
+            MushroomAI mushroom = hitCollider.GetComponent<MushroomAI>();
             SerpienteBoss snake = hitCollider.GetComponent<SerpienteBoss>();
 
             if (beeLife != null)
@@ -178,6 +178,7 @@ public class FireballPrefabScript : MonoBehaviour
             }
             else if(mushroom != null)
             {
+                Debug.Log("Impacto a mushroom");
                 mushroom.TakeDamage(damage);
             }
             else if (snake != null)

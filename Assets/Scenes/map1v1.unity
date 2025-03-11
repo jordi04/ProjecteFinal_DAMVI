@@ -6348,6 +6348,26 @@ PrefabInstance:
       propertyPath: objetivo
       value: 
       objectReference: {fileID: 1074180574}
+    - target: {fileID: 4566826870244750805, guid: cba226884b878654eb64ab0a64768774,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.059
+      objectReference: {fileID: 0}
+    - target: {fileID: 4566826870244750805, guid: cba226884b878654eb64ab0a64768774,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.081
+      objectReference: {fileID: 0}
+    - target: {fileID: 4566826870244750805, guid: cba226884b878654eb64ab0a64768774,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.017
+      objectReference: {fileID: 0}
+    - target: {fileID: 7933983329638312208, guid: cba226884b878654eb64ab0a64768774,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9185709727064708509, guid: cba226884b878654eb64ab0a64768774,
         type: 3}
       propertyPath: m_LocalPosition.x

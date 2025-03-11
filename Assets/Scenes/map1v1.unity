@@ -6348,6 +6348,12 @@ PrefabInstance:
       propertyPath: objetivo
       value: 
       objectReference: {fileID: 1074180574}
+    - target: {fileID: 2517411954048386977, guid: cba226884b878654eb64ab0a64768774,
+        type: 3}
+      propertyPath: charcoVenenoPrefab
+      value: 
+      objectReference: {fileID: 1666233158301983608, guid: e1f3cf9dffc5d92459b0be8239fbd9de,
+        type: 3}
     - target: {fileID: 4566826870244750805, guid: cba226884b878654eb64ab0a64768774,
         type: 3}
       propertyPath: m_LocalPosition.x

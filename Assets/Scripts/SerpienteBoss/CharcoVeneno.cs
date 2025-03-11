@@ -5,6 +5,7 @@ public class CharcoVeneno : MonoBehaviour
 {
     public float dañoPorSegundo = 5f;
     public float duracion = 5f;
+    static Coroutine poisonCorutine;
 
     void Start()
     {
@@ -24,7 +25,29 @@ public class CharcoVeneno : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            other.GetComponent<Jugador>().AplicarVeneno(dañoPorSegundo, 1f);
+            AplicarVeneno(this, dañoPorSegundo, 1f);
         }
+    }
+
+    public static void AplicarVeneno(MonoBehaviour executor, float dañoPorSegundo, float duracion)
+    {
+        if (poisonCorutine != null)
+        {
+            executor.StopCoroutine(poisonCorutine);
+        }
+        poisonCorutine = executor.StartCoroutine(EfectoVeneno(dañoPorSegundo, duracion));
+    }
+
+    private static IEnumerator EfectoVeneno(float dañoPorSegundo, float duracion)
+    {
+        float tiempoTranscurrido = 0f;
+
+        while (tiempoTranscurrido < duracion)
+        {
+            ManaSystem.instance.TakeDamage(dañoPorSegundo);
+            tiempoTranscurrido += 1f;
+            yield return new WaitForSeconds(1f);
+        }
+        poisonCorutine = null;
     }
 }

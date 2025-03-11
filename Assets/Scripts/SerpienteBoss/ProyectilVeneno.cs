@@ -41,7 +41,7 @@ public class ProyectilVeneno : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Player"))
         {
-            collision.gameObject.GetComponent<Jugador>().AplicarVeneno(dañoVeneno, duracionVeneno);
+            CharcoVeneno.AplicarVeneno(this, dañoVeneno, duracionVeneno);
         }
         else if (collision.gameObject.CompareTag("Terrain"))
         {

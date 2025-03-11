@@ -50,8 +50,8 @@ public class LoboSpawner : MonoBehaviour
                 if (NavMesh.SamplePosition(punto.position, out hit, 2f, NavMesh.AllAreas))
                 {
                     GameObject nuevoLobo = Instantiate(loboPrefab, hit.position, Quaternion.identity);
-                    nuevoLobo.GetComponent<LoboIA>().SetPlayer(player.gameObject);
-                    nuevoLobo.GetComponent<LoboIA>().spawner = this;
+                    nuevoLobo.GetComponent<MushroomAI>().SetPlayer(player.gameObject);
+                    nuevoLobo.GetComponent<MushroomAI>().spawner = this;
                     lobosEnEscena.Add(nuevoLobo);
                 }
                 else

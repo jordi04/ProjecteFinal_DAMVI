@@ -8,6 +8,7 @@ public class SerpienteBoss : MonoBehaviour
     public Transform objetivo;
     public GameObject proyectilVenenoPrefab;
     public Transform puntoDisparo;
+    public float rangoActivacion = 40f;
     public float tiempoEntreAtaques = 5f;
     public float rangoMordida = 5f;
     public float dañoMordida = 20f;
@@ -24,6 +25,7 @@ public class SerpienteBoss : MonoBehaviour
 
     private bool isDead = false;
     private bool puedeAtacar = true;
+    private bool estaActiva = false;
 
     void Update()
     {
@@ -33,7 +35,14 @@ public class SerpienteBoss : MonoBehaviour
         materialPropertyBlock = new MaterialPropertyBlock();
         originalColor = snakeRenderer.material.color;
 
-        if (puedeAtacar)
+        if (!estaActiva && distancia <= rangoActivacion)
+        {
+            estaActiva = true;
+            Debug.Log("¡La serpiente se ha activado!");
+        }
+
+        // Si la serpiente está activa, atacar al jugador
+        if (estaActiva && puedeAtacar)
         {
             if (distancia <= rangoMordida)
             {

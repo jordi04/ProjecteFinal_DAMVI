@@ -90,7 +90,7 @@ public class TopoIA : MonoBehaviour
     {
         if (puedeHacerDaño)
         {
-            jugador.GetComponent<Jugador>().TomarDaño(daño);
+            //jugador.GetComponent<Jugador>().TomarDaño(daño);
             StartCoroutine(EsperarProximoGolpe());
         }
     }

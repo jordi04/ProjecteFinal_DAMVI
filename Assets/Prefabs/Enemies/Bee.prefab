@@ -161,10 +161,119 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0017122386a35334e871749e4652b971, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lookConstraint: {fileID: 9021841205167402874}
-  parent: {fileID: 3139664427377110825}
-  life: 20
+  enemyRoot: {fileID: 1384672297626945761}
+  targetPoint: {fileID: 0}
+  enemyRenderer: {fileID: 1192380085717779760}
+  maxHealth: 100
+  currentHealth: 0
+  damageMultiplier: 1
   flashDuration: 0.2
+  invulnerableDuringFlash: 0
+  damageSourceTags:
+  - FireBall
+  - Weapon
+  destroyDelay: 3
+  deathEffect: {fileID: 0}
+  disableColliderOnDeath: 1
+  disableRendererOnDeath: 0
+  movementType: 3
+  moveSpeed: 3.5
+  rotationSpeed: 5
+  stoppingDistance: 2
+  faceTarget: 1
+  avoidObstacles: 1
+  patrolPoints: []
+  patrolWaitTime: 1
+  attackType: 2
+  attackRange: 10
+  attackRate: 1
+  attackDamage: 10
+  chanceToAttack: 100
+  attackAngle: 45
+  attackOrigin: {fileID: 0}
+  attackableLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  requireLineOfSight: 1
+  attackDelay: 0.2
+  canAttackWhileMoving: 0
+  projectilePrefab: {fileID: 7968971157999502322, guid: 444360b1de66de348b65796f88d5e670,
+    type: 3}
+  projectileSpeed: 10
+  projectileLifetime: 5
+  shootPoints:
+  - {fileID: 2986954818027698245}
+  useRandomShootPoint: 0
+  burstFire: 0
+  burstCount: 3
+  burstDelay: 0.1
+  projectileSpread: 5
+  meleeRadius: 1.5
+  usePhysicsForMelee: 0
+  meleeForce: 5
+  meleeUpwardForce: 0
+  meleeEffectPrefab: {fileID: 0}
+  animator: {fileID: 0}
+  idleAnimTrigger: Idle
+  moveAnimTrigger: Move
+  attackAnimTrigger: Attack
+  damageAnimTrigger: Damage
+  deathAnimTrigger: Death
+  useAnimatorSpeed: 1
+  audioSource: {fileID: 0}
+  attackSounds: []
+  damageSounds: []
+  deathSounds: []
+  idleSounds: []
+  idleSoundInterval: 5
+  idleSoundChance: 20
+  damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
+  attackChargeEffect: {fileID: 0}
+  moveParticles: {fileID: 0}
+  detectionRange: 20
+  activateOnPlayerDetection: 1
+  hearingRange: 10
+  obstacleLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  shouldRetreat: 0
+  retreatHealthThreshold: 25
+  retreatDistance: 5
+  spawner: {fileID: 0}
+  flightSpeed: 7
+  hoverHeight: 3
+  enableHover: 1
+--- !u!1 &3010727526859465489
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2986954818027698245}
+  m_Layer: 0
+  m_Name: ShootPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2986954818027698245
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3010727526859465489}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.0020828247, y: 1.685, z: -0.723}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1751131134756718667}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3139664427377110825
 GameObject:
   m_ObjectHideFlags: 0
@@ -175,7 +284,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1751131134756718667}
   - component: {fileID: 272221723234570241}
-  - component: {fileID: 8869368744825787288}
   - component: {fileID: -3236950066719242638}
   m_Layer: 6
   m_Name: Bee
@@ -198,6 +306,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 549460697936172840}
+  - {fileID: 2986954818027698245}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &272221723234570241
@@ -222,27 +331,6 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &8869368744825787288
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3139664427377110825}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74b2ba23d015d4647b1ba7f98f530da6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stoppingDistance: 10
-  velocityThreshold: 0.1
-  bulletPrefab: {fileID: 7968971157999502322, guid: 444360b1de66de348b65796f88d5e670,
-    type: 3}
-  shootPoint: {fileID: 549460697936172840}
-  fireRate: 0.5
-  bulletSpeed: 25
-  shootRange: 15
-  spawner: {fileID: 0}
 --- !u!114 &-3236950066719242638
 MonoBehaviour:
   m_ObjectHideFlags: 0

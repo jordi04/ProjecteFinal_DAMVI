@@ -734,8 +734,9 @@ public class EnemyController : MonoBehaviour, IDamageable
 
         public void Move()
         {
+            Debug.Log("moving");
             if (agent == null || !agent.enabled || targetTransform == null) return;
-
+            Debug.Log("destination" + targetTransform.position);
             agent.SetDestination(targetTransform.position);
         }
 

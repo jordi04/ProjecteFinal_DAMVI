@@ -57,7 +57,7 @@ Transform:
   m_GameObject: {fileID: 6295189090379261515}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -9.928659, y: 5.9250007, z: -2.2761123}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -79,7 +79,7 @@ SphereCollider:
     m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
-  m_ProvidesContacts: 0
+  m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 3
   m_Radius: 30
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 9136458254384505711}
   - component: {fileID: 5087113838620324410}
   m_Layer: 0
-  m_Name: BeeSpawner
+  m_Name: EnemySpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -133,6 +133,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefabs:
   - {fileID: 3139664427377110825, guid: 8b8df63c52c354443846cbb5509bb878, type: 3}
+  - {fileID: 3304445009330831543, guid: 56d712e519c12ba43ac81599e669cb79, type: 3}
   spawnPoints:
   - {fileID: 3441120030850355795}
   enemiesPerSpawn: 3
@@ -169,7 +170,7 @@ Transform:
   m_GameObject: {fileID: 8061800184779196743}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -9.928659, y: 5.9250007, z: -2.2761123}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -191,7 +192,7 @@ SphereCollider:
     m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
-  m_ProvidesContacts: 0
+  m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 3
   m_Radius: 15

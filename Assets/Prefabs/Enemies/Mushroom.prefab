@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 2297593819960928707}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.559, y: 1.194, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -40,8 +40,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4688789641196875211}
-  - component: {fileID: 6716576874701006953}
   - component: {fileID: 2646950269758184119}
+  - component: {fileID: 6716576874701006953}
   - component: {fileID: 9081303519011380607}
   - component: {fileID: 7342394741395069466}
   m_Layer: 6
@@ -68,6 +68,28 @@ Transform:
   - {fileID: 8866931481613153719}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!195 &2646950269758184119
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3304445009330831543}
+  m_Enabled: 1
+  m_AgentTypeID: -334000983
+  m_Radius: 0.5
+  m_Speed: 12
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 5
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 1
+  m_BaseOffset: 0
+  m_WalkableMask: 16
+  m_ObstacleAvoidanceType: 4
 --- !u!114 &6716576874701006953
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,7 +128,7 @@ MonoBehaviour:
   attackType: 1
   attackRange: 10
   attackRate: 1
-  attackDamage: 10
+  attackDamage: 20
   chanceToAttack: 100
   attackAngle: 45
   attackOrigin: {fileID: 8866931481613153719}
@@ -115,7 +137,7 @@ MonoBehaviour:
     m_Bits: 320
   requireLineOfSight: 0
   attackDelay: 0.2
-  canAttackWhileMoving: 1
+  canAttackWhileMoving: 0
   projectilePrefab: {fileID: 0}
   projectileSpeed: 10
   projectileLifetime: 5
@@ -147,38 +169,16 @@ MonoBehaviour:
   damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
   attackChargeEffect: {fileID: 0}
   moveParticles: {fileID: 0}
-  detectionRange: 20
+  detectionRange: 12
   activateOnPlayerDetection: 1
   hearingRange: 10
   obstacleLayerMask:
     serializedVersion: 2
     m_Bits: 0
-  shouldRetreat: 0
-  retreatHealthThreshold: 25
-  retreatDistance: 5
+  shouldRetreat: 1
+  retreatHealthThreshold: 31
+  retreatDistance: 15
   spawner: {fileID: 0}
---- !u!195 &2646950269758184119
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3304445009330831543}
-  m_Enabled: 1
-  m_AgentTypeID: -334000983
-  m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 1
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
 --- !u!54 &9081303519011380607
 Rigidbody:
   m_ObjectHideFlags: 0

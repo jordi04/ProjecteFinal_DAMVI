@@ -37,6 +37,7 @@ public interface IEnemyAttack
 
 // Core enemy controller that serves as the framework for all enemy types
 [RequireComponent(typeof(Collider))]
+[RequireComponent(typeof(NavMeshAgent))]
 public class EnemyController : MonoBehaviour, IDamageable
 {
     [System.Serializable]
@@ -188,6 +189,16 @@ public class EnemyController : MonoBehaviour, IDamageable
     protected virtual void Start()
     {
         InitializeStrategies();
+        if (targetPoint != null)
+        {
+            //Debug.Log("Setting initial target");
+            SetTarget(targetPoint); // Make sure this is called
+        }
+        else
+        {
+            //
+            //Debug.LogError("No target point assigned!");
+        }
         nextIdleSoundTime = Time.time + Random.Range(0f, idleSoundInterval);
     }
 
@@ -281,16 +292,35 @@ public class EnemyController : MonoBehaviour, IDamageable
 
     protected virtual void InitializeStrategies()
     {
+        //Debug.Log($"Initializing strategies for {gameObject.name}");
+        //Debug.Log($"NavMeshAgent exists: {GetComponent<NavMeshAgent>() != null}");
+
         // Create movement strategy based on configuration
         movementStrategy = CreateMovementStrategy();
-        if (movementStrategy != null && target != null)
-            movementStrategy.Initialize(transform, target);
+
+        // Check if targetPoint is assigned before initializing
+        if (targetPoint == null)
+        {
+            //Debug.LogError($"Target point is not assigned for {gameObject.name}");
+            return;
+        }
+
+        if (movementStrategy != null)
+        {
+            //Debug.Log($"Initializing movement strategy of type {movementStrategy.GetType().Name}");
+            movementStrategy.Initialize(transform, targetPoint);
+        }
+        else
+        {
+            //Debug.LogError($"Movement strategy creation failed for {gameObject.name}");
+        }
 
         // Create attack strategy based on configuration
         attackStrategy = CreateAttackStrategy();
-        if (attackStrategy != null && target != null)
+        if (attackStrategy != null && targetPoint != null)  // Changed from target to targetPoint
         {
-            attackStrategy.Initialize(transform, target);
+            Debug.Log("Initializing attack strategy...");
+            attackStrategy.Initialize(transform, targetPoint);  // This is where we set the enemy transform
             attackStrategy.SetDamageMultiplier(damageMultiplier);
         }
 
@@ -366,7 +396,9 @@ public class EnemyController : MonoBehaviour, IDamageable
 
     public virtual void SetTarget(Transform newTarget)
     {
+        Debug.Log($"Setting new target: {(newTarget != null ? newTarget.name : "null")}");
         target = newTarget;
+        targetPoint = newTarget;  // Make sure targetPoint is also updated
 
         if (movementStrategy != null)
             movementStrategy.SetTarget(newTarget);
@@ -374,6 +406,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         if (attackStrategy != null)
             attackStrategy.SetTarget(newTarget);
     }
+
 
     public virtual void TakeDamage(float damageAmount)
     {
@@ -720,23 +753,57 @@ public class EnemyController : MonoBehaviour, IDamageable
 
         public void Initialize(Transform enemy, Transform target)
         {
+            //Debug.Log($"Initializing NavMeshMovement for {enemy.name}");
             enemyTransform = enemy;
             targetTransform = target;
             agent = enemy.GetComponent<NavMeshAgent>();
 
-            if (agent != null)
+            if (agent == null)
             {
-                agent.speed = moveSpeed;
-                agent.stoppingDistance = stoppingDistance;
-                agent.avoidancePriority = shouldAvoidObstacles ? 50 : 99;
+                Debug.LogError($"NavMeshAgent not found on {enemy.name}. Hierarchy path: {GetGameObjectPath(enemy)}");
+                return;
             }
+
+            //Debug.Log($"Found NavMeshAgent on {enemy.name}");
+            agent.speed = moveSpeed;
+            agent.stoppingDistance = stoppingDistance;
+            agent.avoidancePriority = shouldAvoidObstacles ? 50 : 99;
+        }
+        // Helper method to debug object hierarchy
+        private string GetGameObjectPath(Transform transform)
+        {
+            string path = transform.name;
+            while (transform.parent != null)
+            {
+                transform = transform.parent;
+                path = transform.name + "/" + path;
+            }
+            return path;
         }
 
         public void Move()
         {
-            Debug.Log("moving");
-            if (agent == null || !agent.enabled || targetTransform == null) return;
-            Debug.Log("destination" + targetTransform.position);
+            //Debug.Log("Moving - Starting checks:");
+
+            if (agent == null)
+            {
+                //Debug.LogError("NavMeshAgent is null");
+                return;
+            }
+
+            if (!agent.enabled)
+            {
+                //Debug.LogError("NavMeshAgent is not enabled");
+                return;
+            }
+
+            if (targetTransform == null)
+            {
+                //Debug.LogError("Target Transform is null");
+                return;
+            }
+
+            //Debug.Log($"Setting destination to: {targetTransform.position}");
             agent.SetDestination(targetTransform.position);
         }
 
@@ -1176,7 +1243,7 @@ public class EnemyController : MonoBehaviour, IDamageable
             bool useRandomShootPoint,
             float projectileSpread,
             float projectileLifetime)
-        {
+        {   
             this.projectilePrefab = projectilePrefab;
             this.shootPoints = shootPoints;
             this.projectileSpeed = projectileSpeed;
@@ -1194,6 +1261,7 @@ public class EnemyController : MonoBehaviour, IDamageable
 
         public void Initialize(Transform enemy, Transform target)
         {
+            Debug.Log($"Initializing RangedAttack with enemy: {(enemy != null ? enemy.name : "null")} and target: {(target != null ? target.name : "null")}");
             this.enemy = enemy;
             this.target = target;
         }
@@ -1205,28 +1273,137 @@ public class EnemyController : MonoBehaviour, IDamageable
 
         public bool CanAttack()
         {
-            if (target == null || enemy == null)
+            if (target == null)
+            {
+                Debug.LogWarning("Cannot attack: Target is null");
                 return false;
+            }
 
-            // Check if projectile prefab is assigned
+            if (enemy == null)
+            {
+                Debug.LogWarning("Cannot attack: Enemy is null");
+                return false;
+            }
+
             if (projectilePrefab == null)
+            {
+                Debug.LogWarning("Cannot attack: Projectile prefab not assigned");
                 return false;
+            }
 
-            // Check if at least one shoot point is assigned
             if (shootPoints == null || shootPoints.Length == 0)
+            {
+                Debug.LogWarning("Cannot attack: No shoot points assigned");
                 return false;
+            }
 
-            // Check attack cooldown
             if (Time.time < lastAttackTime + attackRate)
+            {
                 return false;
+            }
 
-            // Check distance to target
             float distanceToTarget = Vector3.Distance(enemy.position, target.position);
             if (distanceToTarget > attackRange)
+            {
                 return false;
+            }
 
             return true;
         }
+
+        private void FireSingleShot()
+        {
+            Transform shootPoint = GetShootPoint();
+            if (shootPoint == null)
+            {
+                Debug.LogError("No valid shoot point found");
+                return;
+            }
+
+            Debug.Log($"Attempting to fire projectile. Speed: {projectileSpeed}, Lifetime: {projectileLifetime}");
+
+
+            Vector3 direction = CalculateFireDirection(shootPoint);
+
+            // Create the projectile as a child of the shoot point initially
+            GameObject projectile = GameObject.Instantiate(
+                projectilePrefab,
+                shootPoint.position,
+                Quaternion.LookRotation(direction),
+                shootPoint // Parent to shoot point
+            );
+
+            // Immediately unparent it so it can move freely
+            //projectile.transform.parent = null;
+
+            Debug.Log($"Projectile instantiated at {shootPoint.position}");
+
+            // Ensure the projectile is active
+            projectile.SetActive(true);
+
+            Rigidbody projectileRb = projectile.GetComponent<Rigidbody>();
+            if (projectileRb == null)
+            {
+                // Add Rigidbody if it doesn't exist
+                projectileRb = projectile.AddComponent<Rigidbody>();
+                projectileRb.useGravity = false; // Usually projectiles don't need gravity
+                projectileRb.interpolation = RigidbodyInterpolation.Interpolate; // Smoother movement
+                projectileRb.collisionDetectionMode = CollisionDetectionMode.Continuous; // Better collision detection
+            }
+
+            projectileRb.velocity = direction * projectileSpeed;
+            Debug.Log($"Projectile velocity set to {direction * projectileSpeed}");
+            Debug.Log($"Set projectile velocity to {projectileRb.velocity}");
+
+            // Set up projectile damage
+            Projectile projectileScript = projectile.GetComponent<Projectile>();
+            if (projectileScript == null)
+            {
+                projectileScript = projectile.AddComponent<Projectile>();
+                Debug.Log("Added Projectile script to projectile");
+            }
+
+            // Ensure the projectile has a collider
+            if (projectile.GetComponent<Collider>() == null)
+            {
+                SphereCollider collider = projectile.AddComponent<SphereCollider>();
+                collider.radius = 0.25f; // Adjust this value as needed
+                collider.isTrigger = true; // Usually projectiles work better as triggers
+            }
+
+            // Add a visible mesh if the projectile doesn't have one
+            if (projectile.GetComponent<MeshRenderer>() == null && projectile.GetComponent<SkinnedMeshRenderer>() == null)
+            {
+                // This is just a fallback if the projectile has no visible components
+                GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                sphere.transform.localScale = Vector3.one * 0.5f; // Adjust size as needed
+                sphere.transform.parent = projectile.transform;
+                sphere.transform.localPosition = Vector3.zero;
+                // Remove the collider from the sphere since we already added one to the projectile
+                Destroy(sphere.GetComponent<Collider>());
+            }
+
+            if (projectileScript == null)
+            {
+                projectileScript = projectile.AddComponent<Projectile>();
+            }
+
+            projectileScript.SetDamage(damage * damageMultiplier);
+            projectileScript.SetOwner(enemy.gameObject);
+
+            // Ensure the projectile is destroyed after its lifetime
+            if (projectileLifetime > 0)
+            {
+                Debug.Log($"Setting projectile lifetime to {projectileLifetime} seconds");
+                GameObject.Destroy(projectile, projectileLifetime);
+            }
+
+            projectileScript.SetDamage(damage * damageMultiplier);
+            projectileScript.SetOwner(enemy.gameObject);
+
+            GameObject.Destroy(projectile, projectileLifetime);
+        }
+
 
         public void Attack()
         {
@@ -1264,47 +1441,7 @@ public class EnemyController : MonoBehaviour, IDamageable
                 yield return new WaitForSeconds(burstDelay);
             }
         }
-
-        private void FireSingleShot()
-        {
-            // Choose shoot point
-            Transform shootPoint = GetShootPoint();
-            if (shootPoint == null)
-                return;
-
-            // Calculate direction to target with optional spread
-            Vector3 direction = CalculateFireDirection(shootPoint);
-
-            // Instantiate projectile
-            GameObject projectile = GameObject.Instantiate(
-                projectilePrefab,
-                shootPoint.position,
-                Quaternion.LookRotation(direction)
-            );
-
-            // Set up projectile
-            Rigidbody projectileRb = projectile.GetComponent<Rigidbody>();
-            if (projectileRb != null)
-            {
-                projectileRb.velocity = direction * projectileSpeed;
-            }
-
-            // Set up projectile damage
-            Projectile projectileScript = projectile.GetComponent<Projectile>();
-            if (projectileScript == null)
-            { 
-                //si no existesix afageix l'script
-                projectileScript = projectile.AddComponent<Projectile>();
-            }
-
-            projectileScript.SetDamage(damage * damageMultiplier);
-            projectileScript.SetOwner(enemy.gameObject);
-
-
-            // Destroy projectile after lifetime
-            GameObject.Destroy(projectile, projectileLifetime);
-        }
-
+        
         private Transform GetShootPoint()
         {
             if (shootPoints == null || shootPoints.Length == 0)

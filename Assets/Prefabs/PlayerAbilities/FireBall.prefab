@@ -60,8 +60,8 @@ MonoBehaviour:
   collisionLayers:
     serializedVersion: 2
     m_Bits: 200
-  baseSpeed: 25
-  curveStrength: 60
+  baseSpeed: 15
+  curveStrength: 360
   curveDelay: 0.01
 --- !u!33 &67066588239722700
 MeshFilter:

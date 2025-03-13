@@ -1256,6 +1256,7 @@ public class EnemyController : MonoBehaviour, IDamageable
 
         private IEnumerator FireBurst()
         {
+            Debug.Log("firingSingleShot");
             for (int i = 0; i < burstCount; i++)
             {
                 FireSingleShot();
@@ -1289,11 +1290,15 @@ public class EnemyController : MonoBehaviour, IDamageable
 
             // Set up projectile damage
             Projectile projectileScript = projectile.GetComponent<Projectile>();
-            if (projectileScript != null)
-            {
-                projectileScript.SetDamage(damage * damageMultiplier);
-                projectileScript.SetOwner(enemy.gameObject);
+            if (projectileScript == null)
+            { 
+                //si no existesix afageix l'script
+                projectileScript = projectile.AddComponent<Projectile>();
             }
+
+            projectileScript.SetDamage(damage * damageMultiplier);
+            projectileScript.SetOwner(enemy.gameObject);
+
 
             // Destroy projectile after lifetime
             GameObject.Destroy(projectile, projectileLifetime);

@@ -38,6 +38,7 @@ public class EnemySpawner : MonoBehaviour
             if (Collider.Equals(spawnerTrigger, GetComponent<Collider>()))
             {
                 // Player entered the spawn trigger
+                Debug.Log("Start Spawning");
                 StartSpawning();
             }
         }

@@ -37,7 +37,6 @@ public class ProyectilVeneno : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         if (impactoRealizado) return;
-        impactoRealizado = true;
 
         if (collision.gameObject.CompareTag("Player"))
         {
@@ -48,8 +47,7 @@ public class ProyectilVeneno : MonoBehaviour
             Debug.Log("Proyectil impactó con el terreno.");
         }
 
-        CrearCharco();
-        Destroy(gameObject);
+        DestruirProyectil();
     }
 
     void DestruirProyectil()

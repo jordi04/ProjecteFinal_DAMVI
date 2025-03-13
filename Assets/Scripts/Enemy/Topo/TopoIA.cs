@@ -6,7 +6,7 @@ public class TopoIA : MonoBehaviour
 {
     public float tiempoPersecucion = 3f; 
     public float tiempoEsperaEmergido = 0.5f; 
-    public float daño = 10f;
+    public float damage = 10f;
     public float velocidadMovimiento = 3.5f;
     public float velocidadSumergido = 6f;
     public Transform objetivo;
@@ -90,7 +90,7 @@ public class TopoIA : MonoBehaviour
     {
         if (puedeHacerDaño)
         {
-            jugador.GetComponent<Jugador>().TomarDaño(daño);
+            ManaSystem.instance.TakeDamage(damage);
             StartCoroutine(EsperarProximoGolpe());
         }
     }

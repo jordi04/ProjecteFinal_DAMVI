@@ -69,7 +69,7 @@ public class ProyectilVeneno : MonoBehaviour
 
             if (charcoComponent != null)
             {
-                charcoComponent.dañoPorSegundo = dañoVeneno;
+                charcoComponent.danoPorSegundo = dañoVeneno;
                 charcoComponent.duracion = tiempoCharcoVeneno;
             }
 

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CharcoVeneno : MonoBehaviour
 {
-    public float dañoPorSegundo = 5f;
+    public float danoPorSegundo = 5f;
     public float duracion = 5f;
     static Coroutine poisonCorutine;
 
@@ -25,7 +25,7 @@ public class CharcoVeneno : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            AplicarVeneno(this, dañoPorSegundo, 1f);
+            AplicarVeneno(this, danoPorSegundo, 1f);
         }
     }
 

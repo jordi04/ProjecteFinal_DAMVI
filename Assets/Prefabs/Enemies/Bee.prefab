@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 1326791183909703949}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.69, z: 0}
+  m_LocalPosition: {x: 0, y: -1.69, z: -1.12}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -56,7 +56,7 @@ Transform:
   m_GameObject: {fileID: 5909836471609884408}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0020828247, y: -1.69, z: -0.7229996}
+  m_LocalPosition: {x: 0.0020828247, y: -0.69, z: -0.96}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -161,7 +161,7 @@ MonoBehaviour:
   movementType: 1
   moveSpeed: 3.5
   rotationSpeed: 5
-  stoppingDistance: 9
+  stoppingDistance: 7
   faceTarget: 1
   avoidObstacles: 1
   patrolPoints: []
@@ -177,7 +177,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 320
   requireLineOfSight: 1
-  attackDelay: 0.2
+  attackDelay: 0.5
   canAttackWhileMoving: 0
   projectilePrefab: {fileID: 7968971157999502322, guid: 444360b1de66de348b65796f88d5e670,
     type: 3}
@@ -300,11 +300,11 @@ LookAtConstraint:
   m_Enabled: 1
   serializedVersion: 2
   m_Weight: 1
-  m_RotationAtRest: {x: 0, y: 0, z: 0}
-  m_RotationOffset: {x: -90, y: 180, z: 0}
+  m_RotationAtRest: {x: -90, y: 0, z: 0}
+  m_RotationOffset: {x: -90, y: 0, z: 0}
   m_Roll: 0
   m_WorldUpObject: {fileID: 0}
   m_UseUpObject: 0
   m_Active: 0
-  m_IsLocked: 1
+  m_IsLocked: 0
   m_Sources: []

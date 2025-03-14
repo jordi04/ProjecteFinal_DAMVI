@@ -3433,7 +3433,7 @@ PrefabInstance:
     - target: {fileID: 3304445009330831543, guid: 56d712e519c12ba43ac81599e669cb79,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4688789641196875211, guid: 56d712e519c12ba43ac81599e669cb79,
         type: 3}
@@ -19051,6 +19051,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1802525325}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1805899598 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9136458254384505711, guid: af9ec46bf98507346b9485bca5484f59,
+    type: 3}
+  m_PrefabInstance: {fileID: 1812316318}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1806369459
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19237,11 +19243,37 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 336545339400095020, guid: af9ec46bf98507346b9485bca5484f59,
+        type: 3}
+      propertyPath: m_Name
+      value: SpawnPoint
+      objectReference: {fileID: 0}
     - target: {fileID: 5087113838620324410, guid: af9ec46bf98507346b9485bca5484f59,
         type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 1074180574}
+    - target: {fileID: 5087113838620324410, guid: af9ec46bf98507346b9485bca5484f59,
+        type: 3}
+      propertyPath: enemySpawnDelay
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5087113838620324410, guid: af9ec46bf98507346b9485bca5484f59,
+        type: 3}
+      propertyPath: spawnEffectPrefab
+      value: 
+      objectReference: {fileID: 5098030492564252934, guid: 50fd5318d2e14184ebd8e823567cdaa6,
+        type: 3}
+    - target: {fileID: 5087113838620324410, guid: af9ec46bf98507346b9485bca5484f59,
+        type: 3}
+      propertyPath: spawnPoints.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5087113838620324410, guid: af9ec46bf98507346b9485bca5484f59,
+        type: 3}
+      propertyPath: spawnPoints.Array.data[1]
+      value: 
+      objectReference: {fileID: 2114987110}
     - target: {fileID: 8054948583151798327, guid: af9ec46bf98507346b9485bca5484f59,
         type: 3}
       propertyPath: m_Name
@@ -19299,7 +19331,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 9136458254384505711, guid: af9ec46bf98507346b9485bca5484f59,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2114987110}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: af9ec46bf98507346b9485bca5484f59, type: 3}
 --- !u!1 &1849437354
@@ -21792,6 +21828,37 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2104257263}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2114987109
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2114987110}
+  m_Layer: 0
+  m_Name: SpawnPoint (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2114987110
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2114987109}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 7.26, y: 0, z: 6.8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1805899598}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2122206124
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22216,6 +22283,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Bee
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565181303178810632, guid: 31a12f4bc32eb544990bfa00476b45fa,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8965444036169075393, guid: 31a12f4bc32eb544990bfa00476b45fa,
         type: 3}

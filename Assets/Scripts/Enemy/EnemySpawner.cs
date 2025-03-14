@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
+    [Header("Enemy Spawning Settings")]
     public GameObject[] enemyPrefabs;
     public Transform[] spawnPoints;
     public int enemiesPerSpawn = 3;
@@ -13,49 +14,66 @@ public class EnemySpawner : MonoBehaviour
     public float delayBetweenEnemiesSpawn = 0.5f;
     [SerializeField] Transform player;
 
+    [Header("Spawn Effect Settings")]
+    [SerializeField] private GameObject spawnEffectPrefab;
+    [SerializeField] private float enemySpawnDelay = 1.5f;
+    [SerializeField] private bool destroyEffectAfterSpawn = true;
+
+    [Header("Spawn Area Settings")]
+    [SerializeField] private bool useRandomPositionInArea = true;
+    [SerializeField] private float spawnAreaRadius = 2f;
+    [SerializeField] private Color spawnAreaColor = new Color(0.2f, 0.8f, 0.2f, 0.3f);
+    [SerializeField] private bool showSpawnAreas = true;
+
+    [Header("Trigger Settings")]
+    [SerializeField] private float triggerRadius = 10f;
+    [SerializeField] private float clearEnemiesRadius = 20f;
+    [SerializeField] private bool showDebugSpheres = true;
+    [SerializeField] private Color triggerColor = Color.green;
+    [SerializeField] private Color clearColor = Color.red;
+
     private int enemiesSpawned = 0;
     private List<GameObject> enemiesInScene = new List<GameObject>();
     private bool isSpawning = false;
     private Coroutine spawnCoroutine;
 
-    [SerializeField] private Collider spawnerTrigger;
-    [SerializeField] private Collider clearEnemiesTrigger;
-
     void Start()
     {
-        // Make sure the colliders are set as triggers
-        if (spawnerTrigger != null)
-            spawnerTrigger.isTrigger = true;
-
-        if (clearEnemiesTrigger != null)
-            clearEnemiesTrigger.isTrigger = true;
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player") && other.gameObject.transform == player)
+        // Ensure player reference is set
+        if (player == null)
         {
-            if (Collider.Equals(spawnerTrigger, GetComponent<Collider>()))
+            player = GameObject.FindGameObjectWithTag("Player")?.transform;
+            if (player == null)
             {
-                // Player entered the spawn trigger
-                Debug.Log("Start Spawning");
-                StartSpawning();
+                Debug.LogError("No player found. Please assign the player transform or tag a GameObject as 'Player'.");
             }
         }
     }
 
-    void OnTriggerExit(Collider other)
+    void Update()
     {
-        if (other.CompareTag("Player") && other.gameObject.transform == player)
+        if (player != null)
         {
-            if (Collider.Equals(spawnerTrigger, GetComponent<Collider>()))
+            // Check if player is within spawn trigger radius
+            float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+
+            // Player entered spawn trigger
+            if (distanceToPlayer <= triggerRadius && !isSpawning)
             {
-                // Player left the spawn trigger
+                Debug.Log("Player entered spawn trigger zone");
+                StartSpawning();
+            }
+            // Player exited spawn trigger
+            else if (distanceToPlayer > triggerRadius && isSpawning)
+            {
+                Debug.Log("Player exited spawn trigger zone");
                 StopSpawning();
             }
-            else if (Collider.Equals(clearEnemiesTrigger, GetComponent<Collider>()))
+
+            // Player exited clear enemies radius
+            if (distanceToPlayer > clearEnemiesRadius && enemiesInScene.Count > 0)
             {
-                // Player left the clear enemies trigger
+                Debug.Log("Player exited clear enemies zone");
                 ClearAllEnemies();
             }
         }
@@ -66,6 +84,7 @@ public class EnemySpawner : MonoBehaviour
         if (!isSpawning)
         {
             isSpawning = true;
+            Debug.Log("Starting to spawn enemies");
             spawnCoroutine = StartCoroutine(SpawnEnemies());
         }
     }
@@ -75,6 +94,7 @@ public class EnemySpawner : MonoBehaviour
         if (isSpawning)
         {
             isSpawning = false;
+            Debug.Log("Stopping enemy spawning");
             if (spawnCoroutine != null)
             {
                 StopCoroutine(spawnCoroutine);
@@ -97,8 +117,6 @@ public class EnemySpawner : MonoBehaviour
         // Clear the list but keep track of the total spawned
         enemiesInScene.Clear();
 
-        // We don't decrease enemiesSpawned because we want to keep track
-        // of the total enemies spawned, even if they were cleared
         Debug.Log($"Cleared {enemiesCleared} enemies. Total spawned: {enemiesSpawned}");
     }
 
@@ -125,19 +143,11 @@ public class EnemySpawner : MonoBehaviour
                     // Select a random enemy prefab
                     GameObject enemyPrefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Length)];
 
-                    // Spawn the enemy
-                    GameObject enemy = Instantiate(enemyPrefab, spawnPoints[i].position, spawnPoints[i].rotation);
+                    // Get spawn position (either exact or within radius)
+                    Vector3 spawnPosition = GetSpawnPosition(spawnPoints[i]);
 
-                    // Add the enemy to our list and increment the count
-                    enemiesInScene.Add(enemy);
-                    enemiesSpawned++;
-
-                    // Set up the enemy to notify us when it's eliminated
-                    EnemyController enemyController = enemy.GetComponent<EnemyController>();
-                    if (enemyController != null)
-                    {
-                        enemyController.spawner = this;
-                    }
+                    // First spawn the effect
+                    StartCoroutine(SpawnEnemyWithEffect(enemyPrefab, spawnPosition, spawnPoints[i].rotation));
 
                     // Wait between enemy spawns
                     yield return new WaitForSeconds(delayBetweenEnemiesSpawn);
@@ -152,6 +162,61 @@ public class EnemySpawner : MonoBehaviour
         if (enemiesSpawned >= maxEnemiesSpawnedTotal)
         {
             isSpawning = false;
+            Debug.Log("Reached maximum number of enemies to spawn");
+        }
+    }
+
+    private Vector3 GetSpawnPosition(Transform spawnPoint)
+    {
+        if (!useRandomPositionInArea)
+            return spawnPoint.position;
+
+        // Get random position within spawn area
+        Vector3 randomOffset = Random.insideUnitSphere * spawnAreaRadius;
+        randomOffset.y = 0; // Keep on same Y level, remove if you want 3D spawn volume
+
+        return spawnPoint.position + randomOffset;
+    }
+
+    private IEnumerator SpawnEnemyWithEffect(GameObject enemyPrefab, Vector3 position, Quaternion rotation)
+    {
+        GameObject spawnEffect = null;
+
+        // Create spawn effect if available
+        if (spawnEffectPrefab != null)
+        {
+            spawnEffect = Instantiate(spawnEffectPrefab, position, rotation);
+            Debug.Log($"Spawned effect at {position}");
+        }
+
+        // Wait for the delay
+        yield return new WaitForSeconds(enemySpawnDelay);
+
+        // Spawn the actual enemy
+        GameObject enemy = Instantiate(enemyPrefab, position, rotation);
+
+        // Set the target for the enemy
+        EnemyController enemyController = enemy.GetComponent<EnemyController>();
+        if (enemyController != null)
+        {
+            Debug.Log($"Setting target for enemy {enemy.name}");
+            enemyController.SetTarget(player);
+            enemyController.spawner = this;
+        }
+        else
+        {
+            Debug.LogWarning($"Enemy {enemy.name} does not have an EnemyController component!");
+        }
+
+        // Add the enemy to our list and increment the count
+        enemiesInScene.Add(enemy);
+        enemiesSpawned++;
+        Debug.Log($"Spawned enemy {enemiesSpawned}/{maxEnemiesSpawnedTotal}");
+
+        // Destroy the effect if needed
+        if (spawnEffect != null && destroyEffectAfterSpawn)
+        {
+            Destroy(spawnEffect);
         }
     }
 
@@ -160,6 +225,49 @@ public class EnemySpawner : MonoBehaviour
         if (enemiesInScene.Contains(enemy))
         {
             enemiesInScene.Remove(enemy);
+            Debug.Log($"Enemy eliminated. Remaining enemies: {enemiesInScene.Count}");
+        }
+    }
+
+    // Visualize the trigger areas and spawn points in the editor
+    void OnDrawGizmos()
+    {
+        // Draw trigger areas
+        if (showDebugSpheres)
+        {
+            // Draw spawn trigger
+            Gizmos.color = triggerColor;
+            Gizmos.DrawWireSphere(transform.position, triggerRadius);
+
+            // Draw clear trigger
+            Gizmos.color = clearColor;
+            Gizmos.DrawWireSphere(transform.position, clearEnemiesRadius);
+        }
+
+        // Draw spawn areas
+        if (showSpawnAreas && spawnPoints != null)
+        {
+            Gizmos.color = spawnAreaColor;
+
+            foreach (Transform spawnPoint in spawnPoints)
+            {
+                if (spawnPoint != null)
+                {
+                    // Draw spawn point
+                    Gizmos.DrawSphere(spawnPoint.position, 0.3f);
+
+                    // Draw spawn area
+                    if (useRandomPositionInArea)
+                    {
+                        Gizmos.DrawWireSphere(spawnPoint.position, spawnAreaRadius);
+
+                        // Draw semi-transparent sphere to show the area
+                        Gizmos.color = new Color(spawnAreaColor.r, spawnAreaColor.g, spawnAreaColor.b, 0.1f);
+                        Gizmos.DrawSphere(spawnPoint.position, spawnAreaRadius);
+                        Gizmos.color = spawnAreaColor;
+                    }
+                }
+            }
         }
     }
 }

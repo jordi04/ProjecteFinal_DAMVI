@@ -19,7 +19,7 @@ public class TopoIA : MonoBehaviour
     private bool estaSumergido = false;
     private bool puedeHacerDaño = true;
 
-    private ParticleSystem  particles;
+    private ParticleSystem particles;
 
     void Start()
     {
@@ -72,6 +72,7 @@ public class TopoIA : MonoBehaviour
         hitbox.enabled = true;
         modelo.enabled = true;
         agente.speed = velocidadMovimiento;
+        particles.Stop();
         StartCoroutine(PerseguirJugador());
     }
 

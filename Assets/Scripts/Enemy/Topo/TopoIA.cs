@@ -19,11 +19,15 @@ public class TopoIA : MonoBehaviour
     private bool estaSumergido = false;
     private bool puedeHacerDaño = true;
 
+    private ParticleSystem  particles;
+
     void Start()
     {
         agente = GetComponent<NavMeshAgent>();
         hitbox = GetComponent<Collider>();
         modelo = GetComponentInChildren<MeshRenderer>();
+        particles = GetComponent<ParticleSystem>();
+        particles.Stop();
         StartCoroutine(PerseguirJugador());
     }
 
@@ -46,6 +50,7 @@ public class TopoIA : MonoBehaviour
         modelo.enabled = false;
         agente.isStopped = true;
         agente.speed = velocidadSumergido;
+        particles.Play();
         StartCoroutine(MoverseHaciaObjetivo());
     }
 

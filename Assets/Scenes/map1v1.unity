@@ -19266,6 +19266,11 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 5087113838620324410, guid: af9ec46bf98507346b9485bca5484f59,
         type: 3}
+      propertyPath: clearEnemiesRadius
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 5087113838620324410, guid: af9ec46bf98507346b9485bca5484f59,
+        type: 3}
       propertyPath: spawnPoints.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -22273,6 +22278,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_UseUpObject
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6847289709167233177, guid: 31a12f4bc32eb544990bfa00476b45fa,
+        type: 3}
+      propertyPath: attackType
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6847289709167233177, guid: 31a12f4bc32eb544990bfa00476b45fa,
         type: 3}

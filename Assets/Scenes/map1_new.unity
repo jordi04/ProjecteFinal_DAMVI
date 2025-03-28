@@ -1335,7 +1335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59a46a4bd45e6e84a861099d142d38db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstCheckPointName: Village
+  firstCheckPoint: {fileID: 11400000, guid: e513131a1af463840af580c097c6f157, type: 2}
   checkPoints:
   - {fileID: 11400000, guid: e513131a1af463840af580c097c6f157, type: 2}
   - {fileID: 11400000, guid: ca22f4d68736b9940bbec9c320befa49, type: 2}

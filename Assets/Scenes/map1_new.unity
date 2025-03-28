@@ -5451,6 +5451,26 @@ PrefabInstance:
       propertyPath: userInput
       value: 
       objectReference: {fileID: 91324729}
+    - target: {fileID: 3699395289701579674, guid: c5efc39a8aaf6e64ea40e9ad573e9b47,
+        type: 3}
+      propertyPath: m_Height
+      value: 2.5100574
+      objectReference: {fileID: 0}
+    - target: {fileID: 3699395289701579674, guid: c5efc39a8aaf6e64ea40e9ad573e9b47,
+        type: 3}
+      propertyPath: m_Radius
+      value: 1.2550287
+      objectReference: {fileID: 0}
+    - target: {fileID: 3699395289701579674, guid: c5efc39a8aaf6e64ea40e9ad573e9b47,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 1.2240238
+      objectReference: {fileID: 0}
+    - target: {fileID: 3699395289701579674, guid: c5efc39a8aaf6e64ea40e9ad573e9b47,
+        type: 3}
+      propertyPath: m_Center.z
+      value: 0.018353939
+      objectReference: {fileID: 0}
     - target: {fileID: 4135013735270702863, guid: c5efc39a8aaf6e64ea40e9ad573e9b47,
         type: 3}
       propertyPath: m_Layer
@@ -5460,6 +5480,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5393215578589016640, guid: c5efc39a8aaf6e64ea40e9ad573e9b47,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5393215578589016642, guid: c5efc39a8aaf6e64ea40e9ad573e9b47,
         type: 3}
@@ -24058,7 +24083,7 @@ PrefabInstance:
         type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 1074180574}
+      objectReference: {fileID: 737721111}
     - target: {fileID: 5087113838620324410, guid: af9ec46bf98507346b9485bca5484f59,
         type: 3}
       propertyPath: enemySpawnDelay

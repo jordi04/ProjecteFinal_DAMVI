@@ -5,7 +5,7 @@ using UnityEngine;
 public class CheckPointManager : MonoBehaviour
 {
     [Header("FirstCheckPoint")]
-    [SerializeField] private string firstCheckPointName;
+    [SerializeField] private CheckPointSO firstCheckPoint;
     public static CheckPointManager instance { get; private set; }
 
     [SerializeField]private List<CheckPointSO> checkPoints = new List<CheckPointSO>();
@@ -22,6 +22,11 @@ public class CheckPointManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
+    }
+
+    public void Start()
+    {
+        SetCurrentCheckpoint(firstCheckPoint);
     }
 
     public void SetCurrentCheckpoint(CheckPointSO newCurrentCheckpoint)
@@ -43,10 +48,3 @@ public class CheckPointManager : MonoBehaviour
         return checkPoints.Where(cp => cp.isVisited).Select(cp => cp).ToList();
     }
 }
-
-
-//Crear VAO
-//Bindear VAO
-
-//Crear VBO
-//Bindear VBO

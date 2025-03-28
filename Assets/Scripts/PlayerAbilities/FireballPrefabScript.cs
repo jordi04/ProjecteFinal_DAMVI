@@ -167,14 +167,14 @@ public class FireballPrefabScript : MonoBehaviour
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, explosionRadius, enemyLayer);
         foreach (Collider hitCollider in hitColliders)
         {
-            BeeLifeController beeLife = hitCollider.GetComponent<BeeLifeController>();
+            EnemyController enemyController = hitCollider.GetComponent<EnemyController>();
             MushroomAI mushroom = hitCollider.GetComponent<MushroomAI>();
             SerpienteBoss snake = hitCollider.GetComponent<SerpienteBoss>();
 
-            if (beeLife != null)
+            if (enemyController != null)
             {
                 // Call the TakeDamage method instead of relying on trigger
-                beeLife.TakeDamage(damage);
+                enemyController.TakeDamage(damage);
             }
             else if(mushroom != null)
             {

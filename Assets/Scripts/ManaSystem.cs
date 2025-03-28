@@ -4,7 +4,7 @@ using System;
 using UnityEngine.SceneManagement;
 using TMPro;
 
-public class ManaSystem : MonoBehaviour
+public class ManaSystem : MonoBehaviour, IDamageable
 {
     public static ManaSystem instance { get; private set; }
     public event Action<float> OnManaChanged;
@@ -73,20 +73,7 @@ public class ManaSystem : MonoBehaviour
         return currentMana >= amount;
     }
 
-    public void TakeDamage(float amount)
-    {
-        if (isDead) return; // Evitar múltiples muertes seguidas
-
-        currentMana -= amount;
-        if (currentMana < 1)
-        {
-            currentMana = 0;
-            OnManaDepleted?.Invoke();
-            StartCoroutine(HandleDeath());
-        }
-        OnManaChanged?.Invoke(currentMana / maxMana);
-        lastManaRatio = currentMana / maxMana;
-    }
+    
 
     private IEnumerator HandleDeath()
     {
@@ -158,5 +145,36 @@ public class ManaSystem : MonoBehaviour
         return TryConsumeMana(drainAmount * Time.deltaTime);
     }
 
+    public void TakeDamage(float amount)
+    {
+        Debug.Log("ManaSystem.TakeDamage() called.");
+        if (isDead) return; // Evitar múltiples muertes seguidas
+
+        currentMana -= amount;
+        if (currentMana < 1)
+        {
+            currentMana = 0;
+            OnManaDepleted?.Invoke();
+            StartCoroutine(HandleDeath());
+        }
+        Debug.Log("Damage taken");
+        OnManaChanged?.Invoke(currentMana / maxMana);
+        lastManaRatio = currentMana / maxMana;
+    }
     public float GetManaRatio() => currentMana / maxMana;
+
+    public float GetCurrentHealth()
+    {
+        return ((IDamageable)instance).GetCurrentHealth();
+    }
+
+    public float GetMaxHealth()
+    {
+        return ((IDamageable)instance).GetMaxHealth();
+    }
+
+    public bool IsDead()
+    {
+        return ((IDamageable)instance).IsDead();
+    }
 }

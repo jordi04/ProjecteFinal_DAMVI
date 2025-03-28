@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     private Dictionary<AbilityType, PlayerAbility> abilityMap;
 
     //Singleton References
-    private UserInput userInput;
+    [SerializeField] private UserInput userInput;
 
     private void Start()
     {

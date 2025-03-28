@@ -18,6 +18,6 @@ MonoBehaviour:
   manaCost: 10
   fireballPrefab: {fileID: 5713934225956739484, guid: dabf3a3a0c038254b83d283307355351,
     type: 3}
-  fireballSpeed: 25
+  fireballSpeed: 10
   fireballLifetime: 4
   momentumFactor: 0.8

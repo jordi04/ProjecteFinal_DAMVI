@@ -15,7 +15,6 @@ public class CheckPoint : MonoBehaviour
     //public float holdTime = 1f;
 
     [Header("Turn of")]
-    [SerializeField] private PauseMenu pauseMenu;
     [SerializeField] private GameObject hud;
 
     [Header("UI Interact")]
@@ -104,7 +103,7 @@ public class CheckPoint : MonoBehaviour
 
         interactUI.SetActive(false);
         hud.SetActive(false);
-        pauseMenu.otherMenuOpen = true;
+        PauseMenu.otherMenuOpen = true;
         UserInput.instance.switchActionMap(UserInput.ActionMap.InMenu);
         Time.timeScale = 0;
         Cursor.lockState = CursorLockMode.None;
@@ -116,7 +115,7 @@ public class CheckPoint : MonoBehaviour
         main_Panel.SetActive(false);
 
         hud.SetActive(true);
-        pauseMenu.otherMenuOpen = false;
+        PauseMenu.otherMenuOpen = false;
         UserInput.instance.switchActionMap(UserInput.ActionMap.InGame);
         Time.timeScale = 1;
         Cursor.lockState = CursorLockMode.Locked;

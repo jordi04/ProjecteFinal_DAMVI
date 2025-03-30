@@ -10,8 +10,14 @@ public class MainMenu : MonoBehaviour
     [SerializeField] CanvasGroup canvas;
     [SerializeField] PlayableDirector playableDirector;
 
+    private void Start()
+    {
+        UserInput.instance.switchActionMap(UserInput.ActionMap.InMenu);
+    }
+
     private void OnEnable()
     {
+        PauseMenu.otherMenuOpen = true;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         playButton.onClick.AddListener(Play);
@@ -22,17 +28,19 @@ public class MainMenu : MonoBehaviour
     {
         playButton.onClick.RemoveListener(Play);
         exitButton.onClick.RemoveListener(ExitGame);
+        PauseMenu.otherMenuOpen = false;
     }
 
-    void Play()
+    public void Play()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
         this.gameObject.SetActive(false);
         playableDirector.Play();
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        
     }
 
-    void ExitGame()
+    public void ExitGame()
     {
         Application.Quit();
     }

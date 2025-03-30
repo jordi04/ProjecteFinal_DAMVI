@@ -7,7 +7,7 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] GameObject pauseMenu_Canvas;
     private UserInput userInput;
     private bool isPaused = false;
-    public bool otherMenuOpen = false;
+    public static bool otherMenuOpen = true;
 
     [SerializeField] Button exitButton;
     [SerializeField] Button resumeButton;

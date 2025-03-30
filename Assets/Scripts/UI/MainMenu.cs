@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -6,6 +7,8 @@ public class MainMenu : MonoBehaviour
 {
     [SerializeField] Button playButton;
     [SerializeField] Button exitButton;
+    [SerializeField] CanvasGroup canvas;
+    [SerializeField] PlayableDirector playableDirector;
 
     private void OnEnable()
     {
@@ -25,7 +28,8 @@ public class MainMenu : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        SceneManager.LoadScene("map1v1");
+        this.gameObject.SetActive(false);
+        playableDirector.Play();
     }
 
     void ExitGame()

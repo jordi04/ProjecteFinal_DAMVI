@@ -1,8 +1,10 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Playables;
 using UnityEngine.UI;
 
 public class CheckPoint : MonoBehaviour
@@ -41,6 +43,8 @@ public class CheckPoint : MonoBehaviour
     [Header("VFX_Fire")]
     [SerializeField] private GameObject fireVFX;
 
+    [Header("Playable Director")]
+    [SerializeField] private PlayableDirector playableDirector;
 
     private bool isPlayerInRange = false;
 
@@ -98,9 +102,44 @@ public class CheckPoint : MonoBehaviour
 
     private void OpenCheckpointUI()
     {
-        VisitCheckpoint();
-        main_Panel.SetActive(true);
+        Debug.Log(checkPointData.isVisited);
+        if (!checkPointData.isVisited)
+        {
+            // Don't pause the game yet for first-time interaction
+            Debug.Log("C");
+            StartCoroutine(PlayFirstTimeInteraction());
+        }
+        else
+        {
 
+            // For subsequent interactions, show UI immediately
+            ShowCheckpointUI();
+        }
+    }
+
+    private IEnumerator PlayFirstTimeInteraction()
+    {
+        // Hide interaction UI during cinematic
+        interactUI.SetActive(false);
+
+        Debug.Log("A");
+
+        // Play the cinematic
+        playableDirector.Play();
+
+        // Wait for the cinematic to finish
+        yield return new WaitForSeconds((float)playableDirector.duration);
+
+        // Mark checkpoint as visited after cinematic
+        VisitCheckpoint();
+
+        // Now show the UI
+        ShowCheckpointUI();
+    }
+
+    private void ShowCheckpointUI()
+    {
+        main_Panel.SetActive(true);
         interactUI.SetActive(false);
         hud.SetActive(false);
         PauseMenu.otherMenuOpen = true;
@@ -109,6 +148,7 @@ public class CheckPoint : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
+
 
     private void CloseCheckpointUI()
     {
@@ -136,12 +176,9 @@ public class CheckPoint : MonoBehaviour
 
     private void VisitCheckpoint()
     {
-        if (!checkPointData.isVisited)
-        {
-            checkPointData.isVisited = true;
-            fireVFX.SetActive(true);
-        }
-            setUpTravelUI();
+        checkPointData.isVisited = true;
+        fireVFX.SetActive(true);
+        setUpTravelUI();
     }
     private void setUpTravelUI()
     {

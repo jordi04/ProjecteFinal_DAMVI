@@ -16,7 +16,7 @@ public class CheckPoint : MonoBehaviour
     //If will not be opened instantly
     //public float holdTime = 1f;
 
-    [Header("Turn of")]
+    [Header("Turn off")]
     [SerializeField] private GameObject hud;
 
     [Header("UI Interact")]
@@ -47,19 +47,20 @@ public class CheckPoint : MonoBehaviour
     [SerializeField] private PlayableDirector playableDirector;
 
     private bool isPlayerInRange = false;
-
+    private bool hideInteractUI = false;
     private void Start()
     {
         checkPointData.checkPointTransform = spawnPoint;
 
         fireVFX.SetActive(checkPointData.isVisited);
+        Animator animator = GetComponent<Animator>();
     }
 
 
 
     private void Update()
     {
-        if (Physics.Raycast(GameManager.instance.mainCamera.transform.position, GameManager.instance.mainCamera.transform.forward, out RaycastHit hit, interactionDistance))
+        if (Physics.Raycast(GameManager.instance.mainCamera.transform.position, GameManager.instance.mainCamera.transform.forward, out RaycastHit hit, interactionDistance) && !hideInteractUI)
         {
             if (hit.collider.gameObject == gameObject)
             {
@@ -119,10 +120,13 @@ public class CheckPoint : MonoBehaviour
 
     private IEnumerator PlayFirstTimeInteraction()
     {
-        // Hide interaction UI during cinematic
+        hideInteractUI = true;
+        //Desactivar game HUD
+        hud.SetActive(false);
+        //Desactivar la hud de la fogata que diu E per interactuar
         interactUI.SetActive(false);
-
-        Debug.Log("A");
+        UserInput.instance.switchActionMap(UserInput.ActionMap.InCinematic);
+  
 
         // Play the cinematic
         playableDirector.Play();
@@ -135,10 +139,12 @@ public class CheckPoint : MonoBehaviour
 
         // Now show the UI
         ShowCheckpointUI();
+        
     }
 
     private void ShowCheckpointUI()
     {
+        hideInteractUI = true;
         main_Panel.SetActive(true);
         interactUI.SetActive(false);
         hud.SetActive(false);
@@ -160,6 +166,7 @@ public class CheckPoint : MonoBehaviour
         Time.timeScale = 1;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        hideInteractUI = true;
     }
 
     public void OpenTravelUI()

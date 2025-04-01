@@ -56,6 +56,7 @@ namespace StarterAssets
         [Header("Camera-Horse Controls")]
         [Tooltip("Key to press to make horse turn with camera")]
         public KeyCode TurnWithCameraKey = KeyCode.LeftShift;
+        private bool playerMovesCamera = true;
 
         // cinemachine
         private float _cinemachineTargetPitch;
@@ -130,7 +131,11 @@ namespace StarterAssets
 
         private void LateUpdate()
         {
-            CameraRotation();
+            if (playerMovesCamera == true)
+            {
+                CameraRotation();
+            }
+            
         }
 
         private void GroundedCheck()
@@ -293,6 +298,15 @@ namespace StarterAssets
 
             // when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
             Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z), GroundedRadius);
+        }
+        
+        public void SetPlayerMovesCamera(bool playerMovesCameraParam)
+        {
+            playerMovesCamera = playerMovesCameraParam;
+        }
+        public bool GetPlayerMovesCamera()
+        {
+            return playerMovesCamera;
         }
     }
 } 

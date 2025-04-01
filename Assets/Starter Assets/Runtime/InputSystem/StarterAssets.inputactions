@@ -434,6 +434,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "InCinematic",
+            "id": "4309eb06-755a-4f33-b0db-fd6ceb043f03",
+            "actions": [
+                {
+                    "name": "Nothing",
+                    "type": "Button",
+                    "id": "fafa9621-8732-44e3-9c6e-44c3cb1e361e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "5ea15ff4-a5a9-4eb4-baf2-aa91cf439791",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Nothing",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

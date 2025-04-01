@@ -53,6 +53,7 @@ public class CheckPoint : MonoBehaviour
         checkPointData.checkPointTransform = spawnPoint;
 
         fireVFX.SetActive(checkPointData.isVisited);
+        Animator animator = GetComponent<Animator>();
     }
 
 

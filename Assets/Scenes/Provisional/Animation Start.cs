@@ -1,6 +1,7 @@
 using Cinemachine;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Playables;
 using UnityEngine.UI;
 
@@ -11,6 +12,8 @@ public class AnimationStart : MonoBehaviour
     public CinemachineVirtualCamera cinematicCamera;
     public Image fadePanel; 
     public Transform player;
+
+
 
     private bool hasTriggered = false;
 
@@ -36,8 +39,6 @@ public class AnimationStart : MonoBehaviour
         player.position = transform.position;
         player.rotation = transform.rotation;
 
-        playerCamera.Priority = 0;
-        cinematicCamera.Priority = 1;
         playableDirector.Play();
 
         yield return StartCoroutine(FadeFromBlack());

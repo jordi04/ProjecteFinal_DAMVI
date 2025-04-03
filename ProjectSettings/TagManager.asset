@@ -12,6 +12,7 @@ TagManager:
   - Death UI
   - Respawning
   - Terrain
+  - ExtraCamera
   layers:
   - Default
   - TransparentFX

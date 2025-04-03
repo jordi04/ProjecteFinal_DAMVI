@@ -1,8 +1,10 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Playables;
 using UnityEngine.UI;
 
 public class CheckPoint : MonoBehaviour
@@ -14,7 +16,7 @@ public class CheckPoint : MonoBehaviour
     //If will not be opened instantly
     //public float holdTime = 1f;
 
-    [Header("Turn of")]
+    [Header("Turn off")]
     [SerializeField] private GameObject hud;
 
     [Header("UI Interact")]
@@ -41,21 +43,24 @@ public class CheckPoint : MonoBehaviour
     [Header("VFX_Fire")]
     [SerializeField] private GameObject fireVFX;
 
+    [Header("Playable Director")]
+    [SerializeField] private PlayableDirector playableDirector;
 
     private bool isPlayerInRange = false;
-
+    private bool hideInteractUI = false;
     private void Start()
     {
         checkPointData.checkPointTransform = spawnPoint;
 
         fireVFX.SetActive(checkPointData.isVisited);
+        Animator animator = GetComponent<Animator>();
     }
 
 
 
     private void Update()
     {
-        if (Physics.Raycast(GameManager.instance.mainCamera.transform.position, GameManager.instance.mainCamera.transform.forward, out RaycastHit hit, interactionDistance))
+        if (Physics.Raycast(GameManager.instance.mainCamera.transform.position, GameManager.instance.mainCamera.transform.forward, out RaycastHit hit, interactionDistance) && !hideInteractUI)
         {
             if (hit.collider.gameObject == gameObject)
             {
@@ -98,9 +103,49 @@ public class CheckPoint : MonoBehaviour
 
     private void OpenCheckpointUI()
     {
-        VisitCheckpoint();
-        main_Panel.SetActive(true);
+        Debug.Log(checkPointData.isVisited);
+        if (!checkPointData.isVisited)
+        {
+            // Don't pause the game yet for first-time interaction
+            Debug.Log("C");
+            StartCoroutine(PlayFirstTimeInteraction());
+        }
+        else
+        {
 
+            // For subsequent interactions, show UI immediately
+            ShowCheckpointUI();
+        }
+    }
+
+    private IEnumerator PlayFirstTimeInteraction()
+    {
+        hideInteractUI = true;
+        //Desactivar game HUD
+        hud.SetActive(false);
+        //Desactivar la hud de la fogata que diu E per interactuar
+        interactUI.SetActive(false);
+        UserInput.instance.switchActionMap(UserInput.ActionMap.InCinematic);
+  
+
+        // Play the cinematic
+        playableDirector.Play();
+
+        // Wait for the cinematic to finish
+        yield return new WaitForSeconds((float)playableDirector.duration);
+
+        // Mark checkpoint as visited after cinematic
+        VisitCheckpoint();
+
+        // Now show the UI
+        ShowCheckpointUI();
+        
+    }
+
+    private void ShowCheckpointUI()
+    {
+        hideInteractUI = true;
+        main_Panel.SetActive(true);
         interactUI.SetActive(false);
         hud.SetActive(false);
         PauseMenu.otherMenuOpen = true;
@@ -109,6 +154,7 @@ public class CheckPoint : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
+
 
     private void CloseCheckpointUI()
     {
@@ -120,6 +166,7 @@ public class CheckPoint : MonoBehaviour
         Time.timeScale = 1;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        hideInteractUI = true;
     }
 
     public void OpenTravelUI()
@@ -136,12 +183,9 @@ public class CheckPoint : MonoBehaviour
 
     private void VisitCheckpoint()
     {
-        if (!checkPointData.isVisited)
-        {
-            checkPointData.isVisited = true;
-            fireVFX.SetActive(true);
-        }
-            setUpTravelUI();
+        checkPointData.isVisited = true;
+        fireVFX.SetActive(true);
+        setUpTravelUI();
     }
     private void setUpTravelUI()
     {

@@ -10,7 +10,8 @@ public class UserInput : MonoBehaviour
     public enum ActionMap
     {
         InGame,
-        InMenu
+        InMenu,
+        InCinematic
     }
 
     #region Actions States

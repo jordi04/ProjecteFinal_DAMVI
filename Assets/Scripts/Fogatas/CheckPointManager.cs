@@ -26,7 +26,14 @@ public class CheckPointManager : MonoBehaviour
 
     public void Start()
     {
-        SetCurrentCheckpoint(firstCheckPoint);
+        if (firstCheckPoint != null)
+        {
+            SetCurrentCheckpoint(firstCheckPoint);
+        }
+        else
+        {
+            Debug.LogWarning("There are no checkpoints set as default checkpoint, if the player dies the game might be bugged");
+        }
     }
 
     public void SetCurrentCheckpoint(CheckPointSO newCurrentCheckpoint)

@@ -166,7 +166,7 @@ public class CheckPoint : MonoBehaviour
         Time.timeScale = 1;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        hideInteractUI = true;
+        hideInteractUI = false;
     }
 
     public void OpenTravelUI()

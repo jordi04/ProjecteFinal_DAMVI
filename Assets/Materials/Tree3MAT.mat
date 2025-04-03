@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Tree3MAT
-  m_Shader: {fileID: -6465566751694194690, guid: d8433d2822b925d4cae72631507984d0,
+  m_Shader: {fileID: -6465566751694194690, guid: 396537e899ffeb2499b85e21f8206906,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -90,6 +90,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Alpha: 1
     - _AlphaClip: 0
     - _AlphaToMask: 0
     - _AmbientOcclusionAmmount: 1
@@ -105,6 +106,8 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
+    - _FresnellPower: 1
+    - _FresnellThreshold: 0.6
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0

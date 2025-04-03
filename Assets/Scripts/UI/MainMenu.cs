@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Playables;
+using Cinemachine;
 
 public class MainMenu : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] CanvasGroup canvas;
     [SerializeField] PlayableDirector playableDirector;
     [SerializeField] float fadeDuration = 1f;
+    [SerializeField] CinemachineVirtualCamera mainMenuCamera;
 
     private void Start()
     {
@@ -65,6 +67,7 @@ public class MainMenu : MonoBehaviour
         this.gameObject.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        mainMenuCamera.Priority = 1;
     }
 
     private IEnumerator FadeOutAndExit()

@@ -107,7 +107,6 @@ public class CheckPoint : MonoBehaviour
         if (!checkPointData.isVisited)
         {
             // Don't pause the game yet for first-time interaction
-            Debug.Log("C");
             StartCoroutine(PlayFirstTimeInteraction());
         }
         else

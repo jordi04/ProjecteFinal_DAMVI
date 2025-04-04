@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: a04c88590b82fb3428e8cdd40e612607
   - enabled: 1
-    path: Assets/Scenes/map1_new.unity
+    path: Assets/Scenes/MainGame.unity
     guid: f0f94f1948f73e340b0225df77f4e3f3
   - enabled: 0
     path: Assets/Scenes/Lose.unity

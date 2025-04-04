@@ -7185,7 +7185,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 507110748}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.11014499, y: -0.64979583, z: 0.3941269, w: 0.6405447}
+  m_LocalRotation: {x: -0.11014499, y: -0.64979583, z: 0.39412686, w: 0.6405447}
   m_LocalPosition: {x: 7.38, y: 3.04, z: -2.12}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -23837,7 +23837,6 @@ GameObject:
   - component: {fileID: 1572537013}
   - component: {fileID: 1572537016}
   - component: {fileID: 1572537015}
-  - component: {fileID: 1572537014}
   m_Layer: 0
   m_Name: RightHand (1)
   m_TagString: Untagged
@@ -23861,29 +23860,6 @@ Transform:
   - {fileID: 1611905753}
   m_Father: {fileID: 1091893022}
   m_LocalEulerAnglesHint: {x: -2.004, y: 21.28, z: 95.129}
---- !u!136 &1572537014
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1572537012}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1572537015
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -24895,7 +24871,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1644588068}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.046790276, y: -0.4162794, z: 0.32416478, w: 0.84819776}
+  m_LocalRotation: {x: -0.04679027, y: -0.41627926, z: 0.3241647, w: 0.8481978}
   m_LocalPosition: {x: 0.793327, y: 0.3810377, z: -1.1794562}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -28551,7 +28527,6 @@ GameObject:
   - component: {fileID: 2027882541}
   - component: {fileID: 2027882544}
   - component: {fileID: 2027882543}
-  - component: {fileID: 2027882542}
   m_Layer: 0
   m_Name: LeftHand (1)
   m_TagString: Untagged
@@ -28575,29 +28550,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 90679446}
   m_LocalEulerAnglesHint: {x: 359, y: -5, z: -6}
---- !u!136 &2027882542
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2027882540}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &2027882543
 MeshRenderer:
   m_ObjectHideFlags: 0

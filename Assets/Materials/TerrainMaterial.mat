@@ -151,7 +151,7 @@ Material:
     - _BaseColor: {r: 0.21176457, g: 1, b: 0, a: 1}
     - _Color: {r: 0.21176454, g: 1, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0.16981131, b: 0, a: 1}
-    - _GrassColor1: {r: 0.03701396, g: 0.6698113, b: 0.028435372, a: 0}
+    - _GrassColor1: {r: 1, g: 1, b: 1, a: 0}
     - _GrassColor2: {r: 0.735849, g: 0.41526815, b: 0, a: 0}
     - _RockColor1: {r: 0.62264144, g: 0.27969238, b: 0, a: 0}
     - _RockColor2: {r: 0.15094337, g: 0.062131763, b: 0, a: 0}

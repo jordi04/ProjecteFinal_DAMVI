@@ -2,123 +2,194 @@ using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
 
-public class TopoIA : MonoBehaviour
+public class TopoIA : EnemyController
 {
-    public float tiempoPersecucion = 3f; 
-    public float tiempoEsperaEmergido = 0.5f; 
-    public float damage = 10f;
-    public float velocidadMovimiento = 3.5f;
-    public float velocidadSumergido = 6f;
-    public Transform objetivo;
-    public float salud = 50f; 
-    public float tiempoEntreGolpes = 1f; 
+    [Header("Topo Settings")]
+    [SerializeField] float tiempoPersecucion = 3f;
+    [SerializeField] float tiempoEsperaEmergido = 0.5f;
+    [SerializeField] float velocidadSumergido = 6f;
+    [SerializeField] ParticleSystem burrowParticles;
 
-    private NavMeshAgent agente;
-    private Collider hitbox;
-    private MeshRenderer modelo;
+    [Header("Component References")]
+    [SerializeField] Collider damageCollider;
+    [SerializeField] Renderer bodyRenderer;
+
     private bool estaSumergido = false;
-    private bool puedeHacerDaño = true;
+    private float originalSpeed;
 
-    private ParticleSystem particles;
-
-    void Start()
+    protected override void Awake()
     {
-        agente = GetComponent<NavMeshAgent>();
-        hitbox = GetComponent<Collider>();
-        modelo = GetComponentInChildren<MeshRenderer>();
-        particles = GetComponent<ParticleSystem>();
-        particles.Stop();
-        StartCoroutine(PerseguirJugador());
+        // Configurar tipo de enemigo
+        movementType = MovementType.NavMesh;
+        attackType = AttackType.Melee;
+
+        base.Awake();
+
+        originalSpeed = moveSpeed;
+        if (navAgent != null) navAgent.speed = originalSpeed;
     }
 
-    IEnumerator PerseguirJugador()
+    protected override void Start()
     {
-        float tiempoRestante = tiempoPersecucion;
-        while (tiempoRestante > 0)
+        base.Start();
+        StartCoroutine(CicloComportamiento());
+        ToggleComponents(false);
+    }
+
+    protected override void InitializeStrategies()
+    {
+        // Usar movimiento NavMesh personalizado
+        movementStrategy = new TopoMovement(
+            moveSpeed,
+            stoppingDistance,
+            faceTarget,
+            avoidObstacles
+        );
+
+        attackStrategy = new MeleeContactAttack(
+            attackDamage,
+            tiempoEntreAtaques,
+            attackRange
+        );
+    }
+
+    IEnumerator CicloComportamiento()
+    {
+        while (!isDead)
         {
-            agente.SetDestination(objetivo.position);
-            tiempoRestante -= Time.deltaTime;
-            yield return null;
+            yield return StartCoroutine(FasePersecucion());
+            yield return StartCoroutine(FaseSumergido());
         }
-        Sumergirse();
     }
 
-    void Sumergirse()
+    IEnumerator FasePersecucion()
     {
-        estaSumergido = true;
-        hitbox.enabled = false;
-        modelo.enabled = false;
-        agente.isStopped = true;
-        agente.speed = velocidadSumergido;
-        particles.Play();
-        StartCoroutine(MoverseHaciaObjetivo());
-    }
-
-    IEnumerator MoverseHaciaObjetivo()
-    {
-        agente.isStopped = false;
-        agente.SetDestination(objetivo.position);
-        while (agente.pathPending || agente.remainingDistance > 0.5f)
-        {
-            yield return null;
-        }
-        yield return new WaitForSeconds(tiempoEsperaEmergido);
-        Emerger();
-    }
-
-    void Emerger()
-    {
+        ToggleComponents(true);
         estaSumergido = false;
-        hitbox.enabled = true;
-        modelo.enabled = true;
-        agente.speed = velocidadMovimiento;
-        particles.Stop();
-        StartCoroutine(PerseguirJugador());
-    }
+        moveSpeed = originalSpeed;
+        UpdateMovementSpeed();
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (!estaSumergido && other.CompareTag("Player"))
+        float timer = 0f;
+        while (timer < tiempoPersecucion)
         {
-            AplicarDañoJugador(other);
+            if (movementStrategy != null) movementStrategy.Move();
+            timer += Time.deltaTime;
+            yield return null;
         }
     }
 
-    void OnTriggerStay(Collider other)
+    IEnumerator FaseSumergido()
     {
-        if (!estaSumergido && other.CompareTag("Player"))
+        ToggleComponents(false);
+        estaSumergido = true;
+        moveSpeed = velocidadSumergido;
+        UpdateMovementSpeed();
+        burrowParticles.Play();
+
+        if (movementStrategy != null)
         {
-            AplicarDañoJugador(other);
+            movementStrategy.SetTarget(target);
+            yield return StartCoroutine(MoveToTarget());
+        }
+
+        burrowParticles.Stop();
+        yield return new WaitForSeconds(tiempoEsperaEmergido);
+    }
+
+    void UpdateMovementSpeed()
+    {
+        if (movementStrategy is TopoMovement topoMovement)
+        {
+            topoMovement.SetSpeed(moveSpeed);
         }
     }
 
-    void AplicarDañoJugador(Collider jugador)
+    IEnumerator MoveToTarget()
     {
-        if (puedeHacerDaño)
+        while (movementStrategy.GetDistanceToTarget() > attackRange)
         {
-            ManaSystem.instance.TakeDamage(damage);
-            StartCoroutine(EsperarProximoGolpe());
+            movementStrategy.Move();
+            yield return null;
         }
     }
 
-    IEnumerator EsperarProximoGolpe()
+    void ToggleComponents(bool state)
     {
-        puedeHacerDaño = false;
-        yield return new WaitForSeconds(tiempoEntreGolpes);
-        puedeHacerDaño = true;
+        damageCollider.enabled = state;
+        bodyRenderer.enabled = state;
     }
 
-    public void TomarDaño(float daño)
+    // Implementación de movimiento especializado
+    protected class TopoMovement : NavMeshMovement
     {
-        salud -= daño;
-        if (salud <= 0)
+        public TopoMovement(float speed, float stopDistance, bool faceTarget, bool avoidObstacles)
+            : base(speed, stopDistance, faceTarget, avoidObstacles) { }
+
+        public void SetSpeed(float newSpeed)
         {
-            Morir();
+            if (agent != null) agent.speed = newSpeed;
         }
     }
 
-    void Morir()
+    // Implementación de ataque por contacto
+    protected class MeleeContactAttack : IEnemyAttack
     {
+        private float damage;
+        private float attackCooldown;
+        private float attackDistance;
+        private float lastAttackTime;
+
+        public MeleeContactAttack(float damage, float cooldown, float distance)
+        {
+            this.damage = damage;
+            this.attackCooldown = cooldown;
+            this.attackDistance = distance;
+        }
+
+        public void Initialize(Transform enemy, Transform target) { }
+        public void SetTarget(Transform target) { }
+
+        public bool CanAttack()
+        {
+            return Time.time > lastAttackTime + attackCooldown;
+        }
+
+        public void Attack()
+        {
+            lastAttackTime = Time.time;
+        }
+
+        public void SetDamageMultiplier(float multiplier)
+        {
+            damage *= multiplier;
+        }
+    }
+
+    // Métodos heredados
+    public override void TakeDamage(float damageAmount)
+    {
+        if (estaSumergido) return; // Inmune cuando está sumergido
+
+        base.TakeDamage(damageAmount);
+
+        if (currentHealth <= 0)
+        {
+            StartCoroutine(DeathSequence());
+        }
+    }
+
+    protected override IEnumerator DeathSequence()
+    {
+        Deactivate();
+        ToggleComponents(false);
+        burrowParticles.Stop();
+
+        yield return base.DeathSequence();
+
+        if (spawner != null)
+        {
+            spawner.EnemyEliminated(gameObject);
+        }
         Destroy(gameObject);
     }
 }

@@ -709,6 +709,7 @@ public class EnemyController : MonoBehaviour, IDamageable
 
         enemyRenderer.GetPropertyBlock(materialPropertyBlock);
         materialPropertyBlock.SetColor("_BaseColor", color);
+        materialPropertyBlock.SetColor("_Color", color);
         enemyRenderer.SetPropertyBlock(materialPropertyBlock);
     }
 

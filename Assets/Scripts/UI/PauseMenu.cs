@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField] GameObject pauseMenu_Canvas;
+    [SerializeField] GameObject mainMenuCanvas;
     private UserInput userInput;
     private bool isPaused = false;
     public static bool otherMenuOpen = true;
@@ -61,6 +62,12 @@ public class PauseMenu : MonoBehaviour
     private void ReturnToMainMenu()
     {
         Time.timeScale = 1;
-        SceneManager.LoadScene("MainGame");
+        PauseMenu.otherMenuOpen = true;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        mainMenuCanvas.SetActive(true);
+        pauseMenu_Canvas.SetActive(false);
+
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

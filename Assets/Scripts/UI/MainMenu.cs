@@ -6,12 +6,15 @@ using Cinemachine;
 
 public class MainMenu : MonoBehaviour
 {
+
+
     [SerializeField] Button playButton;
     [SerializeField] Button exitButton;
     [SerializeField] CanvasGroup canvas;
     [SerializeField] PlayableDirector playableDirector;
     [SerializeField] float fadeDuration = 1f;
     [SerializeField] CinemachineVirtualCamera mainMenuCamera;
+    private bool firstTime = false;
 
     private void Start()
     {
@@ -20,6 +23,10 @@ public class MainMenu : MonoBehaviour
 
     private void OnEnable()
     {
+        mainMenuCamera.Priority = 21;
+        canvas.alpha = 1;
+        playButton.interactable = true;
+        exitButton.interactable = true;
         PauseMenu.otherMenuOpen = true;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -34,12 +41,13 @@ public class MainMenu : MonoBehaviour
         PauseMenu.otherMenuOpen = false;
     }
 
-    public void Play()
+    private void Play()
     {
-        StartCoroutine(FadeOutAndPlay());
+            StartCoroutine(FadeOutAndPlay());
+            UserInput.instance.switchActionMap(UserInput.ActionMap.InGame);
     }
 
-    public void ExitGame()
+    private void ExitGame()
     {
         StartCoroutine(FadeOutAndExit());
     }
@@ -51,7 +59,8 @@ public class MainMenu : MonoBehaviour
         canvas.blocksRaycasts = false;
 
         // Inicia la cinemática y el fade out simultáneamente
-        playableDirector.Play();
+        if (firstTime)
+            playableDirector.Play();
 
         float startAlpha = canvas.alpha;
         float elapsedTime = 0f;

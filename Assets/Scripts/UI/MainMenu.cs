@@ -14,7 +14,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] PlayableDirector playableDirector;
     [SerializeField] float fadeDuration = 1f;
     [SerializeField] CinemachineVirtualCamera mainMenuCamera;
-    private bool firstTime = false;
+    private bool firstTime = true;
 
     private void Start()
     {
@@ -25,11 +25,11 @@ public class MainMenu : MonoBehaviour
     {
         mainMenuCamera.Priority = 21;
         canvas.alpha = 1;
-        playButton.interactable = true;
-        exitButton.interactable = true;
         PauseMenu.otherMenuOpen = true;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        canvas.interactable = true;
+        canvas.blocksRaycasts = true;
         playButton.onClick.AddListener(Play);
         exitButton.onClick.AddListener(ExitGame);
     }

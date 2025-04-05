@@ -6,6 +6,7 @@ public class PauseMenu : MonoBehaviour
 {
     [SerializeField] GameObject pauseMenu_Canvas;
     [SerializeField] GameObject mainMenuCanvas;
+    [SerializeField] CanvasGroup hudCanvas;
     private UserInput userInput;
     private bool isPaused = false;
     public static bool otherMenuOpen = true;
@@ -17,12 +18,14 @@ public class PauseMenu : MonoBehaviour
     {
         exitButton.onClick.AddListener(ReturnToMainMenu);
         resumeButton.onClick.AddListener(TogglePauseMenu);
+        hudCanvas.alpha = 0f;
     }
 
     private void OnDisable()
     {
         exitButton.onClick.RemoveListener(ReturnToMainMenu);
         resumeButton.onClick.RemoveListener(TogglePauseMenu);
+        hudCanvas.alpha = 1f;
     }
 
     void Start()
@@ -62,7 +65,7 @@ public class PauseMenu : MonoBehaviour
     private void ReturnToMainMenu()
     {
         Time.timeScale = 1;
-        PauseMenu.otherMenuOpen = true;
+        otherMenuOpen = true;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         mainMenuCanvas.SetActive(true);

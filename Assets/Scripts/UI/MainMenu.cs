@@ -6,11 +6,10 @@ using Cinemachine;
 
 public class MainMenu : MonoBehaviour
 {
-
-
     [SerializeField] Button playButton;
     [SerializeField] Button exitButton;
-    [SerializeField] CanvasGroup canvas;
+    [SerializeField] CanvasGroup mainMenuCanvas;
+    [SerializeField] CanvasGroup hudCanvas;
     [SerializeField] PlayableDirector playableDirector;
     [SerializeField] float fadeDuration = 1f;
     [SerializeField] CinemachineVirtualCamera mainMenuCamera;
@@ -23,13 +22,14 @@ public class MainMenu : MonoBehaviour
 
     private void OnEnable()
     {
+        hudCanvas.alpha = 0;
         mainMenuCamera.Priority = 21;
-        canvas.alpha = 1;
+        mainMenuCanvas.alpha = 1;
         PauseMenu.otherMenuOpen = true;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        canvas.interactable = true;
-        canvas.blocksRaycasts = true;
+        mainMenuCanvas.interactable = true;
+        mainMenuCanvas.blocksRaycasts = true;
         playButton.onClick.AddListener(Play);
         exitButton.onClick.AddListener(ExitGame);
     }
@@ -38,13 +38,14 @@ public class MainMenu : MonoBehaviour
     {
         playButton.onClick.RemoveListener(Play);
         exitButton.onClick.RemoveListener(ExitGame);
-        PauseMenu.otherMenuOpen = false;
     }
 
     private void Play()
     {
-            StartCoroutine(FadeOutAndPlay());
+        StartCoroutine(FadeOutAndPlay());
+        if(!firstTime)
             UserInput.instance.switchActionMap(UserInput.ActionMap.InGame);
+        firstTime = false;
     }
 
     private void ExitGame()
@@ -55,25 +56,26 @@ public class MainMenu : MonoBehaviour
     private IEnumerator FadeOutAndPlay()
     {
         // Bloquea los botones durante la transición
-        canvas.interactable = false;
-        canvas.blocksRaycasts = false;
+        mainMenuCanvas.interactable = false;
+        mainMenuCanvas.blocksRaycasts = false;
 
         // Inicia la cinemática y el fade out simultáneamente
         if (firstTime)
             playableDirector.Play();
 
-        float startAlpha = canvas.alpha;
+        float startAlpha = mainMenuCanvas.alpha;
         float elapsedTime = 0f;
 
         while (elapsedTime < fadeDuration)
         {
             elapsedTime += Time.deltaTime;
-            canvas.alpha = Mathf.Lerp(startAlpha, 0f, elapsedTime / fadeDuration);
+            mainMenuCanvas.alpha = Mathf.Lerp(startAlpha, 0f, elapsedTime / fadeDuration);
+            hudCanvas.alpha = Mathf.Lerp(0, 1f, elapsedTime / fadeDuration);
             yield return null;
         }
 
         // Finaliza la transición
-        this.gameObject.SetActive(false);
+        gameObject.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         mainMenuCamera.Priority = 1;
@@ -81,19 +83,25 @@ public class MainMenu : MonoBehaviour
 
     private IEnumerator FadeOutAndExit()
     {
-        canvas.interactable = false;
-        canvas.blocksRaycasts = false;
+        mainMenuCanvas.interactable = false;
+        mainMenuCanvas.blocksRaycasts = false;
 
-        float startAlpha = canvas.alpha;
+        float startAlpha = mainMenuCanvas.alpha;
         float elapsedTime = 0f;
 
         while (elapsedTime < fadeDuration)
         {
             elapsedTime += Time.deltaTime;
-            canvas.alpha = Mathf.Lerp(startAlpha, 0f, elapsedTime / fadeDuration);
+            mainMenuCanvas.alpha = Mathf.Lerp(startAlpha, 0f, elapsedTime / fadeDuration);
             yield return null;
         }
 
         Application.Quit();
+    }
+
+    public void EndTimeline()
+    {
+        PauseMenu.otherMenuOpen = false;
+        UserInput.instance.switchActionMap(UserInput.ActionMap.InGame);
     }
 }

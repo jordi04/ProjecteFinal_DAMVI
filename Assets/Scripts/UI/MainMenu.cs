@@ -43,8 +43,8 @@ public class MainMenu : MonoBehaviour
     private void Play()
     {
         StartCoroutine(FadeOutAndPlay());
-        if(!firstTime)
-            UserInput.instance.switchActionMap(UserInput.ActionMap.InGame);
+        if (!firstTime)
+            EndTimeline();
         firstTime = false;
     }
 

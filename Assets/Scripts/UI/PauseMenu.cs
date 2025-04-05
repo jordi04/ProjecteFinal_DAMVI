@@ -64,13 +64,9 @@ public class PauseMenu : MonoBehaviour
 
     private void ReturnToMainMenu()
     {
+        isPaused = false;
         Time.timeScale = 1;
-        otherMenuOpen = true;
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
         mainMenuCanvas.SetActive(true);
         pauseMenu_Canvas.SetActive(false);
-
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

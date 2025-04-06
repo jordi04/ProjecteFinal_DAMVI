@@ -15344,6 +15344,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 947422968}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &959973726 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 412110173386372080, guid: d20181841ce88e148b96a6bedcead9dc,
+    type: 3}
+  m_PrefabInstance: {fileID: 3838292278017918579}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &965280175
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -40118,6 +40130,16 @@ PrefabInstance:
       objectReference: {fileID: 1416259747}
     - target: {fileID: 2657498537159524662, guid: d20181841ce88e148b96a6bedcead9dc,
         type: 3}
+      propertyPath: optionsButton
+      value: 
+      objectReference: {fileID: 959973726}
+    - target: {fileID: 2657498537159524662, guid: d20181841ce88e148b96a6bedcead9dc,
+        type: 3}
+      propertyPath: mainMenuCanvas
+      value: 
+      objectReference: {fileID: 62463277}
+    - target: {fileID: 2657498537159524662, guid: d20181841ce88e148b96a6bedcead9dc,
+        type: 3}
       propertyPath: optionsMenu_Canvas
       value: 
       objectReference: {fileID: 1758718098}
@@ -40177,7 +40199,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8355254697619889358, guid: d20181841ce88e148b96a6bedcead9dc, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d20181841ce88e148b96a6bedcead9dc, type: 3}

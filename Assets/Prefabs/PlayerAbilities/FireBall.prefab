@@ -181,7 +181,7 @@ MonoBehaviour:
       Data2: 1231125558
       Data3: -2081558614
       Data4: 1392034484
-    Path: event:/fireball-whoosh
+    Path: event:/SFX/fireball-whoosh
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0

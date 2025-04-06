@@ -7,9 +7,13 @@ using Cinemachine;
 public class MainMenu : MonoBehaviour
 {
     [SerializeField] Button playButton;
+    [SerializeField] Button optionsButton;
     [SerializeField] Button exitButton;
+
     [SerializeField] CanvasGroup mainMenuCanvas;
     [SerializeField] CanvasGroup hudCanvas;
+    [SerializeField] GameObject optionsMenuCanvas;
+
     [SerializeField] PlayableDirector playableDirector;
     [SerializeField] float fadeDuration = 1f;
     [SerializeField] CinemachineVirtualCamera mainMenuCamera;
@@ -31,12 +35,14 @@ public class MainMenu : MonoBehaviour
         mainMenuCanvas.interactable = true;
         mainMenuCanvas.blocksRaycasts = true;
         playButton.onClick.AddListener(Play);
+        optionsButton.onClick.AddListener(OpenOptionsMenu);
         exitButton.onClick.AddListener(ExitGame);
     }
 
     private void OnDisable()
     {
         playButton.onClick.RemoveListener(Play);
+        optionsButton.onClick.RemoveListener(OpenOptionsMenu);
         exitButton.onClick.RemoveListener(ExitGame);
     }
 
@@ -97,6 +103,13 @@ public class MainMenu : MonoBehaviour
         }
 
         Application.Quit();
+    }
+
+    private void OpenOptionsMenu()
+    {
+        mainMenuCanvas.gameObject.SetActive(false);
+        optionsMenuCanvas.SetActive(true);
+
     }
 
     public void EndTimeline()

@@ -107,10 +107,11 @@ public class MainMenu : MonoBehaviour
 
     private void OpenOptionsMenu()
     {
+        PauseMenu.previousMenu = PreviousMenu.MainMenu;
         mainMenuCanvas.gameObject.SetActive(false);
         optionsMenuCanvas.SetActive(true);
-
     }
+
 
     public void EndTimeline()
     {

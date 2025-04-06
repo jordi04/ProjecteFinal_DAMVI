@@ -276,12 +276,18 @@ public class EnemyController : MonoBehaviour, IDamageable
 
         if (targetPoint == null)
         {
-            return;
+            targetPoint = GameObject.FindGameObjectWithTag("Player")?.transform;
         }
 
-        if (movementStrategy != null)
+        movementStrategy = CreateMovementStrategy();
+
+        if (movementStrategy != null && targetPoint != null)
         {
             movementStrategy.Initialize(transform, targetPoint);
+        }
+        else
+        {
+            Debug.LogError("Fallo al inicializar movimiento");
         }
 
         attackStrategy = CreateAttackStrategy();
@@ -357,16 +363,26 @@ public class EnemyController : MonoBehaviour, IDamageable
     #region Public Methods
     public virtual void SetTarget(Transform newTarget)
     {
+        if (newTarget == null)
+        {
+            Debug.LogWarning("Se intentó asignar un target nulo");
+            return;
+        }
+
         target = newTarget;
         targetPoint = newTarget;
 
         if (movementStrategy != null)
+        {
             movementStrategy.SetTarget(newTarget);
+            movementStrategy.Initialize(transform, newTarget);
+        }
 
         if (attackStrategy != null)
+        {
             attackStrategy.SetTarget(newTarget);
+        }
     }
-
     public virtual void TakeDamage(float damageAmount)
     {
         if (isDead || isInvulnerable) return;
@@ -705,7 +721,10 @@ public class EnemyController : MonoBehaviour, IDamageable
 
         public float GetDistanceToTarget()
         {
-            if (targetTransform == null) return float.MaxValue;
+            if (targetTransform == null || enemyTransform == null)
+            {
+                return float.MaxValue;
+            }
             return Vector3.Distance(enemyTransform.position, targetTransform.position);
         }
     }
@@ -894,7 +913,10 @@ public class EnemyController : MonoBehaviour, IDamageable
 
         public bool IsInRange(float range)
         {
-            if (targetTransform == null) return false;
+            if (targetTransform == null || enemyTransform == null)
+            {
+                return false;
+            }
             return Vector3.Distance(enemyTransform.position, targetTransform.position) <= range;
         }
 

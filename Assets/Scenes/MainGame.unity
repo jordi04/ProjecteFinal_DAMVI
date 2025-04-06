@@ -1489,11 +1489,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playButton: {fileID: 275157592}
-  optionsButton: {fileID: 0}
+  optionsButton: {fileID: 1596836894}
   exitButton: {fileID: 297851611}
-  mainMenuCanvas: {fileID: 0}
-  hudCanvas: {fileID: 0}
-  optionsMenuCanvas: {fileID: 0}
+  mainMenuCanvas: {fileID: 62463282}
+  hudCanvas: {fileID: 1416259747}
+  optionsMenuCanvas: {fileID: 1758718098}
   playableDirector: {fileID: 425703418}
   fadeDuration: 1
   mainMenuCamera: {fileID: 383634802}
@@ -13482,7 +13482,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 657073046}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1758718104}
+        m_TargetAssemblyTypeName: OptionsMenu, Assembly-CSharp
+        m_MethodName: ShowPanel
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1031586832}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &657073046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18890,7 +18902,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1031586833
 RectTransform:
   m_ObjectHideFlags: 0
@@ -36368,6 +36380,7 @@ GameObject:
   - component: {fileID: 1758718101}
   - component: {fileID: 1758718100}
   - component: {fileID: 1758718103}
+  - component: {fileID: 1758718104}
   m_Layer: 0
   m_Name: OptionsMenu
   m_TagString: Untagged
@@ -36487,6 +36500,21 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &1758718104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1758718098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7beb9e517d4551a4da261c024fc4a706, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  optionPanels:
+  - {fileID: 471569614}
+  - {fileID: 1031586832}
 --- !u!1 &1759126790
 GameObject:
   m_ObjectHideFlags: 0
@@ -39088,7 +39116,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1891642090}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1758718104}
+        m_TargetAssemblyTypeName: OptionsMenu, Assembly-CSharp
+        m_MethodName: ShowPanel
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 471569614}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1891642090
 MonoBehaviour:
   m_ObjectHideFlags: 0

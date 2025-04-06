@@ -302,7 +302,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 529125175}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 635450854}
+        m_TargetAssemblyTypeName: Win, Assembly-CSharp
+        m_MethodName: playAgain
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &529125175
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -370,7 +382,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 635450853}
-  - component: {fileID: 635450852}
+  - component: {fileID: 635450854}
   m_Layer: 0
   m_Name: MenuManager
   m_TagString: Untagged
@@ -378,20 +390,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &635450852
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 635450851}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 367c34c4a483a464fbd19b1bc6c8dac7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playButton: {fileID: 529125174}
-  exitButton: {fileID: 2120974655}
 --- !u!4 &635450853
 Transform:
   m_ObjectHideFlags: 0
@@ -407,6 +405,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &635450854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 635450851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c459dc5d55e6c884dbdb345e458eb4a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &721327988
 GameObject:
   m_ObjectHideFlags: 0
@@ -419,7 +429,6 @@ GameObject:
   - component: {fileID: 721327992}
   - component: {fileID: 721327991}
   - component: {fileID: 721327990}
-  - component: {fileID: 721327989}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -427,20 +436,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &721327989
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 721327988}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 367c34c4a483a464fbd19b1bc6c8dac7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playButton: {fileID: 529125174}
-  exitButton: {fileID: 2120974655}
 --- !u!114 &721327990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1043,7 +1038,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 143.8
+  m_fontSize: 145.3
   m_fontSizeBase: 72
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1130,7 +1125,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1292,7 +1287,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2120974656}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 635450854}
+        m_TargetAssemblyTypeName: Win, Assembly-CSharp
+        m_MethodName: Exit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2120974656
 MonoBehaviour:
   m_ObjectHideFlags: 0

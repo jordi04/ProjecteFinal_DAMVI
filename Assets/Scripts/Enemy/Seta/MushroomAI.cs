@@ -85,12 +85,15 @@ public class MushroomAI : EnemyController
 
         public void CheckJump(Rigidbody rb, Transform target)
         {
-            if (canJump && GetDistanceToTarget() <= jumpRange)
+            if (target != null && canJump && GetDistanceToTarget() <= jumpRange)
+            {
                 owner.StartCoroutine(PerformJump(rb, target));
+            }
         }
 
         private IEnumerator PerformJump(Rigidbody rb, Transform target)
         {
+            if (target == null) yield break;
             canJump = false;
             if (Agent != null) Agent.isStopped = true;
 

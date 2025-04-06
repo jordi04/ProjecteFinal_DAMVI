@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-9112518594947336548
+--- !u!114 &-4017377726244176633
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10,36 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/bee-flying
+  m_Name: event:/SFX/shield
   m_EditorClassIdentifier: 
-  Path: event:/bee-flying
-  Guid:
-    Data1: -1648509623
-    Data2: 1108700872
-    Data3: 359864763
-    Data4: -778109431
-  Banks:
-  - {fileID: 557109491724218155}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
---- !u!114 &-7881526223029714819
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/shield
-  m_EditorClassIdentifier: 
-  Path: event:/shield
+  Path: event:/SFX/shield
   Guid:
     Data1: 1672996892
     Data2: 1200600190
@@ -70,16 +43,44 @@ MonoBehaviour:
   - {fileID: 3013371581036214418}
   - {fileID: 557109491724218155}
   EditorEvents:
-  - {fileID: -7881526223029714819}
-  - {fileID: -9112518594947336548}
-  - {fileID: 8466513163414018953}
+  - {fileID: 7784042915845628187}
+  - {fileID: -4017377726244176633}
+  - {fileID: 5744205625990858251}
+  - {fileID: 124584966412069426}
   EditorParameters: []
   MasterBanks:
   - {fileID: 557109491724218155}
   StringsBanks:
   - {fileID: 3013371581036214418}
-  cacheTime: 638766275823905264
+  cacheTime: 638795527669289734
   cacheVersion: 131846
+--- !u!114 &124584966412069426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/fireball-whoosh
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/fireball-whoosh
+  Guid:
+    Data1: 1554393332
+    Data2: 1231125558
+    Data3: -2081558614
+    Data4: 1392034484
+  Banks:
+  - {fileID: 557109491724218155}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &557109491724218155
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -95,10 +96,10 @@ MonoBehaviour:
   Path: The_Last_HiHo_Fmod/The_Last_HiHo/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638766275823860129
+  lastModified: 638795527669118743
   FileSizes:
   - Name: Desktop
-    Value: 126688
+    Value: 2664096
   Exists: 1
 --- !u!114 &3013371581036214418
 MonoBehaviour:
@@ -115,12 +116,12 @@ MonoBehaviour:
   Path: The_Last_HiHo_Fmod/The_Last_HiHo/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638766275823905264
+  lastModified: 638795527669289734
   FileSizes:
   - Name: Desktop
-    Value: 866
+    Value: 1012
   Exists: 1
---- !u!114 &8466513163414018953
+--- !u!114 &5744205625990858251
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -130,14 +131,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/fireball-whoosh
+  m_Name: event:/SFX/bee-flying
   m_EditorClassIdentifier: 
-  Path: event:/fireball-whoosh
+  Path: event:/SFX/bee-flying
   Guid:
-    Data1: 1554393332
-    Data2: 1231125558
-    Data3: -2081558614
-    Data4: 1392034484
+    Data1: -1648509623
+    Data2: 1108700872
+    Data3: 359864763
+    Data4: -778109431
   Banks:
   - {fileID: 557109491724218155}
   IsStream: 0
@@ -147,3 +148,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &7784042915845628187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/medieval-ambient-236809
+  m_EditorClassIdentifier: 
+  Path: event:/Music/medieval-ambient-236809
+  Guid:
+    Data1: -1885449972
+    Data2: 1087624348
+    Data3: -447594069
+    Data4: -1480195795
+  Banks:
+  - {fileID: 557109491724218155}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 210755

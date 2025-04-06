@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class OptionsMenu : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] GameObject[] optionPanels;
 
-    // Update is called once per frame
-    void Update()
+    public void ShowPanel(GameObject targetPanel)
     {
-        
+        // Desactiva todos los paneles
+        foreach (var panel in optionPanels)
+        {
+            panel.SetActive(false);
+        }
+
+        // Activa solo el panel objetivo
+        targetPanel.SetActive(true);
     }
 }

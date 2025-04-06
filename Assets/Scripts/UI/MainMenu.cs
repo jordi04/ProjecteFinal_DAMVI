@@ -6,6 +6,8 @@ using Cinemachine;
 
 public class MainMenu : MonoBehaviour
 {
+    private Vector3 playerInitialPosition = new Vector3(373.3f, 3.23f, 5.43f);
+
     [SerializeField] Button playButton;
     [SerializeField] Button optionsButton;
     [SerializeField] Button exitButton;
@@ -21,6 +23,8 @@ public class MainMenu : MonoBehaviour
 
     private void Start()
     {
+        ManaSystem.instance.gameObject.transform.position = playerInitialPosition;
+        ManaSystem.instance.gameObject.transform.rotation = Quaternion.identity;
         UserInput.instance.switchActionMap(UserInput.ActionMap.InMenu);
     }
 

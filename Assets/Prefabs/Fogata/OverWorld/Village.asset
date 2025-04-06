@@ -16,5 +16,5 @@ MonoBehaviour:
   checkPointImage: {fileID: 21300000, guid: 6720d35f6d9b9ba42811d616a272ceae, type: 3}
   map: 0
   order: 1
-  isVisited: 0
+  isVisited: 1
   checkPointTransform: {fileID: 0}

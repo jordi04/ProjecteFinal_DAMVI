@@ -5,23 +5,31 @@ using UnityEngine.UI;
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField] GameObject pauseMenu_Canvas;
+    [SerializeField] GameObject mainMenuCanvas;
+    [SerializeField] GameObject optionsMenu_Canvas;
+    [SerializeField] CanvasGroup hudCanvas;
     private UserInput userInput;
     private bool isPaused = false;
     public static bool otherMenuOpen = true;
 
     [SerializeField] Button exitButton;
+    [SerializeField] Button optionsButton;
     [SerializeField] Button resumeButton;
 
     private void OnEnable()
     {
         exitButton.onClick.AddListener(ReturnToMainMenu);
+        optionsButton.onClick.AddListener(OpenOptionsMenu);
         resumeButton.onClick.AddListener(TogglePauseMenu);
+        hudCanvas.alpha = 0f;
     }
 
     private void OnDisable()
     {
         exitButton.onClick.RemoveListener(ReturnToMainMenu);
+        optionsButton.onClick.RemoveListener(OpenOptionsMenu);
         resumeButton.onClick.RemoveListener(TogglePauseMenu);
+        hudCanvas.alpha = 1f;
     }
 
     void Start()
@@ -31,11 +39,20 @@ public class PauseMenu : MonoBehaviour
 
     void Update()
     {
-        if (userInput.pauseMenuPressed && !otherMenuOpen)
+        if (userInput.pauseMenuPressed)
         {
-            TogglePauseMenu();
+            if (optionsMenu_Canvas.activeSelf)
+            {
+                pauseMenu_Canvas.SetActive(true);
+                optionsMenu_Canvas.SetActive(false);
+            }
+            else if (!otherMenuOpen)
+            {
+                TogglePauseMenu();
+            }
         }
     }
+
 
     private void TogglePauseMenu()
     {
@@ -58,9 +75,18 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
+    private void OpenOptionsMenu()
+    {
+        pauseMenu_Canvas.SetActive(false);
+        optionsMenu_Canvas.SetActive(true);
+
+    }
+
     private void ReturnToMainMenu()
     {
+        isPaused = false;
         Time.timeScale = 1;
-        SceneManager.LoadScene("MainGame");
+        mainMenuCanvas.SetActive(true);
+        pauseMenu_Canvas.SetActive(false);
     }
 }

@@ -125,7 +125,7 @@ MonoBehaviour:
       Data2: 1200600190
       Data3: 48515722
       Data4: -151106996
-    Path: event:/shield
+    Path: event:/SFX/shield
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0

@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.03.00">
 	<object class="AudioFile" id="{453d8d60-ee95-4da8-82f4-842e0970b94d}">
 		<property name="assetPath">
-			<value>bee-flying.mp3</value>
+			<value>SFX/bee-flying.mp3</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>24</value>

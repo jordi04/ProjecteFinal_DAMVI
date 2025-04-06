@@ -157,10 +157,6 @@ public class UserInput : MonoBehaviour
         else if (PlayerInput.currentActionMap.name == "InMenu")
         {
             pauseMenuPressed = unpauseMenu_Action.WasPressedThisFrame();
-            if(pauseMenuPressed)
-            {
-                Debug.Log("Unpausing");
-            }
         }
     }
 

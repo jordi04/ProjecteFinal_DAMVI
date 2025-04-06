@@ -1489,11 +1489,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playButton: {fileID: 275157592}
-  optionsButton: {fileID: 1596836894}
+  optionsButton: {fileID: 0}
   exitButton: {fileID: 297851611}
-  mainMenuCanvas: {fileID: 62463282}
-  hudCanvas: {fileID: 1416259747}
-  optionsMenuCanvas: {fileID: 1758718098}
+  mainMenuCanvas: {fileID: 0}
+  hudCanvas: {fileID: 0}
+  optionsMenuCanvas: {fileID: 0}
   playableDirector: {fileID: 425703418}
   fadeDuration: 1
   mainMenuCamera: {fileID: 383634802}
@@ -5452,12 +5452,12 @@ PrefabInstance:
     - target: {fileID: 3304445009330831543, guid: 56d712e519c12ba43ac81599e669cb79,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4688789641196875211, guid: 56d712e519c12ba43ac81599e669cb79,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 370.61523
+      value: 383.38
       objectReference: {fileID: 0}
     - target: {fileID: 4688789641196875211, guid: 56d712e519c12ba43ac81599e669cb79,
         type: 3}
@@ -5467,7 +5467,7 @@ PrefabInstance:
     - target: {fileID: 4688789641196875211, guid: 56d712e519c12ba43ac81599e669cb79,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 90.362
+      value: 196
       objectReference: {fileID: 0}
     - target: {fileID: 4688789641196875211, guid: 56d712e519c12ba43ac81599e669cb79,
         type: 3}
@@ -5537,8 +5537,123 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3304445009330831543, guid: 56d712e519c12ba43ac81599e669cb79,
+        type: 3}
+      insertIndex: 3
+      addedObject: {fileID: 263103553}
   m_SourcePrefab: {fileID: 100100000, guid: 56d712e519c12ba43ac81599e669cb79, type: 3}
+--- !u!1 &263103550 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3304445009330831543, guid: 56d712e519c12ba43ac81599e669cb79,
+    type: 3}
+  m_PrefabInstance: {fileID: 263103549}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &263103551 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8866931481613153719, guid: 56d712e519c12ba43ac81599e669cb79,
+    type: 3}
+  m_PrefabInstance: {fileID: 263103549}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &263103552 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 7542768910452233456, guid: 56d712e519c12ba43ac81599e669cb79,
+    type: 3}
+  m_PrefabInstance: {fileID: 263103549}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &263103553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 263103550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2d33012504f72b44b6bfd49606ce989, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyRoot: {fileID: 263103550}
+  targetPoint: {fileID: 737721111}
+  enemyRenderer: {fileID: 263103552}
+  maxHealth: 100
+  currentHealth: 0
+  damageMultiplier: 1
+  flashDuration: 0.2
+  invulnerableDuringFlash: 0
+  damageSourceTags:
+  - FireBall
+  - Weapon
+  destroyDelay: 3
+  deathEffect: {fileID: 0}
+  disableColliderOnDeath: 1
+  disableRendererOnDeath: 0
+  movementType: 1
+  moveSpeed: 3.5
+  rotationSpeed: 5
+  stoppingDistance: 2
+  faceTarget: 1
+  avoidObstacles: 1
+  patrolPoints: []
+  patrolWaitTime: 1
+  attackType: 1
+  attackRange: 10
+  attackRate: 1
+  attackDamage: 10
+  chanceToAttack: 100
+  attackAngle: 45
+  attackOrigin: {fileID: 263103551}
+  attackableLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  requireLineOfSight: 1
+  attackDelay: 0.2
+  canAttackWhileMoving: 0
+  projectilePrefab: {fileID: 0}
+  projectileSpeed: 10
+  projectileLifetime: 5
+  shootPoints: []
+  useRandomShootPoint: 0
+  burstFire: 0
+  burstCount: 3
+  burstDelay: 0.1
+  projectileSpread: 5
+  meleeRadius: 1.5
+  usePhysicsForMelee: 0
+  meleeForce: 5
+  meleeUpwardForce: 0
+  meleeEffectPrefab: {fileID: 0}
+  animator: {fileID: 0}
+  idleAnimTrigger: Idle
+  moveAnimTrigger: Move
+  attackAnimTrigger: Attack
+  damageAnimTrigger: Damage
+  deathAnimTrigger: Death
+  useAnimatorSpeed: 1
+  audioSource: {fileID: 0}
+  attackSounds: []
+  damageSounds: []
+  deathSounds: []
+  idleSounds: []
+  idleSoundInterval: 5
+  idleSoundChance: 20
+  damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
+  attackChargeEffect: {fileID: 0}
+  moveParticles: {fileID: 0}
+  detectionRange: 20
+  activateOnPlayerDetection: 1
+  hearingRange: 10
+  obstacleLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  shouldRetreat: 0
+  retreatHealthThreshold: 25
+  retreatDistance: 5
+  spawner: {fileID: 0}
+  jumpRange: 3
+  jumpForce: 8
+  jumpCooldown: 2
+  mushroomRenderer: {fileID: 0}
 --- !u!1 &275157591
 GameObject:
   m_ObjectHideFlags: 0
@@ -34187,7 +34302,7 @@ PrefabInstance:
     - target: {fileID: 690190895482579582, guid: f25dcd618d3acd64795bf8bb32edb6c9,
         type: 3}
       propertyPath: m_Text
-      value: D
+      value: LS
       objectReference: {fileID: 0}
     - target: {fileID: 690190895482579582, guid: f25dcd618d3acd64795bf8bb32edb6c9,
         type: 3}

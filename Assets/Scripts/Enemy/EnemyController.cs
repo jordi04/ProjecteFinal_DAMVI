@@ -382,7 +382,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         {
             attackStrategy.SetTarget(newTarget);
         }
-
+    }
     public virtual void TakeDamage(float damageAmount)
     {
         if (isDead || isInvulnerable) return;

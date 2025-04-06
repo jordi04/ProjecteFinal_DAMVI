@@ -148,6 +148,7 @@ public class SerpienteBoss : MonoBehaviour
     {
         snakeRenderer.GetPropertyBlock(materialPropertyBlock);
         materialPropertyBlock.SetColor("_BaseColor", color);
+        materialPropertyBlock.SetColor("_Color", color);
         snakeRenderer.SetPropertyBlock(materialPropertyBlock);
     }
 

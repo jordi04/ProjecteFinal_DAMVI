@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [Header("Enemy Spawning Settings")]
-    public GameObject[] enemyPrefabs;
+    public GameObject[] enemyPrefabs;   
     public Transform[] spawnPoints;
     public int enemiesPerSpawn = 3;
     public int maxEnemiesSpawnedAtTheSameTime = 10;
@@ -220,7 +220,7 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    public void EnemyEliminated(GameObject enemy)
+    public virtual void EnemyEliminated(GameObject enemy)
     {
         if (enemiesInScene.Contains(enemy))
         {

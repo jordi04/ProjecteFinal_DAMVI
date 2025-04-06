@@ -2,123 +2,200 @@ using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
 
-public class TopoIA : MonoBehaviour
+public class TopoIA : EnemyController
 {
-    public float tiempoPersecucion = 3f; 
-    public float tiempoEsperaEmergido = 0.5f; 
-    public float damage = 10f;
-    public float velocidadMovimiento = 3.5f;
-    public float velocidadSumergido = 6f;
-    public Transform objetivo;
-    public float salud = 50f; 
-    public float tiempoEntreGolpes = 1f; 
+    [Header("Topo Settings")]
+    [SerializeField] float tiempoPersecucion = 3f;
+    [SerializeField] float tiempoEsperaEmergido = 0.5f;
+    [SerializeField] float velocidadSumergido = 6f;
+    [SerializeField] ParticleSystem burrowParticles;
 
-    private NavMeshAgent agente;
-    private Collider hitbox;
-    private MeshRenderer modelo;
+    [Header("Component References")]
+    [SerializeField] Collider damageCollider;
+    [SerializeField] Renderer bodyRenderer;
+
     private bool estaSumergido = false;
-    private bool puedeHacerDaño = true;
+    private float originalSpeed;
+    [SerializeField] private float tiempoEntreAtaques = 1f;
 
-    private ParticleSystem particles;
-
-    void Start()
+    protected override void Awake()
     {
-        agente = GetComponent<NavMeshAgent>();
-        hitbox = GetComponent<Collider>();
-        modelo = GetComponentInChildren<MeshRenderer>();
-        particles = GetComponent<ParticleSystem>();
-        particles.Stop();
-        StartCoroutine(PerseguirJugador());
+        movementType = MovementType.NavMesh;
+        attackType = AttackType.Melee;
+
+        base.Awake();
+        originalSpeed = moveSpeed;
     }
 
-    IEnumerator PerseguirJugador()
+    protected override void InitializeStrategies()
     {
-        float tiempoRestante = tiempoPersecucion;
-        while (tiempoRestante > 0)
+        movementStrategy = new TopoMovement(
+            moveSpeed,
+            stoppingDistance,
+            faceTarget,
+            avoidObstacles
+        );
+
+        attackStrategy = new MeleeContactAttack(
+            attackDamage,
+            tiempoEntreAtaques,
+            attackRange
+        );
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+        StartCoroutine(CicloComportamiento());
+        ToggleComponents(false);
+    }
+
+    IEnumerator CicloComportamiento()
+    {
+        while (!isDead)
         {
-            agente.SetDestination(objetivo.position);
-            tiempoRestante -= Time.deltaTime;
-            yield return null;
+            yield return StartCoroutine(FasePersecucion());
+            yield return StartCoroutine(FaseSumergido());
         }
-        Sumergirse();
     }
 
-    void Sumergirse()
+    IEnumerator FasePersecucion()
     {
-        estaSumergido = true;
-        hitbox.enabled = false;
-        modelo.enabled = false;
-        agente.isStopped = true;
-        agente.speed = velocidadSumergido;
-        particles.Play();
-        StartCoroutine(MoverseHaciaObjetivo());
-    }
-
-    IEnumerator MoverseHaciaObjetivo()
-    {
-        agente.isStopped = false;
-        agente.SetDestination(objetivo.position);
-        while (agente.pathPending || agente.remainingDistance > 0.5f)
-        {
-            yield return null;
-        }
-        yield return new WaitForSeconds(tiempoEsperaEmergido);
-        Emerger();
-    }
-
-    void Emerger()
-    {
+        ToggleComponents(true);
         estaSumergido = false;
-        hitbox.enabled = true;
-        modelo.enabled = true;
-        agente.speed = velocidadMovimiento;
-        particles.Stop();
-        StartCoroutine(PerseguirJugador());
-    }
+        ((TopoMovement)movementStrategy).SetSpeed(originalSpeed);
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (!estaSumergido && other.CompareTag("Player"))
+        float timer = 0f;
+        while (timer < tiempoPersecucion)
         {
-            AplicarDañoJugador(other);
+            movementStrategy.Move();
+            timer += Time.deltaTime;
+            yield return null;
         }
     }
 
-    void OnTriggerStay(Collider other)
+    IEnumerator FaseSumergido()
     {
-        if (!estaSumergido && other.CompareTag("Player"))
+        ToggleComponents(false);
+        estaSumergido = true;
+        ((TopoMovement)movementStrategy).SetSpeed(velocidadSumergido);
+        burrowParticles.Play();
+
+        yield return StartCoroutine(MoveToTarget());
+
+        burrowParticles.Stop();
+        yield return new WaitForSeconds(tiempoEsperaEmergido);
+    }
+
+    IEnumerator MoveToTarget()
+    {
+        while (movementStrategy.GetDistanceToTarget() > attackRange)
         {
-            AplicarDañoJugador(other);
+            movementStrategy.Move();
+            yield return null;
         }
     }
 
-    void AplicarDañoJugador(Collider jugador)
+    void ToggleComponents(bool state)
     {
-        if (puedeHacerDaño)
-        {
-            ManaSystem.instance.TakeDamage(damage);
-            StartCoroutine(EsperarProximoGolpe());
-        }
+        damageCollider.enabled = state;
+        bodyRenderer.enabled = state;
     }
 
-    IEnumerator EsperarProximoGolpe()
+    public override void TakeDamage(float damageAmount)
     {
-        puedeHacerDaño = false;
-        yield return new WaitForSeconds(tiempoEntreGolpes);
-        puedeHacerDaño = true;
+        if (estaSumergido) return;
+        base.TakeDamage(damageAmount);
     }
 
-    public void TomarDaño(float daño)
+    protected override IEnumerator DeathSequence()
     {
-        salud -= daño;
-        if (salud <= 0)
-        {
-            Morir();
-        }
-    }
+        Deactivate();
+        ToggleComponents(false);
+        burrowParticles.Stop();
 
-    void Morir()
-    {
+        yield return base.DeathSequence();
+
+        if (spawner != null) spawner.EnemyEliminated(gameObject);
         Destroy(gameObject);
+    }
+
+    protected class TopoMovement : IEnemyMovement
+    {
+        private NavMeshAgent agent;
+        private Transform enemyTransform;
+        private Transform targetTransform;
+        private float moveSpeed;
+        private float stoppingDistance;
+        private bool faceTarget;
+        private bool avoidObstacles;
+
+        public TopoMovement(float speed, float stopDistance, bool faceTarget, bool avoidObstacles)
+        {
+            this.moveSpeed = speed;
+            this.stoppingDistance = stopDistance;
+            this.faceTarget = faceTarget;
+            this.avoidObstacles = avoidObstacles;
+        }
+
+        public void Initialize(Transform enemy, Transform target)
+        {
+            enemyTransform = enemy;
+            targetTransform = target;
+            agent = enemy.GetComponent<NavMeshAgent>();
+
+            if (agent != null)
+            {
+                agent.speed = moveSpeed;
+                agent.stoppingDistance = stoppingDistance;
+                agent.avoidancePriority = avoidObstacles ? 50 : 99;
+            }
+        }
+
+        public void Move()
+        {
+            if (agent != null && agent.enabled && targetTransform != null)
+            {
+                agent.SetDestination(targetTransform.position);
+            }
+        }
+
+        public void SetSpeed(float newSpeed)
+        {
+            if (agent != null) agent.speed = newSpeed;
+        }
+
+        public void SetTarget(Transform target) => targetTransform = target;
+        public void Stop() { if (agent != null) agent.isStopped = true; }
+        public void Resume() { if (agent != null) agent.isStopped = false; }
+        public bool IsInRange(float range) => GetDistanceToTarget() <= range;
+        public float GetDistanceToTarget() => Vector3.Distance(enemyTransform.position, targetTransform.position);
+    }
+
+    protected class MeleeContactAttack : IEnemyAttack
+    {
+        private float damage;
+        private float attackCooldown;
+        private float attackDistance;
+        private float lastAttackTime;
+        private float damageMultiplier = 1f;
+
+        public MeleeContactAttack(float damage, float cooldown, float distance)
+        {
+            this.damage = damage;
+            this.attackCooldown = cooldown;
+            this.attackDistance = distance;
+        }
+
+        public void Initialize(Transform enemy, Transform target) { }
+        public void SetTarget(Transform target) { }
+        public bool CanAttack() => Time.time > lastAttackTime + attackCooldown;
+
+        public void Attack()
+        {
+            lastAttackTime = Time.time;
+        }
+
+        public void SetDamageMultiplier(float multiplier) => damageMultiplier = multiplier;
     }
 }

@@ -2,11 +2,22 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+public enum PreviousMenu
+{
+    None,
+    MainMenu,
+    PauseMenu
+}
+
+
 public class PauseMenu : MonoBehaviour
 {
-    [SerializeField] GameObject pauseMenu_Canvas;
+    public static PreviousMenu previousMenu = PreviousMenu.None;
+
+
+    [SerializeField] GameObject pauseMenuCanvas;
     [SerializeField] GameObject mainMenuCanvas;
-    [SerializeField] GameObject optionsMenu_Canvas;
+    [SerializeField] GameObject optionsMenuCanvas;
     [SerializeField] CanvasGroup hudCanvas;
     private UserInput userInput;
     private bool isPaused = false;
@@ -41,23 +52,36 @@ public class PauseMenu : MonoBehaviour
     {
         if (userInput.pauseMenuPressed)
         {
-            if (optionsMenu_Canvas.activeSelf)
+            if (optionsMenuCanvas.activeSelf)
             {
-                pauseMenu_Canvas.SetActive(true);
-                optionsMenu_Canvas.SetActive(false);
+                // Cerrar opciones y volver al menú anterior
+                optionsMenuCanvas.SetActive(false);
+
+                if (previousMenu == PreviousMenu.MainMenu)
+                {
+                    mainMenuCanvas.SetActive(true);
+                }
+                else if (previousMenu == PreviousMenu.PauseMenu)
+                {
+                    pauseMenuCanvas.SetActive(true);
+                }
+
+                previousMenu = PreviousMenu.None;
             }
             else if (!otherMenuOpen)
             {
+                // Alternar pausa solo si no hay otro menú abierto
                 TogglePauseMenu();
             }
         }
     }
 
 
+
     private void TogglePauseMenu()
     {
         isPaused = !isPaused;
-        pauseMenu_Canvas.SetActive(isPaused);
+        pauseMenuCanvas.SetActive(isPaused);
 
         if (isPaused)
         {
@@ -75,18 +99,21 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
+
+
     private void OpenOptionsMenu()
     {
-        pauseMenu_Canvas.SetActive(false);
-        optionsMenu_Canvas.SetActive(true);
-
+        previousMenu = PreviousMenu.PauseMenu;
+        pauseMenuCanvas.SetActive(false);
+        optionsMenuCanvas.SetActive(true);
     }
+
 
     private void ReturnToMainMenu()
     {
         isPaused = false;
         Time.timeScale = 1;
         mainMenuCanvas.SetActive(true);
-        pauseMenu_Canvas.SetActive(false);
+        pauseMenuCanvas.SetActive(false);
     }
 }

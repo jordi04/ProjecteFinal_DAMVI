@@ -1,163 +1,131 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
-using UnityEngine.SceneManagement;
 
-public class MushroomAI : MonoBehaviour
+public class MushroomAI : EnemyController
 {
-    public float rangoSalto = 3f;
-    public float fuerzaSalto = 8f;
-    public float tiempoEntreSaltos = 2f;
-    [SerializeField] float damage = 10f;
+    [Header("Jump Settings")]
+    [SerializeField] float jumpRange = 3f;
+    [SerializeField] float jumpForce = 8f;
+    [SerializeField] float jumpCooldown = 2f;
 
-    private NavMeshAgent agente;
-    private Rigidbody rb;
-    private GameObject playerObject;
-    private bool puedeSaltar = true;
-    public LoboSpawner spawner;
+    [Header("Visual Settings")]
+    [SerializeField] Renderer mushroomRenderer;
 
-
-    [SerializeField] float life = 10f;
-    [SerializeField] private float flashDuration = 0.2f;
-    [SerializeField] private Renderer mushroomRenderer;
-    private MaterialPropertyBlock materialPropertyBlock;
-    private Color originalColor;
-
-    private bool isDead = false;
-
-    void Start()
+    protected override void Awake()
     {
-        agente = GetComponent<NavMeshAgent>();
-        rb = GetComponent<Rigidbody>();
+        movementType = MovementType.NavMesh;
+        attackType = AttackType.Melee;
 
-        StartCoroutine(EsperarNavMesh());
-        materialPropertyBlock = new MaterialPropertyBlock();
-        originalColor = mushroomRenderer.material.color;
+        base.Awake();
+
+        enemyRigidbody.isKinematic = false;
+        enemyRigidbody.interpolation = RigidbodyInterpolation.Interpolate;
+
+        if (enemyRenderer == null)
+            enemyRenderer = mushroomRenderer;
     }
 
-    IEnumerator EsperarNavMesh()
+    protected override void InitializeStrategies()
     {
-        while (!agente.isOnNavMesh)
-        {
-            yield return null; 
-        }
+        movementStrategy = new JumpingMovement(
+            moveSpeed,
+            stoppingDistance,
+            faceTarget,
+            avoidObstacles,
+            jumpRange,
+            jumpForce,
+            jumpCooldown,
+            this
+        );
 
-        agente.SetDestination(playerObject.transform.position);
+        attackStrategy = new MeleeContactAttack(
+            attackDamage,
+            attackRate,
+            attackRange
+        );
     }
 
-    void Update()
+    protected override void Update()
     {
+        base.Update();
         if (isDead) return;
 
-        float distancia = Vector3.Distance(transform.position, playerObject.transform.position);
-
-        if (agente.isOnNavMesh)
-        {
-            agente.SetDestination(playerObject.transform.position);
-        }
-        
-        if (distancia <= rangoSalto && puedeSaltar)
-        {
-            StartCoroutine(Saltar());
-        }
+        ((JumpingMovement)movementStrategy).CheckJump(enemyRigidbody, target);
     }
 
-    private IEnumerator Saltar()
+    protected override IEnumerator DeathSequence()
     {
-        puedeSaltar = false;
-        agente.isStopped = true;
+        Deactivate();
 
-        Vector3 direccionSalto = (playerObject.transform.position - transform.position).normalized;
-        direccionSalto.y = 1f;
-        rb.AddForce(direccionSalto * fuerzaSalto, ForceMode.Impulse);
+        if (spawner != null && spawner is EnemySpawner enemySpawner)
+            enemySpawner.EnemyEliminated(gameObject);
 
-        yield return new WaitForSeconds(0.5f);
-        agente.isStopped = false;
-
-        yield return new WaitForSeconds(tiempoEntreSaltos);
-        puedeSaltar = true;
+        yield return base.DeathSequence();
+        Destroy(gameObject);
     }
 
-
-   private void OnTriggerEnter(Collider other)
+    protected class JumpingMovement : NavMeshMovement
     {
-        if (isDead) return;
+        private float jumpRange;
+        private float jumpForce;
+        private float jumpCooldown;
+        private bool canJump = true;
+        private MonoBehaviour owner;
 
-        if (other.CompareTag("FireBall"))
+        public JumpingMovement(float speed, float stopDistance, bool faceTarget, bool avoidObstacles,
+                             float jumpRange, float jumpForce, float jumpCooldown, MonoBehaviour owner)
+            : base(speed, stopDistance, faceTarget, avoidObstacles)
         {
-            // Try to get the damage amount from the fireball
-            FireballPrefabScript fireball = other.GetComponent<FireballPrefabScript>();
-
-
-            // If we can't get the fireball script, use default damage
-            if (fireball == null)
-            {
-                life -= 10f;
-            }
-
-            // The actual damage is now handled by the TakeDamage method
-            // which the fireball script will call directly
-
-            StartCoroutine(DamageFlash());
-
-            if (life <= 0)
-            {
-                isDead = true;
-                StartCoroutine(DeathSequence());
-            }
+            this.jumpRange = jumpRange;
+            this.jumpForce = jumpForce;
+            this.jumpCooldown = jumpCooldown;
+            this.owner = owner;
         }
-        if (other.CompareTag("Player"))
+
+        public void CheckJump(Rigidbody rb, Transform target)
         {
-            ManaSystem.instance.TakeDamage(damage);
+            if (canJump && GetDistanceToTarget() <= jumpRange)
+                owner.StartCoroutine(PerformJump(rb, target));
+        }
+
+        private IEnumerator PerformJump(Rigidbody rb, Transform target)
+        {
+            canJump = false;
+            if (Agent != null) Agent.isStopped = true;
+
+            Vector3 jumpDirection = (target.position - rb.position).normalized;
+            jumpDirection.y = 1f;
+            rb.AddForce(jumpDirection * jumpForce, ForceMode.Impulse);
+
+            yield return new WaitForSeconds(0.5f);
+            if (Agent != null) Agent.isStopped = false;
+
+            yield return new WaitForSeconds(jumpCooldown);
+            canJump = true;
         }
     }
 
-    public void TakeDamage(float damageAmount)
+    protected class MeleeContactAttack : IEnemyAttack
     {
-        if (isDead) return;
+        private float damage;
+        private float attackCooldown;
+        private float attackRange;
+        private float lastAttackTime;
+        private float damageMultiplier = 1f;
 
-        life -= damageAmount;
-        // Flash on every hit
-        StartCoroutine(DamageFlash());
-
-        if (life <= 0)
+        public MeleeContactAttack(float damage, float cooldown, float distance)
         {
-            isDead = true;
-            StartCoroutine(DeathSequence());
+            this.damage = damage;
+            this.attackCooldown = cooldown;
+            this.attackRange = distance;
         }
-    }
 
-    private IEnumerator DamageFlash()
-    {
-        SetColor(Color.yellow);
-        yield return new WaitForSeconds(flashDuration);
-        if (!isDead) ResetColor();
-    }
+        public void Initialize(Transform enemy, Transform target) { }
+        public void SetTarget(Transform target) { }
 
-    private IEnumerator DeathSequence()
-    {
-        yield return new WaitForSeconds(flashDuration);
-        if (spawner != null)
-        {
-            spawner.LoboEliminado(gameObject);
-            Destroy(gameObject);
-        }
-    }
-
-    private void SetColor(Color color)
-    {
-        mushroomRenderer.GetPropertyBlock(materialPropertyBlock);
-        materialPropertyBlock.SetColor("_BaseColor", color);
-        mushroomRenderer.SetPropertyBlock(materialPropertyBlock);
-    }
-
-    private void ResetColor()
-    {
-        SetColor(originalColor);
-    }
-
-    public void SetPlayer(GameObject player)
-    {
-           playerObject = player;
+        public bool CanAttack() => Time.time > lastAttackTime + attackCooldown;
+        public void Attack() => lastAttackTime = Time.time;
+        public void SetDamageMultiplier(float multiplier) => damageMultiplier = multiplier;
     }
 }

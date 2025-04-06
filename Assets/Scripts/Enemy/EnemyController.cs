@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.AI;
 
-// Interface for anything that can take damage
 public interface IDamageable
 {
     void TakeDamage(float damageAmount);
@@ -13,7 +12,6 @@ public interface IDamageable
     bool IsDead();
 }
 
-// Interface for enemy movement strategies
 public interface IEnemyMovement
 {
     void Initialize(Transform enemy, Transform target);
@@ -25,7 +23,6 @@ public interface IEnemyMovement
     float GetDistanceToTarget();
 }
 
-// Interface for enemy attack strategies
 public interface IEnemyAttack
 {
     void Initialize(Transform enemy, Transform target);
@@ -35,7 +32,6 @@ public interface IEnemyAttack
     void SetDamageMultiplier(float multiplier);
 }
 
-// Core enemy controller that serves as the framework for all enemy types
 [RequireComponent(typeof(Collider))]
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyController : MonoBehaviour, IDamageable
@@ -61,7 +57,7 @@ public class EnemyController : MonoBehaviour, IDamageable
 
     [Header("Core Settings")]
     [SerializeField] protected GameObject enemyRoot;
-    [SerializeField] protected Transform targetPoint; // Where to aim attacks
+    [SerializeField] protected Transform targetPoint;
     [SerializeField] protected Renderer enemyRenderer;
 
     [Header("Health & Damage")]
@@ -93,12 +89,12 @@ public class EnemyController : MonoBehaviour, IDamageable
     [SerializeField] protected float attackRange = 10f;
     [SerializeField] protected float attackRate = 1f;
     [SerializeField] protected float attackDamage = 10f;
-    [SerializeField] protected float chanceToAttack = 100f; // percentage
-    [SerializeField] protected float attackAngle = 45f; // For melee attacks
+    [SerializeField] protected float chanceToAttack = 100f;
+    [SerializeField] protected float attackAngle = 45f;
     [SerializeField] protected Transform attackOrigin;
     [SerializeField] protected LayerMask attackableLayerMask;
     [SerializeField] protected bool requireLineOfSight = true;
-    [SerializeField] protected float attackDelay = 0.2f; // Delay between attack animation and damage
+    [SerializeField] protected float attackDelay = 0.2f;
     [SerializeField] protected bool canAttackWhileMoving = false;
 
     [Header("Ranged Attack Settings")]
@@ -151,13 +147,11 @@ public class EnemyController : MonoBehaviour, IDamageable
     [SerializeField] protected float retreatHealthThreshold = 25f;
     [SerializeField] protected float retreatDistance = 5f;
 
-    // Component references
     protected Collider enemyCollider;
     protected Rigidbody enemyRigidbody;
     protected NavMeshAgent navAgent;
     protected MaterialPropertyBlock materialPropertyBlock;
 
-    // State tracking
     protected bool isDead = false;
     protected bool isAttacking = false;
     protected bool isMoving = true;
@@ -175,11 +169,9 @@ public class EnemyController : MonoBehaviour, IDamageable
     protected Coroutine meleeAttackCoroutine;
     protected Coroutine retreatCoroutine;
 
-    // Spawner reference
     public EnemySpawner spawner;
 
     #region Unity Lifecycle Methods
-
     protected virtual void Awake()
     {
         InitializeComponents();
@@ -191,13 +183,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         InitializeStrategies();
         if (targetPoint != null)
         {
-            //Debug.Log("Setting initial target");
-            SetTarget(targetPoint); // Make sure this is called
-        }
-        else
-        {
-            //
-            //Debug.LogError("No target point assigned!");
+            SetTarget(targetPoint);
         }
         nextIdleSoundTime = Time.time + Random.Range(0f, idleSoundInterval);
     }
@@ -213,15 +199,12 @@ public class EnemyController : MonoBehaviour, IDamageable
 
     protected virtual void OnDrawGizmosSelected()
     {
-        // Draw attack range
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
 
-        // Draw detection range
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, detectionRange);
 
-        // Draw melee range if applicable
         if (attackType == AttackType.Melee)
         {
             Gizmos.color = Color.blue;
@@ -229,7 +212,6 @@ public class EnemyController : MonoBehaviour, IDamageable
             Gizmos.DrawWireSphere(meleeOrigin, meleeRadius);
         }
 
-        // Draw patrol points if applicable
         if (movementType == MovementType.Patrol && patrolPoints != null && patrolPoints.Length > 0)
         {
             Gizmos.color = Color.green;
@@ -258,11 +240,9 @@ public class EnemyController : MonoBehaviour, IDamageable
             spawner.EnemyEliminated(gameObject);
         }
     }
-
     #endregion
 
     #region Initialization
-
     protected virtual void InitializeComponents()
     {
         if (enemyRoot == null)
@@ -292,39 +272,25 @@ public class EnemyController : MonoBehaviour, IDamageable
 
     protected virtual void InitializeStrategies()
     {
-        //Debug.Log($"Initializing strategies for {gameObject.name}");
-        //Debug.Log($"NavMeshAgent exists: {GetComponent<NavMeshAgent>() != null}");
-
-        // Create movement strategy based on configuration
         movementStrategy = CreateMovementStrategy();
 
-        // Check if targetPoint is assigned before initializing
         if (targetPoint == null)
         {
-            //Debug.LogError($"Target point is not assigned for {gameObject.name}");
             return;
         }
 
         if (movementStrategy != null)
         {
-            //Debug.Log($"Initializing movement strategy of type {movementStrategy.GetType().Name}");
             movementStrategy.Initialize(transform, targetPoint);
         }
-        else
-        {
-            //Debug.LogError($"Movement strategy creation failed for {gameObject.name}");
-        }
 
-        // Create attack strategy based on configuration
         attackStrategy = CreateAttackStrategy();
-        if (attackStrategy != null && targetPoint != null)  // Changed from target to targetPoint
+        if (attackStrategy != null && targetPoint != null)
         {
-            Debug.Log("Initializing attack strategy...");
-            attackStrategy.Initialize(transform, targetPoint);  // This is where we set the enemy transform
+            attackStrategy.Initialize(transform, targetPoint);
             attackStrategy.SetDamageMultiplier(damageMultiplier);
         }
 
-        // Configure NavMeshAgent if available
         if (navAgent != null)
         {
             navAgent.speed = moveSpeed;
@@ -343,8 +309,6 @@ public class EnemyController : MonoBehaviour, IDamageable
                 return new DirectMovement(moveSpeed, stoppingDistance, rotationSpeed, faceTarget);
             case MovementType.Patrol:
                 return new PatrolMovement(moveSpeed, stoppingDistance, patrolPoints, patrolWaitTime, rotationSpeed);
-            /*case MovementType.Stationary:
-                return new StationaryMovement();*/
             default:
                 return null;
         }
@@ -383,22 +347,18 @@ public class EnemyController : MonoBehaviour, IDamageable
                     projectileLifetime
                 );
             case AttackType.Special:
-                // Custom attack strategy implemented by child classes
                 return null;
             default:
                 return null;
         }
     }
-
     #endregion
 
     #region Public Methods
-
     public virtual void SetTarget(Transform newTarget)
     {
-        Debug.Log($"Setting new target: {(newTarget != null ? newTarget.name : "null")}");
         target = newTarget;
-        targetPoint = newTarget;  // Make sure targetPoint is also updated
+        targetPoint = newTarget;
 
         if (movementStrategy != null)
             movementStrategy.SetTarget(newTarget);
@@ -407,7 +367,6 @@ public class EnemyController : MonoBehaviour, IDamageable
             attackStrategy.SetTarget(newTarget);
     }
 
-
     public virtual void TakeDamage(float damageAmount)
     {
         if (isDead || isInvulnerable) return;
@@ -415,56 +374,29 @@ public class EnemyController : MonoBehaviour, IDamageable
         currentHealth -= damageAmount;
         isTakingDamage = true;
 
-        // Visual feedback
         StartCoroutine(DamageFlash());
-
-        // Audio feedback
         PlayRandomSound(damageSounds);
 
-        // Animation
         if (animator != null)
             animator.SetTrigger(damageAnimTrigger);
 
-        // Check for retreat
         if (shouldRetreat && currentHealth <= maxHealth * (retreatHealthThreshold / 100) && !isRetreating)
         {
             StartRetreat();
         }
 
-        // Check for death
         if (currentHealth <= 0)
         {
             Die();
         }
     }
 
-    public float GetCurrentHealth()
-    {
-        return currentHealth;
-    }
+    public float GetCurrentHealth() => currentHealth;
+    public float GetMaxHealth() => maxHealth;
+    public bool IsDead() => isDead;
 
-    public float GetMaxHealth()
-    {
-        return maxHealth;
-    }
-
-    public bool IsDead()
-    {
-        return isDead;
-    }
-
-    public virtual void Activate()
-    {
-        isActivated = true;
-    }
-
-    public virtual void Deactivate()
-    {
-        isActivated = false;
-        StopAllCoroutines();
-        if (movementStrategy != null)
-            movementStrategy.Stop();
-    }
+    public virtual void Activate() => isActivated = true;
+    public virtual void Deactivate() => isActivated = false;
 
     public virtual void ForceAttack()
     {
@@ -473,11 +405,9 @@ public class EnemyController : MonoBehaviour, IDamageable
             PerformAttack();
         }
     }
-
     #endregion
 
     #region Protected Methods
-
     protected virtual void HandleMovement()
     {
         if (isDead || isTakingDamage || (isAttacking && !canAttackWhileMoving)) return;
@@ -553,18 +483,14 @@ public class EnemyController : MonoBehaviour, IDamageable
 
         isAttacking = true;
 
-        // Play attack animation
         if (animator != null)
             animator.SetTrigger(attackAnimTrigger);
 
-        // Play attack sound
         PlayRandomSound(attackSounds);
 
-        // Show charge effect if available
         if (attackChargeEffect != null)
             StartCoroutine(ShowAttackEffect());
 
-        // Execute the attack after delay if needed
         if (attackDelay > 0)
         {
             attackCoroutine = StartCoroutine(DelayedAttack());
@@ -607,51 +533,38 @@ public class EnemyController : MonoBehaviour, IDamageable
 
     protected virtual IEnumerator RetreatCoroutine()
     {
-        // Basic retreat logic - move away from target
         if (target != null && navAgent != null)
         {
-            // Calculate retreat direction
             Vector3 retreatDirection = (transform.position - target.position).normalized;
             Vector3 retreatPosition = transform.position + retreatDirection * retreatDistance;
 
-            // Find valid retreat position on NavMesh
             NavMeshHit hit;
             if (NavMesh.SamplePosition(retreatPosition, out hit, retreatDistance, NavMesh.AllAreas))
             {
                 navAgent.SetDestination(hit.position);
-
-                yield return new WaitForSeconds(2f);  // Retreat for 2 seconds
-
-                // Resume normal behavior
+                yield return new WaitForSeconds(2f);
                 isRetreating = false;
             }
         }
-
         isRetreating = false;
     }
 
     protected virtual void Die()
     {
         if (isDead) return;
-
         isDead = true;
         isActivated = false;
 
-        // Stop all ongoing coroutines
         StopAllCoroutines();
 
-        // Play death animation
         if (animator != null)
             animator.SetTrigger(deathAnimTrigger);
 
-        // Play death sound
         PlayRandomSound(deathSounds);
 
-        // Instantiate death effect
         if (deathEffect != null)
             Instantiate(deathEffect, transform.position, Quaternion.identity);
 
-        // Disable components
         if (navAgent != null)
             navAgent.enabled = false;
 
@@ -678,7 +591,6 @@ public class EnemyController : MonoBehaviour, IDamageable
     {
         yield return new WaitForSeconds(destroyDelay);
 
-        // Notify spawner before destruction
         if (spawner != null)
         {
             spawner.EnemyEliminated(gameObject);
@@ -697,10 +609,10 @@ public class EnemyController : MonoBehaviour, IDamageable
         RaycastHit hit;
         if (Physics.Raycast(transform.position, directionToTarget.normalized, out hit, distanceToTarget, obstacleLayerMask))
         {
-            return false; // Something is blocking the view
+            return false;
         }
 
-        return true; // Clear line of sight
+        return true;
     }
 
     protected virtual void SetColor(Color color)
@@ -712,10 +624,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         enemyRenderer.SetPropertyBlock(materialPropertyBlock);
     }
 
-    protected virtual void ResetColor()
-    {
-        SetColor(originalColor);
-    }
+    protected virtual void ResetColor() => SetColor(originalColor);
 
     protected virtual void PlayRandomSound(AudioClip[] sounds)
     {
@@ -727,21 +636,20 @@ public class EnemyController : MonoBehaviour, IDamageable
             audioSource.PlayOneShot(soundToPlay);
         }
     }
-
     #endregion
 
     #region Movement Strategy Implementations
-
-    // NavMesh based movement
     protected class NavMeshMovement : IEnemyMovement
     {
-        private NavMeshAgent agent;
+        protected NavMeshAgent navAgent;
         private Transform enemyTransform;
         private Transform targetTransform;
         private float moveSpeed;
         private float stoppingDistance;
         private bool shouldFaceTarget;
         private bool shouldAvoidObstacles;
+
+        public NavMeshAgent Agent => navAgent;
 
         public NavMeshMovement(float speed, float stopDistance, bool faceTarget, bool avoidObstacles)
         {
@@ -753,75 +661,39 @@ public class EnemyController : MonoBehaviour, IDamageable
 
         public void Initialize(Transform enemy, Transform target)
         {
-            //Debug.Log($"Initializing NavMeshMovement for {enemy.name}");
             enemyTransform = enemy;
             targetTransform = target;
-            agent = enemy.GetComponent<NavMeshAgent>();
+            navAgent = enemy.GetComponent<NavMeshAgent>();
 
-            if (agent == null)
+            if (navAgent == null)
             {
-                Debug.LogError($"NavMeshAgent not found on {enemy.name}. Hierarchy path: {GetGameObjectPath(enemy)}");
+                Debug.LogError($"NavMeshAgent not found on {enemy.name}");
                 return;
             }
 
-            //Debug.Log($"Found NavMeshAgent on {enemy.name}");
-            agent.speed = moveSpeed;
-            agent.stoppingDistance = stoppingDistance;
-            agent.avoidancePriority = shouldAvoidObstacles ? 50 : 99;
-        }
-        // Helper method to debug object hierarchy
-        private string GetGameObjectPath(Transform transform)
-        {
-            string path = transform.name;
-            while (transform.parent != null)
-            {
-                transform = transform.parent;
-                path = transform.name + "/" + path;
-            }
-            return path;
+            navAgent.speed = moveSpeed;
+            navAgent.stoppingDistance = stoppingDistance;
+            navAgent.avoidancePriority = shouldAvoidObstacles ? 50 : 99;
         }
 
         public void Move()
         {
-            //Debug.Log("Moving - Starting checks:");
-
-            if (agent == null)
-            {
-                //Debug.LogError("NavMeshAgent is null");
-                return;
-            }
-
-            if (!agent.enabled)
-            {
-                //Debug.LogError("NavMeshAgent is not enabled");
-                return;
-            }
-
-            if (targetTransform == null)
-            {
-                //Debug.LogError("Target Transform is null");
-                return;
-            }
-
-            //Debug.Log($"Setting destination to: {targetTransform.position}");
-            agent.SetDestination(targetTransform.position);
+            if (navAgent == null || !navAgent.enabled || targetTransform == null) return;
+            navAgent.SetDestination(targetTransform.position);
         }
 
-        public void SetTarget(Transform target)
-        {
-            targetTransform = target;
-        }
+        public void SetTarget(Transform target) => targetTransform = target;
 
         public void Stop()
         {
-            if (agent != null && agent.enabled)
-                agent.isStopped = true;
+            if (navAgent != null && navAgent.enabled)
+                navAgent.isStopped = true;
         }
 
         public void Resume()
         {
-            if (agent != null && agent.enabled)
-                agent.isStopped = false;
+            if (navAgent != null && navAgent.enabled)
+                navAgent.isStopped = false;
         }
 
         public bool IsInRange(float range)
@@ -837,7 +709,6 @@ public class EnemyController : MonoBehaviour, IDamageable
         }
     }
 
-    // Direct movement without NavMesh
     protected class DirectMovement : IEnemyMovement
     {
         private Transform enemyTransform;
@@ -870,10 +741,8 @@ public class EnemyController : MonoBehaviour, IDamageable
 
             if (distanceToTarget > stoppingDistance)
             {
-                // Move towards target
                 enemyTransform.position += directionToTarget.normalized * moveSpeed * Time.deltaTime;
 
-                // Rotate towards target if needed
                 if (shouldFaceTarget)
                 {
                     Quaternion targetRotation = Quaternion.LookRotation(new Vector3(directionToTarget.x, 0, directionToTarget.z));
@@ -882,26 +751,14 @@ public class EnemyController : MonoBehaviour, IDamageable
             }
             else if (shouldFaceTarget)
             {
-                // Just face the target if we're in range
                 Quaternion targetRotation = Quaternion.LookRotation(new Vector3(directionToTarget.x, 0, directionToTarget.z));
                 enemyTransform.rotation = Quaternion.Slerp(enemyTransform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
             }
         }
 
-        public void SetTarget(Transform target)
-        {
-            targetTransform = target;
-        }
-
-        public void Stop()
-        {
-            // Nothing to do for direct movement
-        }
-
-        public void Resume()
-        {
-            // Nothing to do for direct movement
-        }
+        public void SetTarget(Transform target) => targetTransform = target;
+        public void Stop() { }
+        public void Resume() { }
 
         public bool IsInRange(float range)
         {
@@ -916,7 +773,6 @@ public class EnemyController : MonoBehaviour, IDamageable
         }
     }
 
-    // Patrol movement between points
     protected class PatrolMovement : IEnemyMovement
     {
         private Transform enemyTransform;
@@ -931,7 +787,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         private bool isWaiting = false;
         private float waitTimer = 0f;
         private bool hasTarget = false;
-        private float detectionRange = 10f; // Default detection range
+        private float detectionRange = 10f;
 
         public PatrolMovement(float speed, float stopDistance, Transform[] points, float waitTime, float rotSpeed)
         {
@@ -954,10 +810,8 @@ public class EnemyController : MonoBehaviour, IDamageable
                 agent.stoppingDistance = stoppingDistance;
             }
 
-            if (target != null)
-                hasTarget = true;
+            hasTarget = target != null;
 
-            // Go to first patrol point
             if (patrolPoints != null && patrolPoints.Length > 0 && patrolPoints[0] != null)
             {
                 SetPatrolDestination();
@@ -968,7 +822,6 @@ public class EnemyController : MonoBehaviour, IDamageable
         {
             if (enemyTransform == null) return;
 
-            // If we have a target and it's in range, chase it instead of patrolling
             if (hasTarget && targetTransform != null &&
                 Vector3.Distance(enemyTransform.position, targetTransform.position) <= detectionRange)
             {
@@ -979,11 +832,9 @@ public class EnemyController : MonoBehaviour, IDamageable
                 return;
             }
 
-            // If we don't have patrol points, do nothing
             if (patrolPoints == null || patrolPoints.Length == 0)
                 return;
 
-            // Handle patrol logic
             if (isWaiting)
             {
                 waitTimer += Time.deltaTime;
@@ -995,7 +846,6 @@ public class EnemyController : MonoBehaviour, IDamageable
             }
             else if (agent != null && agent.enabled)
             {
-                // Check if we've reached the current patrol point
                 if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
                 {
                     isWaiting = true;
@@ -1056,9 +906,6 @@ public class EnemyController : MonoBehaviour, IDamageable
     #endregion
 
     #region Attack Types Implementations
-
-
-    // Melee Attack Strategy Implementation
     public class MeleeAttack : IEnemyAttack
     {
         private Transform enemy;
@@ -1098,7 +945,7 @@ public class EnemyController : MonoBehaviour, IDamageable
             this.usePhysics = usePhysics;
             this.meleeForce = meleeForce;
             this.upwardForce = upwardForce;
-            this.lastAttackTime = -attackRate; // Allow immediate first attack
+            this.lastAttackTime = -attackRate;
         }
 
         public void Initialize(Transform enemy, Transform target)
@@ -1107,26 +954,20 @@ public class EnemyController : MonoBehaviour, IDamageable
             this.target = target;
         }
 
-        public void SetTarget(Transform target)
-        {
-            this.target = target;
-        }
+        public void SetTarget(Transform target) => this.target = target;
 
         public bool CanAttack()
         {
             if (target == null || enemy == null)
                 return false;
 
-            // Check attack cooldown
             if (Time.time < lastAttackTime + attackRate)
                 return false;
 
-            // Check if target is in range
             float distanceToTarget = Vector3.Distance(enemy.position, target.position);
             if (distanceToTarget > attackRange)
                 return false;
 
-            // Check if target is within attack angle
             if (attackAngle < 360f)
             {
                 Vector3 directionToTarget = (target.position - enemy.position).normalized;
@@ -1135,7 +976,6 @@ public class EnemyController : MonoBehaviour, IDamageable
                     return false;
             }
 
-            // Check line of sight if required
             if (requireLineOfSight)
             {
                 if (!HasLineOfSight())
@@ -1147,34 +987,28 @@ public class EnemyController : MonoBehaviour, IDamageable
 
         public void Attack()
         {
-            if (!CanAttack())
-                return;
+            if (!CanAttack()) return;
 
             lastAttackTime = Time.time;
 
-            // Perform a melee attack using overlap sphere for hit detection
             Collider[] hitColliders = Physics.OverlapSphere(enemy.position, meleeRadius, attackableLayerMask);
 
             foreach (var hitCollider in hitColliders)
             {
-                // Skip self-collision
                 if (hitCollider.transform == enemy)
                     continue;
 
-                // Check if target is within attack angle
                 Vector3 directionToTarget = (hitCollider.transform.position - enemy.position).normalized;
                 float angle = Vector3.Angle(enemy.forward, directionToTarget);
                 if (angle > attackAngle * 0.5f)
                     continue;
 
-                // Apply damage if target is damageable
                 IDamageable damageable = hitCollider.GetComponent<IDamageable>();
                 if (damageable != null)
                 {
                     damageable.TakeDamage(damage * damageMultiplier);
                 }
 
-                // Apply physics force if enabled
                 if (usePhysics)
                 {
                     Rigidbody rb = hitCollider.GetComponent<Rigidbody>();
@@ -1189,10 +1023,7 @@ public class EnemyController : MonoBehaviour, IDamageable
             }
         }
 
-        public void SetDamageMultiplier(float multiplier)
-        {
-            this.damageMultiplier = multiplier;
-        }
+        public void SetDamageMultiplier(float multiplier) => damageMultiplier = multiplier;
 
         private bool HasLineOfSight()
         {
@@ -1203,32 +1034,30 @@ public class EnemyController : MonoBehaviour, IDamageable
             Vector3 direction = target.position - enemy.position;
             if (Physics.Raycast(enemy.position, direction.normalized, out hit, attackRange))
             {
-                // Check if what we hit is the target or belongs to the target
                 return hit.transform == target || hit.transform.IsChildOf(target);
             }
             return false;
         }
     }
 
-    // Ranged Attack Strategy Implementation
     public class RangedAttack : IEnemyAttack
     {
-        private Transform enemy;
-        private Transform target;
-        private GameObject projectilePrefab;
-        private Transform[] shootPoints;
-        private float projectileSpeed;
-        private float damage;
-        private float attackRate;
-        private float attackRange;
-        private bool burstFire;
-        private int burstCount;
-        private float burstDelay;
-        private bool useRandomShootPoint;
-        private float projectileSpread;
-        private float projectileLifetime;
-        private float damageMultiplier = 1f;
-        private float lastAttackTime;
+        protected Transform enemy;
+        protected Transform target;
+        protected GameObject projectilePrefab;
+        protected Transform[] shootPoints;
+        protected float projectileSpeed;
+        protected float damage;
+        protected float attackRate;
+        protected float attackRange;
+        protected bool burstFire;
+        protected int burstCount;
+        protected float burstDelay;
+        protected bool useRandomShootPoint;
+        protected float projectileSpread;
+        protected float projectileLifetime;
+        protected float damageMultiplier = 1f;
+        protected float lastAttackTime;
 
         public RangedAttack(
             GameObject projectilePrefab,
@@ -1243,7 +1072,7 @@ public class EnemyController : MonoBehaviour, IDamageable
             bool useRandomShootPoint,
             float projectileSpread,
             float projectileLifetime)
-        {   
+        {
             this.projectilePrefab = projectilePrefab;
             this.shootPoints = shootPoints;
             this.projectileSpeed = projectileSpeed;
@@ -1256,165 +1085,37 @@ public class EnemyController : MonoBehaviour, IDamageable
             this.useRandomShootPoint = useRandomShootPoint;
             this.projectileSpread = projectileSpread;
             this.projectileLifetime = projectileLifetime;
-            this.lastAttackTime = -attackRate; // Allow immediate first attack
+            this.lastAttackTime = -attackRate;
         }
 
         public void Initialize(Transform enemy, Transform target)
         {
-            Debug.Log($"Initializing RangedAttack with enemy: {(enemy != null ? enemy.name : "null")} and target: {(target != null ? target.name : "null")}");
             this.enemy = enemy;
             this.target = target;
         }
 
-        public void SetTarget(Transform target)
-        {
-            this.target = target;
-        }
+        public void SetTarget(Transform target) => this.target = target;
 
         public bool CanAttack()
         {
-            if (target == null)
-            {
-                Debug.LogWarning("Cannot attack: Target is null");
+            if (target == null || enemy == null || projectilePrefab == null || shootPoints == null || shootPoints.Length == 0)
                 return false;
-            }
-
-            if (enemy == null)
-            {
-                Debug.LogWarning("Cannot attack: Enemy is null");
-                return false;
-            }
-
-            if (projectilePrefab == null)
-            {
-                Debug.LogWarning("Cannot attack: Projectile prefab not assigned");
-                return false;
-            }
-
-            if (shootPoints == null || shootPoints.Length == 0)
-            {
-                Debug.LogWarning("Cannot attack: No shoot points assigned");
-                return false;
-            }
 
             if (Time.time < lastAttackTime + attackRate)
-            {
                 return false;
-            }
 
             float distanceToTarget = Vector3.Distance(enemy.position, target.position);
-            if (distanceToTarget > attackRange)
-            {
-                return false;
-            }
-
-            return true;
+            return distanceToTarget <= attackRange;
         }
-
-        private void FireSingleShot()
-        {
-            Transform shootPoint = GetShootPoint();
-            if (shootPoint == null)
-            {
-                Debug.LogError("No valid shoot point found");
-                return;
-            }
-
-            Debug.Log($"Attempting to fire projectile. Speed: {projectileSpeed}, Lifetime: {projectileLifetime}");
-
-
-            Vector3 direction = CalculateFireDirection(shootPoint);
-
-            // Create the projectile as a child of the shoot point initially
-            GameObject projectile = GameObject.Instantiate(
-                projectilePrefab,
-                shootPoint.position,
-                Quaternion.LookRotation(direction),
-                shootPoint // Parent to shoot point
-            );
-
-            // Immediately unparent it so it can move freely
-            //projectile.transform.parent = null;
-
-            Debug.Log($"Projectile instantiated at {shootPoint.position}");
-
-            // Ensure the projectile is active
-            projectile.SetActive(true);
-
-            Rigidbody projectileRb = projectile.GetComponent<Rigidbody>();
-            if (projectileRb == null)
-            {
-                // Add Rigidbody if it doesn't exist
-                projectileRb = projectile.AddComponent<Rigidbody>();
-                projectileRb.useGravity = false; // Usually projectiles don't need gravity
-                projectileRb.interpolation = RigidbodyInterpolation.Interpolate; // Smoother movement
-                projectileRb.collisionDetectionMode = CollisionDetectionMode.Continuous; // Better collision detection
-            }
-
-            projectileRb.velocity = direction * projectileSpeed;
-            Debug.Log($"Projectile velocity set to {direction * projectileSpeed}");
-            Debug.Log($"Set projectile velocity to {projectileRb.velocity}");
-
-            // Set up projectile damage
-            Projectile projectileScript = projectile.GetComponent<Projectile>();
-            if (projectileScript == null)
-            {
-                projectileScript = projectile.AddComponent<Projectile>();
-                Debug.Log("Added Projectile script to projectile");
-            }
-
-            // Ensure the projectile has a collider
-            if (projectile.GetComponent<Collider>() == null)
-            {
-                SphereCollider collider = projectile.AddComponent<SphereCollider>();
-                collider.radius = 0.25f; // Adjust this value as needed
-                collider.isTrigger = true; // Usually projectiles work better as triggers
-            }
-
-            // Add a visible mesh if the projectile doesn't have one
-            if (projectile.GetComponent<MeshRenderer>() == null && projectile.GetComponent<SkinnedMeshRenderer>() == null)
-            {
-                // This is just a fallback if the projectile has no visible components
-                GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                sphere.transform.localScale = Vector3.one * 0.5f; // Adjust size as needed
-                sphere.transform.parent = projectile.transform;
-                sphere.transform.localPosition = Vector3.zero;
-                // Remove the collider from the sphere since we already added one to the projectile
-                Destroy(sphere.GetComponent<Collider>());
-            }
-
-            if (projectileScript == null)
-            {
-                projectileScript = projectile.AddComponent<Projectile>();
-            }
-
-            projectileScript.SetDamage(damage * damageMultiplier);
-            projectileScript.SetOwner(enemy.gameObject);
-
-            // Ensure the projectile is destroyed after its lifetime
-            if (projectileLifetime > 0)
-            {
-                Debug.Log($"Setting projectile lifetime to {projectileLifetime} seconds");
-                GameObject.Destroy(projectile, projectileLifetime);
-            }
-
-            projectileScript.SetDamage(damage * damageMultiplier);
-            projectileScript.SetOwner(enemy.gameObject);
-
-            GameObject.Destroy(projectile, projectileLifetime);
-        }
-
 
         public void Attack()
         {
-            if (!CanAttack())
-                return;
+            if (!CanAttack()) return;
 
             lastAttackTime = Time.time;
 
             if (burstFire)
             {
-                // Start a coroutine to handle burst fire
                 MonoBehaviour mb = enemy.GetComponent<MonoBehaviour>();
                 if (mb != null)
                 {
@@ -1422,7 +1123,6 @@ public class EnemyController : MonoBehaviour, IDamageable
                 }
                 else
                 {
-                    // Fallback to single shot if no MonoBehaviour available
                     FireSingleShot();
                 }
             }
@@ -1434,28 +1134,75 @@ public class EnemyController : MonoBehaviour, IDamageable
 
         private IEnumerator FireBurst()
         {
-            Debug.Log("firingSingleShot");
             for (int i = 0; i < burstCount; i++)
             {
                 FireSingleShot();
                 yield return new WaitForSeconds(burstDelay);
             }
         }
-        
-        private Transform GetShootPoint()
+
+         protected virtual void FireSingleShot()
+        {
+            Transform shootPoint = GetShootPoint();
+            if (shootPoint == null) return;
+
+            Vector3 direction = CalculateFireDirection(shootPoint);
+
+            GameObject projectile = GameObject.Instantiate(
+                projectilePrefab,
+                shootPoint.position,
+                Quaternion.LookRotation(direction),
+                shootPoint
+            );
+
+            projectile.SetActive(true);
+
+            Rigidbody projectileRb = projectile.GetComponent<Rigidbody>();
+            if (projectileRb == null)
+            {
+                projectileRb = projectile.AddComponent<Rigidbody>();
+                projectileRb.useGravity = false;
+                projectileRb.interpolation = RigidbodyInterpolation.Interpolate;
+                projectileRb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+            }
+
+            projectileRb.velocity = direction * projectileSpeed;
+
+            Projectile projectileScript = projectile.GetComponent<Projectile>();
+            if (projectileScript == null)
+            {
+                projectileScript = projectile.AddComponent<Projectile>();
+            }
+
+            if (projectile.GetComponent<Collider>() == null)
+            {
+                SphereCollider collider = projectile.AddComponent<SphereCollider>();
+                collider.radius = 0.25f;
+                collider.isTrigger = true;
+            }
+
+            if (projectileScript == null)
+            {
+                projectileScript = projectile.AddComponent<Projectile>();
+            }
+
+            projectileScript.SetDamage(damage * damageMultiplier);
+            projectileScript.SetOwner(enemy.gameObject);
+
+            if (projectileLifetime > 0)
+            {
+                GameObject.Destroy(projectile, projectileLifetime);
+            }
+        }
+
+        protected virtual Transform GetShootPoint()
         {
             if (shootPoints == null || shootPoints.Length == 0)
                 return null;
 
-            if (useRandomShootPoint)
-            {
-                int index = Random.Range(0, shootPoints.Length);
-                return shootPoints[index];
-            }
-            else
-            {
-                return shootPoints[0];
-            }
+            return useRandomShootPoint ?
+                shootPoints[Random.Range(0, shootPoints.Length)] :
+                shootPoints[0];
         }
 
         private Vector3 CalculateFireDirection(Transform shootPoint)
@@ -1463,17 +1210,12 @@ public class EnemyController : MonoBehaviour, IDamageable
             if (target == null)
                 return shootPoint.forward;
 
-            // Base direction towards target
             Vector3 targetDirection = (target.position - shootPoint.position).normalized;
 
-            // Apply spread if needed
             if (projectileSpread > 0)
             {
-                // Add random spread
                 float spreadX = Random.Range(-projectileSpread, projectileSpread);
                 float spreadY = Random.Range(-projectileSpread, projectileSpread);
-
-                // Apply spread as a rotation
                 Quaternion spreadRotation = Quaternion.Euler(spreadY, spreadX, 0);
                 targetDirection = spreadRotation * targetDirection;
             }
@@ -1481,13 +1223,9 @@ public class EnemyController : MonoBehaviour, IDamageable
             return targetDirection;
         }
 
-        public void SetDamageMultiplier(float multiplier)
-        {
-            this.damageMultiplier = multiplier;
-        }
+        public void SetDamageMultiplier(float multiplier) => damageMultiplier = multiplier;
     }
 
-    // Simple projectile class that should be attached to projectile prefabs
     public class Projectile : MonoBehaviour
     {
         [SerializeField] private float damage = 10f;
@@ -1497,15 +1235,8 @@ public class EnemyController : MonoBehaviour, IDamageable
 
         private GameObject owner;
 
-        public void SetDamage(float newDamage)
-        {
-            damage = newDamage;
-        }
-
-        public void SetOwner(GameObject newOwner)
-        {
-            owner = newOwner;
-        }
+        public void SetDamage(float newDamage) => damage = newDamage;
+        public void SetOwner(GameObject newOwner) => owner = newOwner;
 
         private void OnCollisionEnter(Collision collision)
         {
@@ -1519,31 +1250,26 @@ public class EnemyController : MonoBehaviour, IDamageable
 
         private void HandleImpact(GameObject hitObject, Vector3 hitPoint)
         {
-            // Don't damage owner
             if (hitObject == owner)
                 return;
 
-            // Apply damage if target is damageable
             IDamageable damageable = hitObject.GetComponent<IDamageable>();
             if (damageable != null)
             {
                 damageable.TakeDamage(damage);
             }
 
-            // Spawn impact effect if configured
             if (impactEffect != null)
             {
                 GameObject effect = Instantiate(impactEffect, hitPoint, Quaternion.identity);
-                Destroy(effect, 2f); // Cleanup effect after 2 seconds
+                Destroy(effect, 2f);
             }
 
-            // Play impact sound if configured
             if (impactSound != null)
             {
                 AudioSource.PlayClipAtPoint(impactSound, hitPoint);
             }
 
-            // Destroy projectile if configured
             if (destroyOnImpact)
             {
                 Destroy(gameObject);

@@ -1068,7 +1068,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &62463279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12695,9 +12695,9 @@ RectTransform:
   - {fileID: 495855399}
   m_Father: {fileID: 1758718099}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 1439.9999, y: -75}
   m_SizeDelta: {x: 500, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &657073045
@@ -17964,6 +17964,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1001245587}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1005250188 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8085684001556813704, guid: d20181841ce88e148b96a6bedcead9dc,
+    type: 3}
+  m_PrefabInstance: {fileID: 3838292278017918579}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1020603478 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4186014515721415510, guid: 6796774542803394ea7c3815603aa538,
@@ -21554,14 +21560,90 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 142f1d12c66abc447b5fd46c681d8380, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyRoot: {fileID: 0}
+  targetPoint: {fileID: 0}
+  enemyRenderer: {fileID: 0}
+  maxHealth: 100
+  currentHealth: 0
+  damageMultiplier: 1
+  flashDuration: 0.2
+  invulnerableDuringFlash: 0
+  damageSourceTags:
+  - FireBall
+  - Weapon
+  destroyDelay: 3
+  deathEffect: {fileID: 0}
+  disableColliderOnDeath: 1
+  disableRendererOnDeath: 0
+  movementType: 1
+  moveSpeed: 3.5
+  rotationSpeed: 5
+  stoppingDistance: 2
+  faceTarget: 1
+  avoidObstacles: 1
+  patrolPoints: []
+  patrolWaitTime: 1
+  attackType: 2
+  attackRange: 10
+  attackRate: 1
+  attackDamage: 10
+  chanceToAttack: 100
+  attackAngle: 45
+  attackOrigin: {fileID: 0}
+  attackableLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  requireLineOfSight: 1
+  attackDelay: 0.2
+  canAttackWhileMoving: 0
+  projectilePrefab: {fileID: 0}
+  projectileSpeed: 10
+  projectileLifetime: 5
+  shootPoints: []
+  useRandomShootPoint: 0
+  burstFire: 0
+  burstCount: 3
+  burstDelay: 0.1
+  projectileSpread: 5
+  meleeRadius: 1.5
+  usePhysicsForMelee: 0
+  meleeForce: 5
+  meleeUpwardForce: 0
+  meleeEffectPrefab: {fileID: 0}
+  animator: {fileID: 0}
+  idleAnimTrigger: Idle
+  moveAnimTrigger: Move
+  attackAnimTrigger: Attack
+  damageAnimTrigger: Damage
+  deathAnimTrigger: Death
+  useAnimatorSpeed: 1
+  audioSource: {fileID: 0}
+  attackSounds: []
+  damageSounds: []
+  deathSounds: []
+  idleSounds: []
+  idleSoundInterval: 5
+  idleSoundChance: 20
+  damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
+  attackChargeEffect: {fileID: 0}
+  moveParticles: {fileID: 0}
+  detectionRange: 20
+  activateOnPlayerDetection: 1
+  hearingRange: 10
+  obstacleLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  shouldRetreat: 0
+  retreatHealthThreshold: 25
+  retreatDistance: 5
+  spawner: {fileID: 0}
   tiempoPersecucion: 5
   tiempoEsperaEmergido: 0.5
-  damage: 10
-  velocidadMovimiento: 3.5
   velocidadSumergido: 6
-  objetivo: {fileID: 1074180574}
-  salud: 50
-  tiempoEntreGolpes: 1
+  burrowParticles: {fileID: 0}
+  damageCollider: {fileID: 0}
+  bodyRenderer: {fileID: 0}
+  tiempoEntreAtaques: 1
 --- !u!65 &1210081070
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -26798,6 +26880,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: HUD
+      objectReference: {fileID: 0}
+    - target: {fileID: 2841742934451999394, guid: a860e6b2f86541343a6468e853ea6ea8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8161236001388304896, guid: a860e6b2f86541343a6468e853ea6ea8,
         type: 3}
@@ -35224,7 +35311,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1758718099
 RectTransform:
   m_ObjectHideFlags: 0
@@ -37890,9 +37977,9 @@ RectTransform:
   - {fileID: 1435715890}
   m_Father: {fileID: 1758718099}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 479.99997, y: -75}
   m_SizeDelta: {x: 500, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1891642089
@@ -42754,6 +42841,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PauseMenu
       objectReference: {fileID: 0}
+    - target: {fileID: 1248586782816101777, guid: d20181841ce88e148b96a6bedcead9dc,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2657498537159524662, guid: d20181841ce88e148b96a6bedcead9dc,
         type: 3}
       propertyPath: hudCanvas
@@ -42769,6 +42861,16 @@ PrefabInstance:
       propertyPath: mainMenuCanvas
       value: 
       objectReference: {fileID: 62463277}
+    - target: {fileID: 2657498537159524662, guid: d20181841ce88e148b96a6bedcead9dc,
+        type: 3}
+      propertyPath: pauseMenuCanvas
+      value: 
+      objectReference: {fileID: 1005250188}
+    - target: {fileID: 2657498537159524662, guid: d20181841ce88e148b96a6bedcead9dc,
+        type: 3}
+      propertyPath: optionsMenuCanvas
+      value: 
+      objectReference: {fileID: 1758718098}
     - target: {fileID: 2657498537159524662, guid: d20181841ce88e148b96a6bedcead9dc,
         type: 3}
       propertyPath: optionsMenu_Canvas

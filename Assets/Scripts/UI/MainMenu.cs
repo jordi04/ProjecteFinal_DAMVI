@@ -6,7 +6,7 @@ using Cinemachine;
 
 public class MainMenu : MonoBehaviour
 {
-    private Vector3 playerInitialPosition = new Vector3(373.3f, 3.23f, 5.43f);
+    private Vector3 playerInitialPosition = new Vector3(373.3f, 12f, 5.43f);
 
     [SerializeField] Button playButton;
     [SerializeField] Button optionsButton;

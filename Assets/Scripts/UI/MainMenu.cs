@@ -6,8 +6,7 @@ using Cinemachine;
 
 public class MainMenu : MonoBehaviour
 {
-    private Vector3 playerInitialPosition = new Vector3(373.3f, 12f, 5.43f);
-
+    [SerializeField] Transform playerInitialTransform;
     [SerializeField] Button playButton;
     [SerializeField] Button optionsButton;
     [SerializeField] Button exitButton;
@@ -19,12 +18,21 @@ public class MainMenu : MonoBehaviour
     [SerializeField] PlayableDirector playableDirector;
     [SerializeField] float fadeDuration = 1f;
     [SerializeField] CinemachineVirtualCamera mainMenuCamera;
-    private bool firstTime = true;
+    private bool firstTime = false;
+    private Transform playerTransform;
+
+    private void Awake()
+    {
+        //playerTransform = ManaSystem.instance.gameObject.transform;
+        //playerTransform.transform.position = playerInitialTransform.position;
+        //playerTransform.transform.rotation = playerInitialTransform.rotation;
+    }
 
     private void Start()
     {
-        ManaSystem.instance.gameObject.transform.position = playerInitialPosition;
-        ManaSystem.instance.gameObject.transform.rotation = Quaternion.identity;
+        //playerTransform = ManaSystem.instance.gameObject.transform;
+        //playerTransform.transform.position = playerInitialTransform.position;
+        //playerTransform.transform.rotation = playerInitialTransform.rotation;
         UserInput.instance.switchActionMap(UserInput.ActionMap.InMenu);
     }
 

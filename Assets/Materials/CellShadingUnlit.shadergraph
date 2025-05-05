@@ -137,7 +137,20 @@
         }
     ],
     "m_GroupDatas": [],
-    "m_StickyNoteDatas": [],
+    "m_StickyNoteDatas": [
+        {
+            "m_Id": "9a60905b705345b0b567548ed2a40585"
+        },
+        {
+            "m_Id": "e640a7f5352942a3b93310dd6aed344e"
+        },
+        {
+            "m_Id": "502ec6d82a06480f9d751dd07fafa703"
+        },
+        {
+            "m_Id": "f84c0c3fe3974d1d8dd433c11d4bdb0a"
+        }
+    ],
     "m_Edges": [
         {
             "m_OutputSlot": {
@@ -1753,6 +1766,26 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.StickyNoteData",
+    "m_ObjectId": "502ec6d82a06480f9d751dd07fafa703",
+    "m_Title": "Fet per Jordi Roca",
+    "m_Content": "All rights reserved",
+    "m_TextSize": 0,
+    "m_Theme": 0,
+    "m_Position": {
+        "serializedVersion": "2",
+        "x": 378.9294128417969,
+        "y": 653.4205322265625,
+        "width": 200.0,
+        "height": 160.0
+    },
+    "m_Group": {
+        "m_Id": ""
+    }
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "536abe3bd97f4b18aca22ebab1c2676c",
     "m_Id": 2,
@@ -2546,6 +2579,26 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.StickyNoteData",
+    "m_ObjectId": "9a60905b705345b0b567548ed2a40585",
+    "m_Title": "Fet per Jordi Roca",
+    "m_Content": "All rights reserved",
+    "m_TextSize": 0,
+    "m_Theme": 0,
+    "m_Position": {
+        "serializedVersion": "2",
+        "x": 378.9294128417969,
+        "y": 653.4205322265625,
+        "width": 200.0,
+        "height": 160.0
+    },
+    "m_Group": {
+        "m_Id": ""
+    }
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector2Node",
     "m_ObjectId": "9c85db77511643f0af7ebe0ac807a8ef",
     "m_Group": {
@@ -3271,6 +3324,26 @@
 }
 
 {
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.StickyNoteData",
+    "m_ObjectId": "e640a7f5352942a3b93310dd6aed344e",
+    "m_Title": "Fet per Jordi Roca",
+    "m_Content": "All rights reserved",
+    "m_TextSize": 0,
+    "m_Theme": 0,
+    "m_Position": {
+        "serializedVersion": "2",
+        "x": 378.9294128417969,
+        "y": 653.4205322265625,
+        "width": 200.0,
+        "height": 160.0
+    },
+    "m_Group": {
+        "m_Id": ""
+    }
+}
+
+{
     "m_SGVersion": 1,
     "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
     "m_ObjectId": "ed56251a4ebf42fc9d32828f8804f7a2",
@@ -3459,6 +3532,26 @@
     "m_ShaderOutputName": "Out",
     "m_StageCapability": 3,
     "m_BareResource": false
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.StickyNoteData",
+    "m_ObjectId": "f84c0c3fe3974d1d8dd433c11d4bdb0a",
+    "m_Title": "Fet per Jordi Roca",
+    "m_Content": "All rights reserved",
+    "m_TextSize": 0,
+    "m_Theme": 0,
+    "m_Position": {
+        "serializedVersion": "2",
+        "x": 378.9294128417969,
+        "y": 653.4205322265625,
+        "width": 200.0,
+        "height": 160.0
+    },
+    "m_Group": {
+        "m_Id": ""
+    }
 }
 
 {

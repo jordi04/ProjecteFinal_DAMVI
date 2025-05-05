@@ -202,11 +202,11 @@ MonoBehaviour:
   damageAnimTrigger: Damage
   deathAnimTrigger: Death
   useAnimatorSpeed: 1
-  audioSource: {fileID: 0}
-  attackSounds: []
-  damageSounds: []
-  deathSounds: []
-  idleSounds: []
+  attackSoundEvent: event:/Enemies/Bitxo_attack
+  damageSoundEvent: event:/Enemies/Bitxo_damage
+  deathSoundEvent: event:/Enemies/Bitxo_death
+  idleSoundEvent: event:/Enemies/Idle
+  footstepSoundEvent: event:/Enemies/Footstep
   idleSoundInterval: 5
   idleSoundChance: 20
   damageFlashColor: {r: 1, g: 0, b: 0, a: 1}

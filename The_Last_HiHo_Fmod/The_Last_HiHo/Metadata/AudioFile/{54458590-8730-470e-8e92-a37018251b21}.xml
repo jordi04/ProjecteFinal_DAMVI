@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{54458590-8730-470e-8e92-a37018251b21}">
+		<property name="assetPath">
+			<value>Bitxo_damage_01-01.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>0.87272916666666667</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{2d5287c5-e86a-48cd-98de-9a69def681b5}</destination>
+		</relationship>
+	</object>
+</objects>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{23f46b88-ea82-4beb-8ff9-05591a5085e3}">
+		<property name="assetPath">
+			<value>Passes_Cavall_02-01.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>3.3151875</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{2d5287c5-e86a-48cd-98de-9a69def681b5}</destination>
+		</relationship>
+	</object>
+</objects>

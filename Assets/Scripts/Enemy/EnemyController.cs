@@ -125,13 +125,17 @@ public class EnemyController : MonoBehaviour, IDamageable
     [SerializeField] protected bool useAnimatorSpeed = true;
 
     [Header("Audio Settings")]
-    [SerializeField] protected AudioSource audioSource;
-    [SerializeField] protected AudioClip[] attackSounds;
-    [SerializeField] protected AudioClip[] damageSounds;
-    [SerializeField] protected AudioClip[] deathSounds;
-    [SerializeField] protected AudioClip[] idleSounds;
+    [SerializeField] protected string attackSoundEvent = "event:/Enemies/Attack";
+    [SerializeField] protected string damageSoundEvent = "event:/Enemies/Damage";
+    [SerializeField] protected string deathSoundEvent = "event:/Enemies/Death";
+    [SerializeField] protected string idleSoundEvent = "event:/Enemies/Idle";
+    [SerializeField] protected string footstepSoundEvent = "event:/Enemies/Footstep";
     [SerializeField] protected float idleSoundInterval = 5f;
     [SerializeField] protected float idleSoundChance = 20f;
+
+    // For attack sounds that need to be interrupted
+    private FMOD.Studio.EventInstance attackEventInstance;
+
 
     [Header("Visual Effects")]
     [SerializeField] protected Color damageFlashColor = Color.red;
@@ -258,9 +262,6 @@ public class EnemyController : MonoBehaviour, IDamageable
         if (animator == null)
             animator = GetComponentInChildren<Animator>();
 
-        if (audioSource == null)
-            audioSource = GetComponent<AudioSource>();
-
         if (attackOrigin == null)
             attackOrigin = transform;
 
@@ -268,7 +269,16 @@ public class EnemyController : MonoBehaviour, IDamageable
 
         if (enemyRenderer != null)
             originalColor = enemyRenderer.material.color;
+
+        InitializeFMOD();
     }
+
+    protected virtual void InitializeFMOD()
+    {
+        // Create event instances that need to be stopped/manipulated later
+        attackEventInstance = FMODUnity.RuntimeManager.CreateInstance(attackSoundEvent);
+    }
+
 
     protected virtual void InitializeStrategies()
     {
@@ -391,7 +401,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         isTakingDamage = true;
 
         StartCoroutine(DamageFlash());
-        PlayRandomSound(damageSounds);
+        PlaySound(damageSoundEvent);
 
         if (animator != null)
             animator.SetTrigger(damageAnimTrigger);
@@ -481,13 +491,13 @@ public class EnemyController : MonoBehaviour, IDamageable
 
     protected virtual void HandleIdleSounds()
     {
-        if (isDead || audioSource == null || idleSounds == null || idleSounds.Length == 0) return;
+        if (isDead) return;
 
         if (Time.time > nextIdleSoundTime)
         {
             if (Random.Range(0f, 100f) < idleSoundChance)
             {
-                PlayRandomSound(idleSounds);
+                PlaySound(idleSoundEvent);
             }
             nextIdleSoundTime = Time.time + idleSoundInterval;
         }
@@ -502,7 +512,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         if (animator != null)
             animator.SetTrigger(attackAnimTrigger);
 
-        PlayRandomSound(attackSounds);
+        PlayAttackSound();
 
         if (attackChargeEffect != null)
             StartCoroutine(ShowAttackEffect());
@@ -567,6 +577,8 @@ public class EnemyController : MonoBehaviour, IDamageable
 
     protected virtual void Die()
     {
+        StopAttackSound();//atura el so d'atac quan mor
+
         if (isDead) return;
         isDead = true;
         isActivated = false;
@@ -576,7 +588,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         if (animator != null)
             animator.SetTrigger(deathAnimTrigger);
 
-        PlayRandomSound(deathSounds);
+        PlaySound(deathSoundEvent);
 
         if (deathEffect != null)
             Instantiate(deathEffect, transform.position, Quaternion.identity);
@@ -643,16 +655,41 @@ public class EnemyController : MonoBehaviour, IDamageable
 
     protected virtual void ResetColor() => SetColor(originalColor);
 
-    protected virtual void PlayRandomSound(AudioClip[] sounds)
+    protected virtual void PlaySound(string eventPath)
     {
-        if (audioSource == null || sounds == null || sounds.Length == 0) return;
+        if (string.IsNullOrEmpty(eventPath)) return;
 
-        AudioClip soundToPlay = sounds[Random.Range(0, sounds.Length)];
-        if (soundToPlay != null)
-        {
-            audioSource.PlayOneShot(soundToPlay);
-        }
+        // Play one-shot sound at the position of this enemy
+        FMODUnity.RuntimeManager.PlayOneShot(eventPath, transform.position);
     }
+
+    protected virtual void PlayAttackSound()
+    {
+        if (string.IsNullOrEmpty(attackSoundEvent)) return;
+
+        // Stop any existing attack sound
+        attackEventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        attackEventInstance.release();
+
+        // Create and start a new instance
+        attackEventInstance = FMODUnity.RuntimeManager.CreateInstance(attackSoundEvent);
+        attackEventInstance.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(transform.position));
+        attackEventInstance.start();
+    }
+
+    protected virtual void StopAttackSound()
+    {
+        attackEventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+    }
+
+    public void PlayFootstepSound()
+    {
+        if (string.IsNullOrEmpty(footstepSoundEvent)) return;
+
+        // Play the footstep sound at the enemy's position
+        FMODUnity.RuntimeManager.PlayOneShot(footstepSoundEvent, transform.position);
+    }
+
     #endregion
 
     #region Movement Strategy Implementations

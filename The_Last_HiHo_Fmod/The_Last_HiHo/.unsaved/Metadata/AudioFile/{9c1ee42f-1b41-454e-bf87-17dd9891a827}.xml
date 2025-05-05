@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{9c1ee42f-1b41-454e-bf87-17dd9891a827}">
+		<property name="assetPath">
+			<value>Bitxo_attack_03-01.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>0.35699999999999998</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{2d5287c5-e86a-48cd-98de-9a69def681b5}</destination>
+		</relationship>
+	</object>
+</objects>

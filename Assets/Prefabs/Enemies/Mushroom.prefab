@@ -159,11 +159,11 @@ MonoBehaviour:
   damageAnimTrigger: Damage
   deathAnimTrigger: Death
   useAnimatorSpeed: 1
-  audioSource: {fileID: 0}
-  attackSounds: []
-  damageSounds: []
-  deathSounds: []
-  idleSounds: []
+  attackSoundEvent: event:/Enemies/Bolet_attack
+  damageSoundEvent: event:/Enemies/Bolet_damage
+  deathSoundEvent: event:/Enemies/Bolet_death
+  idleSoundEvent: event:/Enemies/Bolet_idle
+  footstepSoundEvent: event:/Enemies/Bolet_steps
   idleSoundInterval: 5
   idleSoundChance: 20
   damageFlashColor: {r: 1, g: 0, b: 0, a: 1}

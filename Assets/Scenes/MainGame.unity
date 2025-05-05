@@ -2080,7 +2080,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 367c34c4a483a464fbd19b1bc6c8dac7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInitialTransform: {fileID: 535633757}
   playButton: {fileID: 275157592}
   optionsButton: {fileID: 1596836894}
   exitButton: {fileID: 297851611}
@@ -32186,11 +32185,11 @@ MonoBehaviour:
   damageAnimTrigger: Damage
   deathAnimTrigger: Death
   useAnimatorSpeed: 1
-  audioSource: {fileID: 0}
-  attackSounds: []
-  damageSounds: []
-  deathSounds: []
-  idleSounds: []
+  attackSoundEvent: event:/Enemies/Attack
+  damageSoundEvent: event:/Enemies/Damage
+  deathSoundEvent: event:/Enemies/Death
+  idleSoundEvent: event:/Enemies/Idle
+  footstepSoundEvent: event:/Enemies/Footstep
   idleSoundInterval: 5
   idleSoundChance: 20
   damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
@@ -56961,6 +56960,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1898125423}
   m_PrefabAsset: {fileID: 0}
+--- !u!137 &1907313533 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -6535541734958484950, guid: 8f2d298bb96a38240922fae76dfbc63f,
+    type: 3}
+  m_PrefabInstance: {fileID: 2004716044}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1912232904
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -59846,11 +59851,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8f2d298bb96a38240922fae76dfbc63f,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2004716046}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8f2d298bb96a38240922fae76dfbc63f,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2004716049}
+      addedObject: {fileID: 2004716051}
   m_SourcePrefab: {fileID: 100100000, guid: 8f2d298bb96a38240922fae76dfbc63f, type: 3}
 --- !u!1 &2004716045 stripped
 GameObject:
@@ -59858,48 +59859,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 2004716044}
   m_PrefabAsset: {fileID: 0}
---- !u!23 &2004716046
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2004716045}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &2004716047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59927,30 +59886,28 @@ MonoBehaviour:
   tiempoCharcoVeneno: 5
   life: 50
   flashDuration: 0.2
-  snakeRenderer: {fileID: 2004716046}
---- !u!136 &2004716049
-CapsuleCollider:
+  snakeRenderer: {fileID: 1907313533}
+--- !u!95 &2004716051
+Animator:
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2004716045}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 20.156271
-  m_Height: 40.312553
-  m_Direction: 1
-  m_Center: {x: 34.08697, y: -3.5721397, z: -2.9657754e-14}
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 88084a56e22c3e745a669a09cc7c9fe5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &2007539248
 PrefabInstance:
   m_ObjectHideFlags: 0

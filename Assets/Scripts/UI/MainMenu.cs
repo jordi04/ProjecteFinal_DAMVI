@@ -23,16 +23,16 @@ public class MainMenu : MonoBehaviour
 
     private void Awake()
     {
-        //playerTransform = ManaSystem.instance.gameObject.transform;
-        //playerTransform.transform.position = playerInitialTransform.position;
-        //playerTransform.transform.rotation = playerInitialTransform.rotation;
+        playerTransform = ManaSystem.instance.gameObject.transform;
+        playerTransform.transform.position = playerInitialTransform.position;
+        playerTransform.transform.rotation = playerInitialTransform.rotation;
     }
 
     private void Start()
     {
-        //playerTransform = ManaSystem.instance.gameObject.transform;
-        //playerTransform.transform.position = playerInitialTransform.position;
-        //playerTransform.transform.rotation = playerInitialTransform.rotation;
+        playerTransform = ManaSystem.instance.gameObject.transform;
+        playerTransform.transform.position = playerInitialTransform.position;
+        playerTransform.transform.rotation = playerInitialTransform.rotation;
         UserInput.instance.switchActionMap(UserInput.ActionMap.InMenu);
     }
 

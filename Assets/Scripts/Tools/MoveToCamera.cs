@@ -25,6 +25,5 @@ public static class MoveSelectedToSceneCameraShortcut
 
         Undo.RecordObject(selectedObject.transform, "Move To Scene Camera");
         selectedObject.transform.position = sceneCam.transform.position;
-        selectedObject.transform.rotation = sceneCam.transform.rotation;
-    }
+        }
 }

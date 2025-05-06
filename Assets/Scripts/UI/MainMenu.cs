@@ -18,7 +18,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] PlayableDirector playableDirector;
     [SerializeField] float fadeDuration = 1f;
     [SerializeField] CinemachineVirtualCamera mainMenuCamera;
-    private bool firstTime = false;
+    private bool firstTime = true;
     private Transform playerTransform;
 
     private void Awake()

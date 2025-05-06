@@ -3,7 +3,7 @@ using UnityEngine;
 
 public static class MoveSelectedToSceneCameraShortcut
 {
-    [MenuItem("Tools/Move Selected Object To Scene Camera %#m")] // Ctrl+Shift+M (Cmd+Shift+M on macOS)
+    [MenuItem("Tools/Move Selected Object To Scene Camera %#m")]
     public static void MoveSelectedToSceneCamera()
     {
         GameObject selectedObject = Selection.activeGameObject;

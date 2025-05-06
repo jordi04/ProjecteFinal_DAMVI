@@ -2694,6 +2694,7 @@ MonoBehaviour:
   playableDirector: {fileID: 425703418}
   fadeDuration: 1
   mainMenuCamera: {fileID: 383634802}
+  firstTime: 0
 --- !u!114 &62463285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19107,7 +19108,7 @@ PrefabInstance:
     - target: {fileID: 9005220659476430818, guid: 2d3a85ecde41a8246a79669975912b74,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.0081018945
+      value: -0.008101827
       objectReference: {fileID: 0}
     - target: {fileID: 9005220659476430818, guid: 2d3a85ecde41a8246a79669975912b74,
         type: 3}
@@ -19117,7 +19118,7 @@ PrefabInstance:
     - target: {fileID: 9005220659476430818, guid: 2d3a85ecde41a8246a79669975912b74,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.007492303
+      value: -0.007492236
       objectReference: {fileID: 0}
     - target: {fileID: 9005220659476430818, guid: 2d3a85ecde41a8246a79669975912b74,
         type: 3}

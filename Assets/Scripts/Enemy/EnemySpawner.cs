@@ -195,13 +195,26 @@ public class EnemySpawner : MonoBehaviour
         // Spawn the actual enemy
         GameObject enemy = Instantiate(enemyPrefab, position, rotation);
 
-        // Set the target for the enemy
-        EnemyController enemyController = enemy.GetComponent<EnemyController>();
-        if (enemyController != null)
+        // Ensure all controller components are enabled
+        EnemyController baseController = enemy.GetComponent<EnemyController>();
+        if (baseController != null)
         {
+            // Make sure the base controller is enabled
+            baseController.enabled = true;
             Debug.Log($"Setting target for enemy {enemy.name}");
-            enemyController.SetTarget(player);
-            enemyController.spawner = this;
+            baseController.SetTarget(player);
+            baseController.spawner = this;
+
+            // Check and enable any specialized controllers like BeeEnemyController
+            var specializedControllers = enemy.GetComponents<EnemyController>();
+            foreach (var controller in specializedControllers)
+            {
+                if (controller != baseController)
+                {
+                    controller.enabled = true;
+                    Debug.Log($"Enabled specialized controller: {controller.GetType().Name}");
+                }
+            }
         }
         else
         {

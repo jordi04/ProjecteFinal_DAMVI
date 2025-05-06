@@ -27,13 +27,16 @@ public class SerpienteBoss : MonoBehaviour
     private bool puedeAtacar = true;
     private bool estaActiva = false;
 
+    private void Start()
+    {
+        originalColor = snakeRenderer.material.color;
+        materialPropertyBlock = new MaterialPropertyBlock();
+    }
+
     void Update()
     {
         if (objetivo == null) return;
         float distancia = Vector3.Distance(transform.position, objetivo.position);
-
-        materialPropertyBlock = new MaterialPropertyBlock();
-        originalColor = snakeRenderer.material.color;
 
         if (!estaActiva && distancia <= rangoActivacion)
         {
@@ -51,35 +54,6 @@ public class SerpienteBoss : MonoBehaviour
             else
             {
                 StartCoroutine(AtaqueEscupitajo());
-            }
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (isDead) return;
-
-        if (other.CompareTag("FireBall"))
-        {
-            // Try to get the damage amount from the fireball
-            FireballPrefabScript fireball = other.GetComponent<FireballPrefabScript>();
-
-            // If we can't get the fireball script, use default damage
-            if (fireball == null)
-            {
-                life -= 10f;
-            }
-
-            // The actual damage is now handled by the TakeDamage method
-            // which the fireball script will call directly
-
-            // Flash on every hit
-            StartCoroutine(DamageFlash());
-
-            if (life <= 0)
-            {
-                isDead = true;
-                StartCoroutine(DeathSequence());
             }
         }
     }

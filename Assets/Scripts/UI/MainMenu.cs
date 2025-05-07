@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Playables;
@@ -49,6 +49,7 @@ public class MainMenu : MonoBehaviour
         playButton.onClick.AddListener(Play);
         optionsButton.onClick.AddListener(OpenOptionsMenu);
         exitButton.onClick.AddListener(ExitGame);
+        Time.timeScale = 0;
     }
 
     private void OnDisable()
@@ -56,6 +57,7 @@ public class MainMenu : MonoBehaviour
         playButton.onClick.RemoveListener(Play);
         optionsButton.onClick.RemoveListener(OpenOptionsMenu);
         exitButton.onClick.RemoveListener(ExitGame);
+
     }
 
     private void Play()
@@ -73,11 +75,11 @@ public class MainMenu : MonoBehaviour
 
     private IEnumerator FadeOutAndPlay()
     {
-        // Bloquea los botones durante la transición
+        // Bloquea los botones durante la transicion
         mainMenuCanvas.interactable = false;
         mainMenuCanvas.blocksRaycasts = false;
 
-        // Inicia la cinemática y el fade out simultáneamente
+        // Inicia la cinemï¿½tica y el fade out simultï¿½neamente
         if (firstTime)
             playableDirector.Play();
 
@@ -86,17 +88,19 @@ public class MainMenu : MonoBehaviour
 
         while (elapsedTime < fadeDuration)
         {
-            elapsedTime += Time.deltaTime;
+            elapsedTime += Time.unscaledDeltaTime;
             mainMenuCanvas.alpha = Mathf.Lerp(startAlpha, 0f, elapsedTime / fadeDuration);
             hudCanvas.alpha = Mathf.Lerp(0, 1f, elapsedTime / fadeDuration);
             yield return null;
         }
 
-        // Finaliza la transición
-        gameObject.SetActive(false);
+        // Finaliza la transicion
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         mainMenuCamera.Priority = 1;
+        yield return new WaitForSecondsRealtime(2f);
+        Time.timeScale = 1f;
+        gameObject.SetActive(false);
     }
 
     private IEnumerator FadeOutAndExit()

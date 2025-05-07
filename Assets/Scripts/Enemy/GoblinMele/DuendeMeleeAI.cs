@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
 
 public class DuendeMeleeAI : EnemyController
 {
@@ -129,20 +130,24 @@ public class DuendeMeleeAI : EnemyController
             enemy.GetComponent<MonoBehaviour>().StartCoroutine(PerformAttack());
         }
 
-        IEnumerator PerformAttack()
+        private IEnumerator PerformAttack() // <- Asegurar tipo de retorno
         {
             lastAttackTime = Time.time;
 
-            // Fase de preparación
             yield return new WaitForSeconds(windupTime);
 
-            // Detección del jugador
-            Collider[] hits = Physics.OverlapSphere(enemy.position, attackRange * 1.2f);
+            Collider[] hits = Physics.OverlapSphere(
+                enemy.position,
+                attackRange * 1.2f,
+                LayerMask.GetMask("Player") // <- Especificar capa
+            );
+
             foreach (var hit in hits)
             {
-                if (hit.CompareTag("Player"))
+                IDamageable damageable = hit.GetComponent<IDamageable>();
+                if (damageable != null)
                 {
-                    hit.GetComponent<IDamageable>()?.TakeDamage(damage * damageMultiplier);
+                    damageable.TakeDamage(damage * damageMultiplier);
                 }
             }
         }

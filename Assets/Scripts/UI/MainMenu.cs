@@ -57,7 +57,6 @@ public class MainMenu : MonoBehaviour
         playButton.onClick.RemoveListener(Play);
         optionsButton.onClick.RemoveListener(OpenOptionsMenu);
         exitButton.onClick.RemoveListener(ExitGame);
-
     }
 
     private void Play()

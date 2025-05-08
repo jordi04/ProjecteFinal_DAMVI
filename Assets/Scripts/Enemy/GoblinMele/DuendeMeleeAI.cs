@@ -11,16 +11,19 @@ public class DuendeMeleeAI : EnemyController
 
     private float baseSpeed; // Para almacenar la velocidad normal
 
+    // En DuendeMeleeAI.cs - Modificar el Awake
     protected override void Awake()
     {
-        movementType = MovementType.NavMesh;
-        attackType = AttackType.Melee;
-
         base.Awake();
 
-        // Configuración específica del Duende
-        baseSpeed = moveSpeed;
-        navAgent.acceleration = 25f; // Para cambios rápidos de dirección
+        // Configurar NavMeshAgent
+        navAgent.angularSpeed = 720f; // Aumentar velocidad de rotación
+        navAgent.acceleration = 50f; // Aceleración rápida
+        navAgent.stoppingDistance = 0.1f; // Distancia mínima
+        navAgent.autoBraking = false; // Evitar frenadas bruscas
+        navAgent.updateRotation = false; // Control manual de rotación
+
+        enemyRigidbody.constraints = RigidbodyConstraints.FreezeRotation; // Evitar rotación física
     }
 
     protected override void InitializeStrategies()
@@ -52,8 +55,23 @@ public class DuendeMeleeAI : EnemyController
 
         // Lógica específica del duende
         HandleSpeedBoost();
+        FixedUpdate();
     }
-
+    // Añadir en Update para control manual de rotación
+    void FixedUpdate()
+    {
+        if (target != null && !isDead)
+        {
+            Vector3 lookDirection = (target.position - transform.position).normalized;
+            lookDirection.y = 0;
+            Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                targetRotation,
+                Time.deltaTime * 20f // Aumentar velocidad de rotación
+            );
+        }
+    }
     void HandleSpeedBoost()
     {
         // Aumentar velocidad cuando está cerca del jugador

@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class SerpienteBoss : MonoBehaviour
 {
+    [SerializeField] Transform snakePosition;
     public Transform objetivo;
     public GameObject proyectilVenenoPrefab;
     public Transform puntoDisparo;
@@ -31,18 +32,20 @@ public class SerpienteBoss : MonoBehaviour
     {
         originalColor = snakeRenderer.material.color;
         materialPropertyBlock = new MaterialPropertyBlock();
+        objetivo = ManaSystem.instance.gameObject.transform;
     }
 
     void Update()
     {
-        if (objetivo == null) return;
-        float distancia = Vector3.Distance(transform.position, objetivo.position);
+        float distancia = Vector3.Distance(snakePosition.position, objetivo.position);
 
         if (!estaActiva && distancia <= rangoActivacion)
         {
             estaActiva = true;
             Debug.Log("¡La serpiente se ha activado!");
         }
+        else
+            estaActiva = false;
 
         // Si la serpiente está activa, atacar al jugador
         if (estaActiva && puedeAtacar)
@@ -74,7 +77,7 @@ public class SerpienteBoss : MonoBehaviour
 
         // Instanciamos el proyectil adelantado para evitar colisión con el lanzador
         GameObject veneno = Instantiate(proyectilVenenoPrefab,
-            puntoDisparo.position + puntoDisparo.forward * 1f,
+            puntoDisparo.position,
             Quaternion.identity);
 
         veneno.GetComponent<ProyectilVeneno>().IniciarVeneno(
@@ -82,9 +85,8 @@ public class SerpienteBoss : MonoBehaviour
             dañoVeneno,
             duracionVeneno,
             charcoVenenoPrefab,
-            tiempoCharcoVeneno,
-            puntoDisparo.GetComponent<Collider>() // Pasamos el collider para ignorar colisión
-        );
+            tiempoCharcoVeneno
+            );
 
         yield return new WaitForSeconds(tiempoEntreAtaques);
         puedeAtacar = true;
@@ -129,5 +131,16 @@ public class SerpienteBoss : MonoBehaviour
     private void ResetColor()
     {
         SetColor(originalColor);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        // Rango de activación (ataque a distancia)
+        Gizmos.color = new Color(0, 1, 1, 0.25f); // Cyan transparente
+        Gizmos.DrawWireSphere(snakePosition.position, rangoActivacion);
+
+        // Rango de mordida (ataque cercano)
+        Gizmos.color = new Color(1, 0, 0, 0.5f); // Rojo semitransparente
+        Gizmos.DrawWireSphere(snakePosition.position, rangoMordida);
     }
 }

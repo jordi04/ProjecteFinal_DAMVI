@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 public class SerpienteBoss : MonoBehaviour
 {
     [SerializeField] Transform snakePosition;
-    [SerializeField] Transform snake;
     public Transform objetivo;
     public GameObject proyectilVenenoPrefab;
     public Transform puntoDisparo;
@@ -40,10 +39,7 @@ public class SerpienteBoss : MonoBehaviour
     {
         float distancia = Vector3.Distance(snakePosition.position, objetivo.position);
 
-        if (!estaActiva && distancia <= rangoActivacion)
-            estaActiva = true;
-        else
-            estaActiva = false;
+        estaActiva = distancia <= rangoActivacion;
 
         // Si la serpiente está activa, atacar al jugador
         if (estaActiva && puedeAtacar)
@@ -57,6 +53,15 @@ public class SerpienteBoss : MonoBehaviour
                 StartCoroutine(AtaqueEscupitajo());
             }
         }
+    }
+
+    void FixedUpdate()
+    {
+        if (!estaActiva || objetivo == null) return;
+
+        snakePosition.transform.LookAt(objetivo);
+
+        snakePosition.transform.Rotate(0, 180, 0);
     }
 
     IEnumerator AtaqueMordida()

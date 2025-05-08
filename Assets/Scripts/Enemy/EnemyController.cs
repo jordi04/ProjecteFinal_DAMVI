@@ -659,7 +659,7 @@ public class EnemyController : MonoBehaviour, IDamageable
                 else
                     return new NavMeshMovement(moveSpeed, stoppingDistance, faceTarget, avoidObstacles);
             case MovementType.Direct:
-                return new DirectMovement(moveSpeed, stoppingDistance, rotationSpeed, faceTarget);
+                //return new DirectMovement(moveSpeed, stoppingDistance, rotationSpeed, faceTarget);
             case MovementType.Patrol:
                 return new PatrolMovement(moveSpeed, stoppingDistance, patrolPoints, patrolWaitTime, rotationSpeed, detectionRange);
             default:
@@ -1302,72 +1302,72 @@ public class EnemyController : MonoBehaviour, IDamageable
         }
     }
 
-    protected class DirectMovement : IEnemyMovement
-    {
-        private Transform enemyTransform;
-        private Transform targetTransform;
-        private float moveSpeed;
-        private float rotationSpeed;
-        private float stoppingDistance;
-        private bool shouldFaceTarget;
+    //protected class DirectMovement : IEnemyMovement
+    //{
+    //    private Transform enemyTransform;
+    //    private Transform targetTransform;
+    //    private float moveSpeed;
+    //    private float rotationSpeed;
+    //    private float stoppingDistance;
+    //    private bool shouldFaceTarget;
 
-        public DirectMovement(float speed, float stopDistance, float rotSpeed, bool faceTarget)
-        {
-            moveSpeed = speed;
-            stoppingDistance = stopDistance;
-            rotationSpeed = rotSpeed;
-            shouldFaceTarget = faceTarget;
-        }
+    //    public DirectMovement(float speed, float stopDistance, float rotSpeed, bool faceTarget)
+    //    {
+    //        moveSpeed = speed;
+    //        stoppingDistance = stopDistance;
+    //        rotationSpeed = rotSpeed;
+    //        shouldFaceTarget = faceTarget;
+    //    }
 
-        public void Initialize(Transform enemy, Transform target)
-        {
-            enemyTransform = enemy;
-            targetTransform = target;
-        }
+    //    public void Initialize(Transform enemy, Transform target)
+    //    {
+    //        enemyTransform = enemy;
+    //        targetTransform = target;
+    //    }
 
-        public virtual void Move()
-        {
-            if (navAgent == null || !navAgent.enabled || targetTransform == null) return;
-            navAgent.SetDestination(targetTransform.position);
+        //public virtual void Move()
+        //{
+        //    if (navAgent == null || !navAgent.enabled || targetTransform == null) return;
+        //    navAgent.SetDestination(targetTransform.position);
 
-            if (enemyTransform == null || targetTransform == null) return;
+        //    if (enemyTransform == null || targetTransform == null) return;
 
-            Vector3 directionToTarget = targetTransform.position - enemyTransform.position;
-            float distanceToTarget = directionToTarget.magnitude;
+        //    Vector3 directionToTarget = targetTransform.position - enemyTransform.position;
+        //    float distanceToTarget = directionToTarget.magnitude;
 
-            if (distanceToTarget > stoppingDistance)
-            {
-                enemyTransform.position += directionToTarget.normalized * moveSpeed * Time.deltaTime;
+        //    if (distanceToTarget > stoppingDistance)
+        //    {
+        //        enemyTransform.position += directionToTarget.normalized * moveSpeed * Time.deltaTime;
 
-                if (shouldFaceTarget)
-                {
-                    Quaternion targetRotation = Quaternion.LookRotation(new Vector3(directionToTarget.x, 0, directionToTarget.z));
-                    enemyTransform.rotation = Quaternion.Slerp(enemyTransform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-                }
-            }
-            else if (shouldFaceTarget)
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(new Vector3(directionToTarget.x, 0, directionToTarget.z));
-                enemyTransform.rotation = Quaternion.Slerp(enemyTransform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-            }
-        }
+        //        if (shouldFaceTarget)
+        //        {
+        //            Quaternion targetRotation = Quaternion.LookRotation(new Vector3(directionToTarget.x, 0, directionToTarget.z));
+        //            enemyTransform.rotation = Quaternion.Slerp(enemyTransform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        //        }
+        //    }
+        //    else if (shouldFaceTarget)
+        //    {
+        //        Quaternion targetRotation = Quaternion.LookRotation(new Vector3(directionToTarget.x, 0, directionToTarget.z));
+        //        enemyTransform.rotation = Quaternion.Slerp(enemyTransform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        //    }
+        //}
 
-        public void SetTarget(Transform target) => targetTransform = target;
-        public void Stop() { }
-        public void Resume() { }
+    //    public void SetTarget(Transform target) => targetTransform = target;
+    //    public void Stop() { }
+    //    public void Resume() { }
 
-        public bool IsInRange(float range)
-        {
-            if (targetTransform == null) return false;
-            return Vector3.Distance(enemyTransform.position, targetTransform.position) <= range;
-        }
+    //    public bool IsInRange(float range)
+    //    {
+    //        if (targetTransform == null) return false;
+    //        return Vector3.Distance(enemyTransform.position, targetTransform.position) <= range;
+    //    }
 
-        public float GetDistanceToTarget()
-        {
-            if (targetTransform == null) return float.MaxValue;
-            return Vector3.Distance(enemyTransform.position, targetTransform.position);
-        }
-    }
+    //    public float GetDistanceToTarget()
+    //    {
+    //        if (targetTransform == null) return float.MaxValue;
+    //        return Vector3.Distance(enemyTransform.position, targetTransform.position);
+    //    }
+    //}
 
     protected class PatrolMovement : IEnemyMovement
     {

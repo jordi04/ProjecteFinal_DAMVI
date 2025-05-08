@@ -13,7 +13,7 @@ public class ProyectilVeneno : MonoBehaviour
 
     public void IniciarVeneno(Vector3 direccion, float daño, float duracion, GameObject charcoPrefab, float tiempoCharco)
     {
-        this.direccion = direccion.normalized;
+        this.direccion = direccion;
         this.dañoVeneno = daño;
         this.duracionVeneno = duracion;
         this.charcoVenenoPrefab = charcoPrefab;

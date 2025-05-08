@@ -44,6 +44,8 @@ public class SerpienteBoss : MonoBehaviour
             estaActiva = true;
             Debug.Log("¡La serpiente se ha activado!");
         }
+        else
+            estaActiva = false;
 
         // Si la serpiente está activa, atacar al jugador
         if (estaActiva && puedeAtacar)
@@ -75,7 +77,7 @@ public class SerpienteBoss : MonoBehaviour
 
         // Instanciamos el proyectil adelantado para evitar colisión con el lanzador
         GameObject veneno = Instantiate(proyectilVenenoPrefab,
-            puntoDisparo.position + puntoDisparo.forward * 1f,
+            puntoDisparo.position,
             Quaternion.identity);
 
         veneno.GetComponent<ProyectilVeneno>().IniciarVeneno(

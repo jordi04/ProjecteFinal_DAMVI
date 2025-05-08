@@ -5,7 +5,7 @@ public class Chaman : MonoBehaviour
 {
     [SerializeField] NavMeshAgent agent;
     [SerializeField] Animator animator;
-    [SerializeField] Transform playerTransform;
+    Transform playerTransform;
 
     [Header("Detection Settings")]
     [SerializeField] float playerDetectionRange = 10f;
@@ -42,6 +42,7 @@ public class Chaman : MonoBehaviour
 
     private void Start()
     {
+        playerTransform = GameManager.instance.player.transform;
         SetupStateMachine();
     }
 

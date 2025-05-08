@@ -148,24 +148,28 @@ public class DuendeMeleeAI : EnemyController
             enemy.GetComponent<MonoBehaviour>().StartCoroutine(PerformAttack());
         }
 
-        private IEnumerator PerformAttack() // <- Asegurar tipo de retorno
+        private IEnumerator PerformAttack()
         {
             lastAttackTime = Time.time;
-
             yield return new WaitForSeconds(windupTime);
 
+            // Añadir debug visual
+            Debug.DrawRay(enemy.position, enemy.forward * attackRange, Color.red, 2f);
+
+            // Modificar detección con parámetros correctos
             Collider[] hits = Physics.OverlapSphere(
-                enemy.position,
+                enemy.position + enemy.forward * 0.5f, // Offset frontal
                 attackRange * 1.2f,
-                LayerMask.GetMask("Player") // <- Especificar capa
+                LayerMask.GetMask("Player"), // Capa explícita
+                QueryTriggerInteraction.Ignore // Ignorar triggers
             );
 
             foreach (var hit in hits)
             {
-                IDamageable damageable = hit.GetComponent<IDamageable>();
-                if (damageable != null)
+                if (hit.TryGetComponent<IDamageable>(out var damageable))
                 {
                     damageable.TakeDamage(damage * damageMultiplier);
+                    Debug.Log($"Daño aplicado a {hit.name}");
                 }
             }
         }

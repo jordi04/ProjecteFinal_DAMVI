@@ -86,7 +86,7 @@ public class EnemyController : MonoBehaviour, IDamageable
     [SerializeField] protected bool disableRendererOnDeath = false;
 
     [Header("Movement Configuration")]
-    [SerializeField] protected MovementType movementType = MovementType.NavMesh;
+    [SerializeField] public MovementType movementType = MovementType.NavMesh;
     [SerializeField] protected float moveSpeed = 3.5f;
     [SerializeField] protected float rotationSpeed = 5f;
     [SerializeField] protected float stoppingDistance = 2f;
@@ -413,6 +413,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         if (animator != null)
         {
             animator.SetTrigger(idleAnimTrigger);
+            // Change "speed" to "Speed" if that's what's in your Animator Controller
             if (useAnimatorSpeed)
                 animator.SetFloat("Speed", 0);
         }
@@ -1107,7 +1108,7 @@ public class EnemyController : MonoBehaviour, IDamageable
     #endregion
 
     #region Movement Strategy Implementations
-    protected class NavMeshMovement : IEnemyMovement
+    public class NavMeshMovement : IEnemyMovement
     {
         protected NavMeshAgent navAgent;
         protected Transform enemyTransform;
@@ -2011,6 +2012,7 @@ public class EnemyController : MonoBehaviour, IDamageable
                 // Detach particle system if it exists
                 if (particleSystem != null)
                 {
+
                     particleSystem.transform.SetParent(null);
                     particleSystem.Stop();
                     Destroy(particleSystem.gameObject, particleSystem.main.duration + particleSystem.main.startLifetime.constantMax);
@@ -2021,5 +2023,25 @@ public class EnemyController : MonoBehaviour, IDamageable
         }
     }
     #endregion
-
+    #region Getters
+    public float GetAttackDamage() => attackDamage;
+    public float GetAttackRate() => attackRate;
+    public float GetAttackRange() => attackRange;
+    public float GetMeleeRadius() => meleeRadius;
+    public float GetAttackAngle() => attackAngle;
+    public LayerMask GetAttackableLayerMask() => attackableLayerMask;
+    public bool GetRequireLineOfSight() => requireLineOfSight;
+    public bool GetUsePhysicsForMelee() => usePhysicsForMelee;
+    public float GetMeleeForce() => meleeForce;
+    public float GetMeleeUpwardForce() => meleeUpwardForce;
+    public GameObject GetProjectilePrefab() => projectilePrefab;
+    public Transform[] GetShootPoints() => shootPoints;
+    public float GetProjectileSpeed() => projectileSpeed;
+    public bool GetBurstFire() => burstFire;
+    public int GetBurstCount() => burstCount;
+    public float GetBurstDelay() => burstDelay;
+    public bool GetUseRandomShootPoint() => useRandomShootPoint;
+    public float GetProjectileSpread() => projectileSpread;
+    public float GetProjectileLifetime() => projectileLifetime;
+    #endregion
 }

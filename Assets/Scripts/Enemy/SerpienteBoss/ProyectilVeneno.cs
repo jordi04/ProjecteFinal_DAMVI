@@ -11,20 +11,13 @@ public class ProyectilVeneno : MonoBehaviour
     private float tiempoCharcoVeneno;
     private bool impactoRealizado = false;
 
-    public void IniciarVeneno(Vector3 direccion, float daño, float duracion, GameObject charcoPrefab, float tiempoCharco, Collider lanzador)
+    public void IniciarVeneno(Vector3 direccion, float daño, float duracion, GameObject charcoPrefab, float tiempoCharco)
     {
-        this.direccion = direccion.normalized;
+        this.direccion = direccion;
         this.dañoVeneno = daño;
         this.duracionVeneno = duracion;
         this.charcoVenenoPrefab = charcoPrefab;
         this.tiempoCharcoVeneno = tiempoCharco;
-
-        // Ignorar colisión con el lanzador (serpiente)
-        Collider col = GetComponent<Collider>();
-        if (col != null && lanzador != null)
-        {
-            Physics.IgnoreCollision(col, lanzador);
-        }
 
         Invoke("DestruirProyectil", 5f);
     }
@@ -47,7 +40,8 @@ public class ProyectilVeneno : MonoBehaviour
             Debug.Log("Proyectil impactó con el terreno.");
         }
 
-        DestruirProyectil();
+        if (!collision.gameObject.CompareTag("Enemy")) 
+            DestruirProyectil();
     }
 
     void DestruirProyectil()

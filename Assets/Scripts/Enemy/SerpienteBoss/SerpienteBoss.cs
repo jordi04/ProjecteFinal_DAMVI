@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class SerpienteBoss : MonoBehaviour
 {
     [SerializeField] Transform snakePosition;
+    [SerializeField] Transform snake;
     public Transform objetivo;
     public GameObject proyectilVenenoPrefab;
     public Transform puntoDisparo;
@@ -40,10 +41,7 @@ public class SerpienteBoss : MonoBehaviour
         float distancia = Vector3.Distance(snakePosition.position, objetivo.position);
 
         if (!estaActiva && distancia <= rangoActivacion)
-        {
             estaActiva = true;
-            Debug.Log("¡La serpiente se ha activado!");
-        }
         else
             estaActiva = false;
 

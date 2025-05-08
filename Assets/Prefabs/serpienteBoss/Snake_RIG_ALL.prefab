@@ -1123,6 +1123,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   snakePosition: {fileID: 5148637961770571882}
+  snake: {fileID: 0}
   objetivo: {fileID: 0}
   proyectilVenenoPrefab: {fileID: 9058237785712177519, guid: e38bcd030f6ada5409649e32ec9cd8b3,
     type: 3}

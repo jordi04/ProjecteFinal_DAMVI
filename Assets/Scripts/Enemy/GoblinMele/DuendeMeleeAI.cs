@@ -47,7 +47,7 @@ public class DuendeMeleeAI : EnemyController
     IEnumerator AtaqueMelee()
     {
         puedeAtacar = false;
-        animator.SetTrigger(attackAnimTrigger); // Usa la variable del padre
+        //animator.SetTrigger(attackAnimTrigger); // Usa la variable del padre
 
         yield return new WaitForSeconds(0.3f);
 

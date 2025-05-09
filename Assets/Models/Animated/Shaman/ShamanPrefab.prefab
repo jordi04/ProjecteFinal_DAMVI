@@ -1110,12 +1110,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agent: {fileID: 870905876255572238}
   animator: {fileID: 2904084218502291572}
-  playerTransform: {fileID: 0}
   playerDetectionRange: 10
   runAwayDistance: 8
   spellCastCooldown: 5
   wanderRadius: 5
-  enemyPrefab: {fileID: 183295985436476452, guid: f22b1780c584ccd4c8ce601b29f931de,
+  enemyPrefab: {fileID: 3304445009330831543, guid: b2039aa91561aa546ae3ab0dedd8ac15,
     type: 3}
   spawnRadius: 3
   remainingSpawns: 5

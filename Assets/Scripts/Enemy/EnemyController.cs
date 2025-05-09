@@ -1107,7 +1107,7 @@ public class EnemyController : MonoBehaviour, IDamageable
     #endregion
 
     #region Movement Strategy Implementations
-    protected class NavMeshMovement : IEnemyMovement
+    public class NavMeshMovement : IEnemyMovement
     {
         protected NavMeshAgent navAgent;
         protected Transform enemyTransform;
@@ -2024,5 +2024,26 @@ public class EnemyController : MonoBehaviour, IDamageable
         }
     }
     #endregion
+    #region Getters
+    public float GetAttackDamage() => attackDamage;
+    public float GetAttackRate() => attackRate;
+    public float GetAttackRange() => attackRange;
+    public float GetMeleeRadius() => meleeRadius;
+    public float GetAttackAngle() => attackAngle;
+    public LayerMask GetAttackableLayerMask() => attackableLayerMask;
+    public bool GetRequireLineOfSight() => requireLineOfSight;
+    public bool GetUsePhysicsForMelee() => usePhysicsForMelee;
+    public float GetMeleeForce() => meleeForce;
+    public float GetMeleeUpwardForce() => meleeUpwardForce;
+    public GameObject GetProjectilePrefab() => projectilePrefab;
+    public Transform[] GetShootPoints() => shootPoints;
+    public float GetProjectileSpeed() => projectileSpeed;
+    public bool GetBurstFire() => burstFire;
+    public int GetBurstCount() => burstCount;
+    public float GetBurstDelay() => burstDelay;
+    public bool GetUseRandomShootPoint() => useRandomShootPoint;
+    public float GetProjectileSpread() => projectileSpread;
+    public float GetProjectileLifetime() => projectileLifetime;
 
+    #endregion
 }

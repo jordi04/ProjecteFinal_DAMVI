@@ -87,6 +87,13 @@ MonoBehaviour:
   timeBetweenSpawnPointActivation: 20
   delayBetweenEnemiesSpawn: 0.5
   player: {fileID: 0}
+  spawnEffectPrefab: {fileID: 0}
+  enemySpawnDelay: 1.5
+  destroyEffectAfterSpawn: 1
+  useRandomPositionInArea: 1
+  spawnAreaRadius: 2
+  spawnAreaColor: {r: 0.2, g: 0.8, b: 0.2, a: 0.3}
+  showSpawnAreas: 1
   triggerRadius: 15
   clearEnemiesRadius: 30
   showDebugSpheres: 1

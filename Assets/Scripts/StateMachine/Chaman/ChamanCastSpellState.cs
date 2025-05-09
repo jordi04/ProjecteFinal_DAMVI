@@ -97,7 +97,7 @@ public class ChamanCastSpellState : ChamanBaseState
             {
                 GameObject enemy = Object.Instantiate(enemyPrefab, hit.position, rotation);
 
-                if (remainingSpawns == 0) // este fue el último uso
+                if (remainingSpawns == 0)
                     ApplyStrengthMultiplier(enemy);
             }
         }

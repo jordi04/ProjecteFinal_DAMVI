@@ -1,42 +1,115 @@
 using UnityEngine;
 using UnityEngine.Splines;
+using Unity.Mathematics;
+using UnityEditor;
+using System.Collections.Generic;
 
-[RequireComponent(typeof(SplineContainer))]
-public class splineCollider : MonoBehaviour
+[ExecuteInEditMode]
+[RequireComponent(typeof(SplineContainer), typeof(MeshFilter), typeof(MeshCollider))]
+public class RiverColliderTool : MonoBehaviour
 {
-    public float colliderWidth = 1f;
-    public float colliderHeight = 0.1f;
-    public int resolution = 20;
+    public float width = 1f;
+    public float height = 1f;
+    public int resolution = 50;
 
-    private void Start()
+    // Mesh baking logic
+    public void GenerateMeshCollider()
     {
-        GenerateColliders();
-    }
-
-    void GenerateColliders()
-    {
+        SplineContainer splineContainer = GetComponent<SplineContainer>();
         Spline spline = GetComponent<SplineContainer>().Spline;
-        float step = 1f / resolution;
+        Mesh mesh = new Mesh();
+
+        List<Vector3> vertices = new List<Vector3>();
+        List<int> triangles = new List<int>();
+
+        for (int i = 0; i <= resolution; i++)
+        {
+            float t = i / (float)resolution;
+            splineContainer.Evaluate(0, t, out float3 pos, out float3 tangent, out float3 up);
+
+            Vector3 center = spline.EvaluatePosition(t);
+            Vector3 right = math.normalize(math.cross(tangent, up));
+
+            Vector3 offsetRight = right * (width * 0.5f);
+            Vector3 offsetUp = (Vector3)(-up * height);
+
+            vertices.Add(center + offsetRight);
+            vertices.Add(center - offsetRight);
+
+            vertices.Add(center + offsetUp);
+            vertices.Add(center - offsetUp);
+        }
 
         for (int i = 0; i < resolution; i++)
         {
-            float t0 = i * step;
-            float t1 = (i + 1) * step;
+            int vi = i * 4;
 
-            Vector3 p0 = spline.EvaluatePosition(t0);
-            Vector3 p1 = spline.EvaluatePosition(t1);
+            // Top face
+            triangles.Add(vi);
+            triangles.Add(vi + 4);
+            triangles.Add(vi + 1);
 
-            Vector3 direction = p1 - p0;
-            float length = direction.magnitude;
-            Vector3 center = (p0 + p1) / 2;
+            triangles.Add(vi + 1);
+            triangles.Add(vi + 4);
+            triangles.Add(vi + 5);
 
-            GameObject colliderObj = new GameObject("SplineCollider_" + i);
-            colliderObj.transform.parent = this.transform;
-            colliderObj.transform.position = center;
-            colliderObj.transform.rotation = Quaternion.LookRotation(direction);
+            // Bottom face (inverted winding)
+            triangles.Add(vi + 2);
+            triangles.Add(vi + 3);
+            triangles.Add(vi + 6);
 
-            BoxCollider box = colliderObj.AddComponent<BoxCollider>();
-            box.size = new Vector3(colliderWidth, colliderHeight, length);
+            triangles.Add(vi + 3);
+            triangles.Add(vi + 7);
+            triangles.Add(vi + 6);
+
+            // Left side
+            triangles.Add(vi + 1);
+            triangles.Add(vi + 5);
+            triangles.Add(vi + 3);
+
+            triangles.Add(vi + 3);
+            triangles.Add(vi + 5);
+            triangles.Add(vi + 7);
+
+            // Right side
+            triangles.Add(vi + 2);
+            triangles.Add(vi + 6);
+            triangles.Add(vi);
+
+            triangles.Add(vi);
+            triangles.Add(vi + 6);
+            triangles.Add(vi + 4);
+        }
+
+        mesh.SetVertices(vertices);
+        mesh.SetTriangles(triangles, 0);
+        mesh.RecalculateNormals();
+
+        MeshFilter mf = GetComponent<MeshFilter>();
+        mf.mesh = mesh;
+
+        MeshCollider mc = GetComponent<MeshCollider>();
+        mc.sharedMesh = mesh;
+    }
+
+}
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(RiverColliderTool))]
+public class RiverColliderToolEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+
+        RiverColliderTool river = (RiverColliderTool)target;
+
+        GUILayout.Space(10);
+        if (GUILayout.Button("Bake River Mesh"))
+        {
+            river.GenerateMeshCollider();
+            EditorUtility.SetDirty(river);
         }
     }
 }
+#endif

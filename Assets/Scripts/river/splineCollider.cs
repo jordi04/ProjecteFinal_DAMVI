@@ -12,11 +12,10 @@ public class RiverColliderTool : MonoBehaviour
     public float height = 1f;
     public int resolution = 50;
 
-    // Mesh baking logic
-    public void GenerateMeshCollider()
+    public void Generate2DVerticalMesh()
     {
         SplineContainer splineContainer = GetComponent<SplineContainer>();
-        Spline spline = GetComponent<SplineContainer>().Spline;
+        Spline spline = splineContainer.Spline;
         Mesh mesh = new Mesh();
 
         List<Vector3> vertices = new List<Vector3>();
@@ -28,57 +27,32 @@ public class RiverColliderTool : MonoBehaviour
             splineContainer.Evaluate(0, t, out float3 pos, out float3 tangent, out float3 up);
 
             Vector3 center = spline.EvaluatePosition(t);
-            Vector3 right = math.normalize(math.cross(tangent, up));
 
-            Vector3 offsetRight = right * (width * 0.5f);
-            Vector3 offsetUp = (Vector3)(-up * height);
+            // Always use world up for vertical orientation
+            Vector3 upVec = Vector3.up * (height * 0.5f);
 
-            vertices.Add(center + offsetRight);
-            vertices.Add(center - offsetRight);
+            // Right vector perpendicular to tangent and world up
+            Vector3 right = Vector3.Cross(tangent, Vector3.up).normalized * (width * 0.5f);
 
-            vertices.Add(center + offsetUp);
-            vertices.Add(center - offsetUp);
+            // Two vertices per segment: top and bottom
+            vertices.Add(center + upVec); // Top
+            vertices.Add(center - upVec); // Bottom
         }
 
+        // Build triangles (quads between each segment)
         for (int i = 0; i < resolution; i++)
         {
-            int vi = i * 4;
+            int vi = i * 2;
 
-            // Top face
+            // First triangle
             triangles.Add(vi);
-            triangles.Add(vi + 4);
+            triangles.Add(vi + 2);
             triangles.Add(vi + 1);
 
+            // Second triangle
             triangles.Add(vi + 1);
-            triangles.Add(vi + 4);
-            triangles.Add(vi + 5);
-
-            // Bottom face (inverted winding)
             triangles.Add(vi + 2);
             triangles.Add(vi + 3);
-            triangles.Add(vi + 6);
-
-            triangles.Add(vi + 3);
-            triangles.Add(vi + 7);
-            triangles.Add(vi + 6);
-
-            // Left side
-            triangles.Add(vi + 1);
-            triangles.Add(vi + 5);
-            triangles.Add(vi + 3);
-
-            triangles.Add(vi + 3);
-            triangles.Add(vi + 5);
-            triangles.Add(vi + 7);
-
-            // Right side
-            triangles.Add(vi + 2);
-            triangles.Add(vi + 6);
-            triangles.Add(vi);
-
-            triangles.Add(vi);
-            triangles.Add(vi + 6);
-            triangles.Add(vi + 4);
         }
 
         mesh.SetVertices(vertices);
@@ -91,6 +65,7 @@ public class RiverColliderTool : MonoBehaviour
         MeshCollider mc = GetComponent<MeshCollider>();
         mc.sharedMesh = mesh;
     }
+
 
 }
 
@@ -107,7 +82,7 @@ public class RiverColliderToolEditor : Editor
         GUILayout.Space(10);
         if (GUILayout.Button("Bake River Mesh"))
         {
-            river.GenerateMeshCollider();
+            river.Generate2DVerticalMesh();
             EditorUtility.SetDirty(river);
         }
     }

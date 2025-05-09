@@ -11,19 +11,19 @@ public class DuendeMeleeAI : EnemyController
 
     private float baseSpeed; // Para almacenar la velocidad normal
 
-    // En DuendeMeleeAI.cs - Modificar el Awake
     protected override void Awake()
     {
         base.Awake();
 
-        // Configurar NavMeshAgent
-        navAgent.angularSpeed = 720f; // Aumentar velocidad de rotación
-        navAgent.acceleration = 50f; // Aceleración rápida
-        navAgent.stoppingDistance = 0.1f; // Distancia mínima
-        navAgent.autoBraking = false; // Evitar frenadas bruscas
-        navAgent.updateRotation = false; // Control manual de rotación
+        // Configuración mejorada
+        navAgent.speed = 8f;
+        navAgent.angularSpeed = 720f;
+        navAgent.acceleration = 40f;
+        navAgent.stoppingDistance = 0.3f;
+        navAgent.avoidancePriority = 50;
 
-        enemyRigidbody.constraints = RigidbodyConstraints.FreezeRotation; // Evitar rotación física
+        enemyRigidbody.interpolation = RigidbodyInterpolation.Interpolate;
+        enemyRigidbody.constraints = RigidbodyConstraints.FreezeRotation;
     }
 
     protected override void InitializeStrategies()
@@ -62,14 +62,19 @@ public class DuendeMeleeAI : EnemyController
     {
         if (target != null && !isDead)
         {
-            Vector3 lookDirection = (target.position - transform.position).normalized;
-            lookDirection.y = 0;
-            Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
-            transform.rotation = Quaternion.Slerp(
-                transform.rotation,
-                targetRotation,
-                Time.deltaTime * 20f // Aumentar velocidad de rotación
-            );
+            // Rotación suave mejorada
+            Vector3 direction = (target.position - transform.position).normalized;
+            direction.y = 0;
+
+            if (direction != Vector3.zero)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Slerp(
+                    transform.rotation,
+                    targetRotation,
+                    Time.deltaTime * 25f
+                );
+            }
         }
     }
     void HandleSpeedBoost()

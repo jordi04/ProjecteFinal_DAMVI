@@ -19,20 +19,9 @@ public class MainMenu : MonoBehaviour
     [SerializeField] float fadeDuration = 1f;
     [SerializeField] CinemachineVirtualCamera mainMenuCamera;
     [SerializeField] private bool firstTime = true;
-    private Transform playerTransform;
-
-    private void Awake()
-    {
-        playerTransform = ManaSystem.instance.gameObject.transform;
-        playerTransform.transform.position = playerInitialTransform.position;
-        playerTransform.transform.rotation = playerInitialTransform.rotation;
-    }
 
     private void Start()
     {
-        playerTransform = ManaSystem.instance.gameObject.transform;
-        playerTransform.transform.position = playerInitialTransform.position;
-        playerTransform.transform.rotation = playerInitialTransform.rotation;
         UserInput.instance.switchActionMap(UserInput.ActionMap.InMenu);
     }
 

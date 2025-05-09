@@ -7,6 +7,7 @@ using Cinemachine;
 public class MainMenu : MonoBehaviour
 {
     [SerializeField] Transform playerInitialTransform;
+    [SerializeField] MeshRenderer human;
     [SerializeField] Button playButton;
     [SerializeField] Button optionsButton;
     [SerializeField] Button exitButton;
@@ -116,6 +117,10 @@ public class MainMenu : MonoBehaviour
         optionsMenuCanvas.SetActive(true);
     }
 
+    public void ShadowRenderer()
+    {
+        human.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
+    }
 
     public void EndTimeline()
     {

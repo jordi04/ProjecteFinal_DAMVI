@@ -32,7 +32,7 @@ public class SerpienteBoss : MonoBehaviour
     {
         originalColor = snakeRenderer.material.color;
         materialPropertyBlock = new MaterialPropertyBlock();
-        objetivo = ManaSystem.instance.gameObject.transform;
+        //objetivo = ManaSystem.instance.gameObject.transform;
     }
 
     void Update()
@@ -120,6 +120,7 @@ public class SerpienteBoss : MonoBehaviour
     private IEnumerator DeathSequence()
     {
         yield return new WaitForSeconds(flashDuration);
+        UserInput.instance.switchActionMap(UserInput.ActionMap.InMenu);
         SceneManager.LoadScene("Win");
     }
 

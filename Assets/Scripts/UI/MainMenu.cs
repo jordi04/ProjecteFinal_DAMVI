@@ -7,6 +7,7 @@ using Cinemachine;
 public class MainMenu : MonoBehaviour
 {
     [SerializeField] Transform playerInitialTransform;
+    [SerializeField] MeshRenderer human;
     [SerializeField] Button playButton;
     [SerializeField] Button optionsButton;
     [SerializeField] Button exitButton;
@@ -19,20 +20,9 @@ public class MainMenu : MonoBehaviour
     [SerializeField] float fadeDuration = 1f;
     [SerializeField] CinemachineVirtualCamera mainMenuCamera;
     [SerializeField] private bool firstTime = true;
-    private Transform playerTransform;
-
-    private void Awake()
-    {
-        playerTransform = ManaSystem.instance.gameObject.transform;
-        playerTransform.transform.position = playerInitialTransform.position;
-        playerTransform.transform.rotation = playerInitialTransform.rotation;
-    }
 
     private void Start()
     {
-        playerTransform = ManaSystem.instance.gameObject.transform;
-        playerTransform.transform.position = playerInitialTransform.position;
-        playerTransform.transform.rotation = playerInitialTransform.rotation;
         UserInput.instance.switchActionMap(UserInput.ActionMap.InMenu);
     }
 
@@ -127,6 +117,10 @@ public class MainMenu : MonoBehaviour
         optionsMenuCanvas.SetActive(true);
     }
 
+    public void ShadowRenderer()
+    {
+        human.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
+    }
 
     public void EndTimeline()
     {

@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.03.00">
 	<object class="AudioFile" id="{7107f36f-eb4b-447d-ac86-b5f1f5256f8b}">
-		<property name="assetPath">
-			<value>Serp_dead_01-01.wav</value>
-		</property>
+		<property name="assetPath" />
 		<property name="frequencyInKHz">
 			<value>48</value>
 		</property>

@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.03.00">
 	<object class="AudioFile" id="{37ee5d2c-410b-4adf-bad4-9e491c61b7be}">
-		<property name="assetPath">
-			<value>Bolet_idle_01-01.wav</value>
-		</property>
+		<property name="assetPath" />
 		<property name="frequencyInKHz">
 			<value>48</value>
 		</property>

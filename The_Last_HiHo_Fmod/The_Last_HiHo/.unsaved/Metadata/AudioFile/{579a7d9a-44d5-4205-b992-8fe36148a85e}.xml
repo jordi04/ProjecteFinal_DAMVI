@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.03.00">
 	<object class="AudioFile" id="{579a7d9a-44d5-4205-b992-8fe36148a85e}">
-		<property name="assetPath">
-			<value>Bolet_hurt_01-01.wav</value>
-		</property>
+		<property name="assetPath" />
 		<property name="frequencyInKHz">
 			<value>48</value>
 		</property>

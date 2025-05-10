@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.03.00">
 	<object class="AudioFile" id="{43cc696a-c4e9-47ba-9025-00662a5c9f56}">
-		<property name="assetPath">
-			<value>SFX/Click_medieval_01-05.wav</value>
-		</property>
+		<property name="assetPath" />
 		<property name="frequencyInKHz">
 			<value>48</value>
 		</property>

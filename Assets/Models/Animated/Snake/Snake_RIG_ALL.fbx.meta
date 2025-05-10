@@ -149,11 +149,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Idle|Action
+      name: CloseAttack
       takeName: Idle|Action
       internalID: 6208328974483420854
       firstFrame: 0
-      lastFrame: 549
+      lastFrame: 84
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -177,7 +177,7 @@ ModelImporter:
       maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
-    isReadable: 0
+    isReadable: 1
   meshes:
     lODScreenPercentages: []
     globalScale: 1

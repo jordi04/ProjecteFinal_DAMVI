@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.03.00">
 	<object class="AudioFile" id="{f0862349-b8af-4d04-adab-6b679ee70a70}">
-		<property name="assetPath">
-			<value>Player_damage_01-01.wav</value>
-		</property>
+		<property name="assetPath" />
 		<property name="frequencyInKHz">
 			<value>48</value>
 		</property>

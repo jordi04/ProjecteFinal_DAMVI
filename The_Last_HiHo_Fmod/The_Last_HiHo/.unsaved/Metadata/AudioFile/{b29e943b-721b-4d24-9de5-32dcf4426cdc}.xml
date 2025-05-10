@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.03.00">
 	<object class="AudioFile" id="{b29e943b-721b-4d24-9de5-32dcf4426cdc}">
-		<property name="assetPath">
-			<value>Bolet_steps_02.wav</value>
-		</property>
+		<property name="assetPath" />
 		<property name="isStreaming">
 			<value>true</value>
 		</property>

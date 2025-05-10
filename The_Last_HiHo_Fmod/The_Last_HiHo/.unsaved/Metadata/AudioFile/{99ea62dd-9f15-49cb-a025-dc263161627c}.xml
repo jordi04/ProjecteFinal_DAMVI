@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.03.00">
 	<object class="AudioFile" id="{99ea62dd-9f15-49cb-a025-dc263161627c}">
-		<property name="assetPath">
-			<value>SFX/Cavall_IDLE_03-01.wav</value>
-		</property>
+		<property name="assetPath" />
 		<property name="frequencyInKHz">
 			<value>48</value>
 		</property>

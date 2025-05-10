@@ -23,6 +23,7 @@ public class SerpienteBoss : MonoBehaviour
     [SerializeField] private Renderer snakeRenderer;
     private MaterialPropertyBlock materialPropertyBlock;
     private Color originalColor;
+    [SerializeField] Animator animator;
 
     private bool isDead = false;
     private bool puedeAtacar = true;
@@ -32,11 +33,13 @@ public class SerpienteBoss : MonoBehaviour
     {
         originalColor = snakeRenderer.material.color;
         materialPropertyBlock = new MaterialPropertyBlock();
-        //objetivo = ManaSystem.instance.gameObject.transform;
     }
 
     void Update()
     {
+        if (isDead) 
+            return;
+
         float distancia = Vector3.Distance(snakePosition.position, objetivo.position);
 
         estaActiva = distancia <= rangoActivacion;
@@ -57,7 +60,7 @@ public class SerpienteBoss : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!estaActiva || objetivo == null) return;
+        if (!estaActiva || !objetivo || isDead) return;
 
         snakePosition.transform.LookAt(objetivo);
 
@@ -67,7 +70,7 @@ public class SerpienteBoss : MonoBehaviour
     IEnumerator AtaqueMordida()
     {
         puedeAtacar = false;
-        Debug.Log("La serpiente ataca con una mordida!");
+        animator.SetTrigger("CloseAttack");
         ManaSystem.instance.TakeDamage(dañoMordida);
         yield return new WaitForSeconds(tiempoEntreAtaques);
         puedeAtacar = true;
@@ -76,7 +79,7 @@ public class SerpienteBoss : MonoBehaviour
     IEnumerator AtaqueEscupitajo()
     {
         puedeAtacar = false;
-        Debug.Log("La serpiente escupe veneno!");
+        animator.SetTrigger("DistAttack");
 
         // Instanciamos el proyectil adelantado para evitar colisión con el lanzador
         GameObject veneno = Instantiate(proyectilVenenoPrefab,
@@ -120,8 +123,7 @@ public class SerpienteBoss : MonoBehaviour
     private IEnumerator DeathSequence()
     {
         yield return new WaitForSeconds(flashDuration);
-        UserInput.instance.switchActionMap(UserInput.ActionMap.InMenu);
-        SceneManager.LoadScene("Win");
+        animator.SetTrigger("Die");
     }
 
     private void SetColor(Color color)

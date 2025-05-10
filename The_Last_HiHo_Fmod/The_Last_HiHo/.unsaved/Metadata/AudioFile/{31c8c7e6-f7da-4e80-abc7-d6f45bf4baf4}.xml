@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.03.00">
 	<object class="AudioFile" id="{31c8c7e6-f7da-4e80-abc7-d6f45bf4baf4}">
-		<property name="assetPath">
-			<value>SFX/Cavall_damage_02-01.wav</value>
-		</property>
+		<property name="assetPath" />
 		<property name="frequencyInKHz">
 			<value>48</value>
 		</property>

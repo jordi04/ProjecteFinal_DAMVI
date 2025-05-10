@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.03.00">
 	<object class="AudioFile" id="{8b41ac7f-0fa2-4ed3-8680-94a646fbece6}">
-		<property name="assetPath">
-			<value>SFX/Hitmarker_02-01.wav</value>
-		</property>
+		<property name="assetPath" />
 		<property name="frequencyInKHz">
 			<value>48</value>
 		</property>

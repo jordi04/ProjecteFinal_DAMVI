@@ -74,7 +74,7 @@ public class EnemyController : MonoBehaviour, IDamageable
     [Header("Health & Damage")]
     [SerializeField] protected float maxHealth = 100f;
     [SerializeField] protected float currentHealth;
-    [SerializeField] protected float damageMultiplier = 1f;
+    [SerializeField] protected float damageMultiplier = 1.25f;
     [SerializeField] protected float flashDuration = 0.2f;
     [SerializeField] protected bool invulnerableDuringFlash = false;
     [SerializeField] protected List<string> damageSourceTags = new List<string> { "FireBall", "Weapon" };
@@ -192,14 +192,32 @@ public class EnemyController : MonoBehaviour, IDamageable
     protected Coroutine meleeAttackCoroutine;
     protected Coroutine retreatCoroutine;
     protected EnemyState currentState = EnemyState.Idle;
+    [Header("Base Stats")]
+    [SerializeField] protected float baseDamage = 10f;
+    [SerializeField] protected float baseHealth = 100f;
+    [SerializeField] protected float baseSpeed = 3.5f;
+
 
     public EnemySpawner spawner;
 
     #region Unity Lifecycle Methods
     protected virtual void Awake()
     {
+        // Guardar valores base primero
+        baseDamage = attackDamage;
+        baseHealth = maxHealth;
+        baseSpeed = moveSpeed;
+
+        // Inicialización normal
         InitializeComponents();
         currentHealth = maxHealth;
+
+        if (navAgent != null)
+        {
+            navAgent.speed = moveSpeed;
+            navAgent.stoppingDistance = attackRange * 0.8f;
+        }
+        Debug.Log($"Valores base guardados - Daño: {baseDamage}, Salud: {baseHealth}, Velocidad: {baseSpeed}");
     }
 
     protected virtual void Start()
@@ -627,21 +645,31 @@ public class EnemyController : MonoBehaviour, IDamageable
 
         if (navAgent != null)
         {
-            // Make sure stopping distance is less than attack range for melee enemies
-            if (attackType == AttackType.Melee)
+            // Respeta configuraciones específicas de clases hijas
+            if (navAgent.stoppingDistance <= 0.1f) // Solo aplicar lógica base si no fue configurada
             {
-                // Set stopping distance to be slightly less than attack range
-                navAgent.stoppingDistance = attackRange * 0.8f;
-            }
-            else
-            {
-                navAgent.stoppingDistance = stoppingDistance;
+                // Nueva lógica mejorada para evitar sobrescrituras
+                if (attackType == AttackType.Melee)
+                {
+                    // Asegurar que la stopping distance sea 80% del rango de ataque
+                    navAgent.stoppingDistance = Mathf.Clamp(attackRange * 0.8f, 0.5f, attackRange - 0.3f);
+                    Debug.Log($"Ajustada stopping distance para Melee: {navAgent.stoppingDistance}");
+                }
+                else
+                {
+                    navAgent.stoppingDistance = stoppingDistance;
+                }
             }
 
+            // Configuraciones base que pueden ser sobrescritas
             navAgent.speed = moveSpeed;
             navAgent.angularSpeed = rotationSpeed * 100;
             navAgent.isStopped = false;
-            Debug.Log($"NavMeshAgent configured with speed: {moveSpeed}, stopping distance: {navAgent.stoppingDistance}");
+
+            Debug.Log($"Configuración final NavMeshAgent - " +
+                     $"Velocidad: {navAgent.speed} | " +
+                     $"Stopping Distance: {navAgent.stoppingDistance} | " +
+                     $"Tipo: {attackType}");
         }
         else
         {
@@ -759,6 +787,24 @@ public class EnemyController : MonoBehaviour, IDamageable
     public float GetCurrentHealth() => currentHealth;
     public float GetMaxHealth() => maxHealth;
     public bool IsDead() => isDead;
+
+    public virtual void SetDamageMultiplier(float multiplier)
+    {
+        attackDamage = baseDamage * multiplier;
+        damageMultiplier = multiplier;
+    }
+
+    public virtual void SetHealthMultiplier(float multiplier)
+    {
+        maxHealth = baseHealth * multiplier;
+        currentHealth = maxHealth;
+    }
+
+    public virtual void SetSpeedMultiplier(float multiplier)
+    {
+        moveSpeed = baseSpeed * multiplier;
+        if (navAgent != null) navAgent.speed = moveSpeed;
+    }
 
     public virtual void Activate() => isActivated = true;
     public virtual void Deactivate() => isActivated = false;
@@ -2027,6 +2073,10 @@ public class EnemyController : MonoBehaviour, IDamageable
     #region Getters
     public float GetAttackDamage() => attackDamage;
     public float GetAttackRate() => attackRate;
+    public float GetSpeed() => moveSpeed;
+    public float GetBaseDamage() => baseDamage;
+    public float GetBaseHealth() => baseHealth;
+    public float GetBaseSpeed() => baseSpeed;
     public float GetAttackRange() => attackRange;
     public float GetMeleeRadius() => meleeRadius;
     public float GetAttackAngle() => attackAngle;

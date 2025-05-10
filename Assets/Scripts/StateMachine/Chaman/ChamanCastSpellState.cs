@@ -13,6 +13,7 @@ public class ChamanCastSpellState : ChamanBaseState
 
     private int remainingSpawns;
     private float enemyStrengthMultiplier;
+    private float currentMultiplier = 1.0f;
 
     float castStartTime;
     float lastCastTime;
@@ -84,6 +85,8 @@ public class ChamanCastSpellState : ChamanBaseState
         int enemiesToSpawn = remainingSpawns;
         remainingSpawns--;
 
+        currentMultiplier *= enemyStrengthMultiplier;
+
         float angleStep = 360f / enemiesToSpawn;
         Vector3 forward = chaman.transform.forward;
 
@@ -96,20 +99,47 @@ public class ChamanCastSpellState : ChamanBaseState
             if (NavMesh.SamplePosition(spawnPos, out NavMeshHit hit, spawnRadius, NavMesh.AllAreas))
             {
                 GameObject enemy = Object.Instantiate(enemyPrefab, hit.position, rotation);
-
-                if (remainingSpawns == 0)
-                    ApplyStrengthMultiplier(enemy);
+                ApplyStrengthMultiplier(enemy, currentMultiplier);
             }
         }
     }
 
-    private void ApplyStrengthMultiplier(GameObject enemy)
+    private void ApplyStrengthMultiplier(GameObject enemy, float multiplier)
     {
-        enemy.transform.localScale *= Mathf.Sqrt(enemyStrengthMultiplier);
+        // Escala
+        Vector3 originalScale = enemyPrefab.transform.localScale;
+        enemy.transform.localScale = new Vector3(
+            originalScale.x * Mathf.Sqrt(multiplier),
+            originalScale.y * Mathf.Sqrt(multiplier),
+            originalScale.z * Mathf.Sqrt(multiplier)
+        );
 
+        // Color
         Renderer renderer = enemy.GetComponentInChildren<Renderer>();
         if (renderer != null)
-            renderer.material.color = new Color(1.0f, 0.6f, 0.6f);
+        {
+            Material newMat = new Material(renderer.material);
+            newMat.color = Color.Lerp(
+                Color.white,
+                new Color(1f, 0.5f, 0.5f),
+                Mathf.Clamp01((multiplier - 1f) * 0.5f)
+            );
+            renderer.material = newMat;
+        }
+
+        // Estadísticas
+        EnemyController ec = enemy.GetComponent<EnemyController>();
+        if (ec != null)
+        {
+            ec.SetDamageMultiplier(multiplier);
+            ec.SetHealthMultiplier(multiplier);
+            ec.SetSpeedMultiplier(Mathf.Sqrt(multiplier));
+
+            Debug.Log($"Goblin mejorado - " +
+                     $"Daño: {ec.GetAttackDamage()} (+{multiplier}x) | " +
+                     $"Salud: {ec.GetMaxHealth()} | " +
+                     $"Velocidad: {ec.GetSpeed()}");
+        }
     }
 
     public bool IsSpellReady() => Time.time - lastCastTime >= spellCooldown && remainingSpawns > 0;

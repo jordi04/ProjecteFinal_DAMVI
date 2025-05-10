@@ -56,13 +56,13 @@ public class ManaSystem : MonoBehaviour, IDamageable
                 OnManaChanged?.Invoke(currentRatio);
             }
         }
-        /*
+        
         if (currentMana < 1)
         {
             currentMana = 0;
             OnManaDepleted?.Invoke();
             StartCoroutine(HandleDeath());
-        }*/
+        }
     }
 
 

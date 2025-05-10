@@ -25,20 +25,14 @@ public class SoundManager : MonoBehaviour
     private float currentMusicVolume;
     private float currentSfxVolume;
 
+
     private void Start()
     {
         masterBus = RuntimeManager.GetBus("bus:/");
         musicBus = RuntimeManager.GetBus("bus:/Music");
         sfxBus = RuntimeManager.GetBus("bus:/SFX");
-
-        float savedMasterVolume = PlayerPrefs.GetFloat("MasterVolume", 1f);
-        float savedMusicVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
-        float savedSFXVolume = PlayerPrefs.GetFloat("SFXVolume", 1f);
-
-        SetMasterVolume(savedMasterVolume);
-        SetMusicVolume(savedMusicVolume);
-        SetSFXVolume(savedSFXVolume);
-        applyChanges();
+        
+        LoadSavedValues();
     }
 
     private void OnEnable()
@@ -50,16 +44,7 @@ public class SoundManager : MonoBehaviour
         float savedMusicVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
         float savedSFXVolume = PlayerPrefs.GetFloat("SFXVolume", 1f);
 
-        // Establir els valors dels PlayerPrefs als sliders
-        masterSlider.value = savedMasterVolume;
-        musicSlider.value = savedMusicVolume;
-        sfxSlider.value = savedSFXVolume;
-
-        // Aplicar els volums inicials
-        SetMasterVolume(savedMasterVolume);
-        SetMusicVolume(savedMusicVolume);
-        SetSFXVolume(savedSFXVolume);
-        applyChanges();
+        LoadSavedValues();
     }
 
     private void OnDisable()
@@ -114,5 +99,17 @@ public class SoundManager : MonoBehaviour
         PlayerPrefs.SetFloat("MusicVolume", currentMusicVolume);
         PlayerPrefs.SetFloat("SFXVolume", currentSfxVolume);
         PlayerPrefs.Save();
+    }
+
+    public void LoadSavedValues()
+    {
+        float savedMasterVolume = PlayerPrefs.GetFloat("MasterVolume", 1f);
+        float savedMusicVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
+        float savedSFXVolume = PlayerPrefs.GetFloat("SFXVolume", 1f);
+
+        SetMasterVolume(savedMasterVolume);
+        SetMusicVolume(savedMusicVolume);
+        SetSFXVolume(savedSFXVolume);
+        applyChanges();
     }
 }

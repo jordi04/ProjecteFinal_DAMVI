@@ -21,8 +21,11 @@ public class MainMenu : MonoBehaviour
     [SerializeField] CinemachineVirtualCamera mainMenuCamera;
     [SerializeField] private bool firstTime = true;
 
+    [SerializeField] SoundManager soundManager;
+
     private void Start()
     {
+        soundManager.LoadSavedValues();
         UserInput.instance.switchActionMap(UserInput.ActionMap.InMenu);
     }
 
@@ -53,7 +56,10 @@ public class MainMenu : MonoBehaviour
     {
         StartCoroutine(FadeOutAndPlay());
         if (!firstTime)
+        {
             EndTimeline();
+            human.gameObject.SetActive(false);
+        }
         firstTime = false;
     }
 

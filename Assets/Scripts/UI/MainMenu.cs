@@ -56,7 +56,10 @@ public class MainMenu : MonoBehaviour
     {
         StartCoroutine(FadeOutAndPlay());
         if (!firstTime)
+        {
             EndTimeline();
+            human.gameObject.SetActive(false);
+        }
         firstTime = false;
     }
 

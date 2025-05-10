@@ -37,7 +37,7 @@ public class ProyectilVeneno : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("Terrain"))
         {
-            Debug.Log("Proyectil impactó con el terreno.");
+            //Debug.Log("Proyectil impactó con el terreno.");
         }
 
         if (!collision.gameObject.CompareTag("Enemy")) 

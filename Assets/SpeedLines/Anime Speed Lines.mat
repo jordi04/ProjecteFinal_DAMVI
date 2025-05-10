@@ -35,12 +35,12 @@ Material:
     m_Floats:
     - _MaskHardness: 0.123
     - _MaskPower: 15.05
-    - _MaskScale: 1.574936
+    - _MaskScale: 2
     - _SpeedLinesAnimation: 6
-    - _SpeedLinesPower: 2.5
-    - _SpeedLinesRadialScale: 8
-    - _SpeedLinesRemap: 0.98979175
+    - _SpeedLinesPower: 1
+    - _SpeedLinesRadialScale: 10
+    - _SpeedLinesRemap: 1
     - _SpeedLinesTiling: 300
     m_Colors:
-    - _Colour: {r: 1, g: 0, b: 0, a: 0.8086684}
+    - _Colour: {r: 0.7169812, g: 0.28746888, b: 0.71420217, a: 0.0034688115}
   m_BuildTextureStacks: []

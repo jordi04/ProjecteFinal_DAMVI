@@ -4641,6 +4641,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 96843676}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &96843678 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4984611231720713575, guid: b9426812565fc1b47a4e88dccb2ddd28,
+    type: 3}
+  m_PrefabInstance: {fileID: 96843676}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 367c34c4a483a464fbd19b1bc6c8dac7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &101172987
 GameObject:
   m_ObjectHideFlags: 0
@@ -20867,7 +20879,7 @@ MonoBehaviour:
     m_Events:
     - m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 96843678}
           m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
           m_MethodName: EndTimeline
           m_Mode: 1
@@ -20883,7 +20895,7 @@ MonoBehaviour:
         m_Calls: []
     - m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 96843678}
           m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
           m_MethodName: ShadowRenderer
           m_Mode: 1

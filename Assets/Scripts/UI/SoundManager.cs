@@ -108,8 +108,11 @@ public class SoundManager : MonoBehaviour
         float savedSFXVolume = PlayerPrefs.GetFloat("SFXVolume", 1f);
 
         SetMasterVolume(savedMasterVolume);
+        masterSlider.value = savedMasterVolume;
         SetMusicVolume(savedMusicVolume);
+        musicSlider.value = savedMusicVolume;
         SetSFXVolume(savedSFXVolume);
+        sfxSlider.value = savedSFXVolume;
         applyChanges();
     }
 }

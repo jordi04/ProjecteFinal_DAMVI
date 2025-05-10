@@ -33,14 +33,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _MaskHardness: 0
-    - _MaskPower: 5.4
-    - _MaskScale: 2
-    - _SpeedLinesAnimation: 5.26
-    - _SpeedLinesPower: 1
-    - _SpeedLinesRadialScale: 10
-    - _SpeedLinesRemap: 1
+    - _MaskHardness: 0.123
+    - _MaskPower: 15.05
+    - _MaskScale: 1.574936
+    - _SpeedLinesAnimation: 6
+    - _SpeedLinesPower: 2.5
+    - _SpeedLinesRadialScale: 8
+    - _SpeedLinesRemap: 0.98979175
     - _SpeedLinesTiling: 300
     m_Colors:
-    - _Colour: {r: 0.6226984, g: 0.40970984, b: 0.8773585, a: 1}
+    - _Colour: {r: 1, g: 0, b: 0, a: 0.8086684}
   m_BuildTextureStacks: []

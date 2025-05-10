@@ -218,6 +218,9 @@ MonoBehaviour:
   retreatDistance: 5
   hotZoneObject: {fileID: 0}
   triggerAreaObject: {fileID: 0}
+  baseDamage: 10
+  baseHealth: 100
+  baseSpeed: 3.5
   spawner: {fileID: 0}
   flightSpeed: 7
   hoverHeight: 12
@@ -242,9 +245,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Height: 2.2657318
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: -0.1328659}
 --- !u!1183024399 &504315785191797395
 LookAtConstraint:
   m_ObjectHideFlags: 0

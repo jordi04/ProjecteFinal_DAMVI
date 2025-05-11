@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1564537396503154776}
   - component: {fileID: 2616571798910387792}
   - component: {fileID: 2940137228264596349}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: gapo venenoso
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,13 +29,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9058237785712177519}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 335.9813, y: 26.0746, z: 368.5103}
   m_LocalScale: {x: 0.1888, y: 0.52, z: 0.3278}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!33 &4080883174020846994
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -101,7 +101,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -121,7 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f947ff087a8d6374f9e80b34a8f9868c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocidad: 10
+  velocidad: 1
 --- !u!54 &2940137228264596349
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -148,4 +148,4 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1

@@ -17,7 +17,7 @@ public class SerpienteBoss : MonoBehaviour
     public float duracionVeneno = 5f;
     public GameObject charcoVenenoPrefab;
     public float tiempoCharcoVeneno = 5f;
-    
+
     [SerializeField] float life = 50f;
     [SerializeField] private float flashDuration = 0.2f;
     [SerializeField] private Renderer snakeRenderer;
@@ -67,33 +67,18 @@ public class SerpienteBoss : MonoBehaviour
         snakePosition.transform.Rotate(0, 180, 0);
     }
 
-    IEnumerator AtaqueMordida()
+    public IEnumerator AtaqueMordida()
     {
         puedeAtacar = false;
         animator.SetTrigger("CloseAttack");
-        ManaSystem.instance.TakeDamage(dañoMordida);
         yield return new WaitForSeconds(tiempoEntreAtaques);
         puedeAtacar = true;
     }
 
-    IEnumerator AtaqueEscupitajo()
+    public IEnumerator AtaqueEscupitajo()
     {
         puedeAtacar = false;
         animator.SetTrigger("DistAttack");
-
-        // Instanciamos el proyectil adelantado para evitar colisión con el lanzador
-        GameObject veneno = Instantiate(proyectilVenenoPrefab,
-            puntoDisparo.position,
-            Quaternion.identity);
-
-        veneno.GetComponent<ProyectilVeneno>().IniciarVeneno(
-            (objetivo.position - puntoDisparo.position).normalized,
-            dañoVeneno,
-            duracionVeneno,
-            charcoVenenoPrefab,
-            tiempoCharcoVeneno
-            );
-
         yield return new WaitForSeconds(tiempoEntreAtaques);
         puedeAtacar = true;
     }

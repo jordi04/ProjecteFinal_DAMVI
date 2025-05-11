@@ -27,21 +27,16 @@ public class ProyectilVeneno : MonoBehaviour
         transform.position += direccion * velocidad * Time.deltaTime;
     }
 
-    void OnCollisionEnter(Collision collision)
+
+    private void OnTriggerEnter(Collider other)
     {
         if (impactoRealizado) return;
 
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            CharcoVeneno.AplicarVeneno(this, dañoVeneno, duracionVeneno);
-        }
-        else if (collision.gameObject.CompareTag("Terrain"))
-        {
-            //Debug.Log("Proyectil impactó con el terreno.");
-        }
-
-        if (!collision.gameObject.CompareTag("Enemy")) 
+        if (!other.gameObject.CompareTag("Enemy"))
             DestruirProyectil();
+
+        if (other.gameObject.layer == 7)
+            Destroy(this.gameObject);
     }
 
     void DestruirProyectil()
@@ -64,12 +59,13 @@ public class ProyectilVeneno : MonoBehaviour
             if (charcoComponent != null)
             {
                 charcoComponent.danoPorSegundo = dañoVeneno;
-                charcoComponent.duracion = tiempoCharcoVeneno;
+                charcoComponent.duracionDPS = duracionVeneno;
             }
 
             // Ignorar colisión entre el proyectil y el charco
             Collider proyectilCol = GetComponent<Collider>();
             Collider charcoCol = charco.GetComponent<Collider>();
+            Destroy(charco, tiempoCharcoVeneno);
 
             if (proyectilCol != null && charcoCol != null)
             {

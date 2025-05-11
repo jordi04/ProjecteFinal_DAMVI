@@ -71,5 +71,66 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7f848f70f6126004795c905b75c52b73,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6711960223079124296}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7f848f70f6126004795c905b75c52b73,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7201190411500114179}
   m_SourcePrefab: {fileID: 100100000, guid: 7f848f70f6126004795c905b75c52b73, type: 3}
+--- !u!1 &8753539919425602667 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 7f848f70f6126004795c905b75c52b73,
+    type: 3}
+  m_PrefabInstance: {fileID: 8483581015508236602}
+  m_PrefabAsset: {fileID: 0}
+--- !u!136 &6711960223079124296
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8753539919425602667}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 8.602596
+  m_Height: 25.732468
+  m_Direction: 1
+  m_Center: {x: 1.0985796, y: 12.439863, z: -0.24356419}
+--- !u!205 &7201190411500114179
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8753539919425602667}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0, y: 0, z: 0}
+  m_Size: 1
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.6
+    fadeTransitionWidth: 0
+    renderers: []
+  - screenRelativeHeight: 0.3
+    fadeTransitionWidth: 0
+    renderers: []
+  - screenRelativeHeight: 0.1
+    fadeTransitionWidth: 0
+    renderers: []
+  m_Enabled: 1

@@ -11,11 +11,6 @@ public class DuendeMeleeAI : EnemyController
     [Header("Referencias")]
     [SerializeField] Transform puntoAtaque;
 
-    [Header("Valores Base")]
-    [SerializeField] float baseDamage = 10f;
-    [SerializeField] float baseHealth = 100f;
-    [SerializeField] float baseSpeed = 3.5f;
-
     [SerializeField] float stoppingDistancePersonalizada = 1.5f;
     private bool puedeAtacar = true;
 
@@ -46,7 +41,6 @@ public class DuendeMeleeAI : EnemyController
 
     void ConfigurarComponentesAdicionales()
     {
-        navAgent.stoppingDistance = rangoAtaque;
         navAgent.angularSpeed = 720f;
         navAgent.speed = moveSpeed;
     }
@@ -71,7 +65,7 @@ public class DuendeMeleeAI : EnemyController
     IEnumerator AtaqueMelee()
     {
         puedeAtacar = false;
-        animator.SetTrigger(attackAnimTrigger);
+        //animator.SetTrigger(attackAnimTrigger);
 
         yield return new WaitForSeconds(0.3f);
 

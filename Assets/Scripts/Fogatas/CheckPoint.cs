@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -13,9 +12,6 @@ public class CheckPoint : MonoBehaviour
     [SerializeField] private CheckPointSO checkPointData;
     [SerializeField] private float interactionDistance = 4f;
 
-    //If will not be opened instantly
-    //public float holdTime = 1f;
-
     [Header("Turn off")]
     [SerializeField] private GameObject hud;
 
@@ -24,21 +20,15 @@ public class CheckPoint : MonoBehaviour
 
     [Header("UI Main")]
     [SerializeField] private GameObject main_Panel;
+    [SerializeField] private GameObject travel_Panel;
     [SerializeField] private TextMeshProUGUI checkPointName;
 
-    [Header("UI Travel")]
-    [SerializeField] private GameObject travel_Panel;
-    [SerializeField] private Transform mapListParent;
+    [Header("Checkpoints List")]
     [SerializeField] private Transform checkpointListParent;
-    [SerializeField] private GameObject mapButtonPrefab;
     [SerializeField] private GameObject checkpointButtonPrefab;
     [SerializeField] private Image selectedCheckpointImage;
     [SerializeField] private Color visitedColor = Color.white;
     [SerializeField] private Color unvisitedColor = Color.gray;
-    private Dictionary<Map, List<CheckPointSO>> checkpointsByMap = new Dictionary<Map, List<CheckPointSO>>();
-
-    [Header("UI Upgrades")]
-    [SerializeField] private GameObject upgrades_Panel;
 
     [Header("VFX_Fire")]
     [SerializeField] private GameObject fireVFX;
@@ -48,29 +38,25 @@ public class CheckPoint : MonoBehaviour
 
     private bool isPlayerInRange = false;
     private bool hideInteractUI = false;
+
     private void Start()
     {
         checkPointData.checkPointTransform = spawnPoint;
-
         fireVFX.SetActive(checkPointData.isVisited);
-        Animator animator = GetComponent<Animator>();
     }
-
-
 
     private void Update()
     {
+        // Player interaction check
         if (Physics.Raycast(GameManager.instance.mainCamera.transform.position, GameManager.instance.mainCamera.transform.forward, out RaycastHit hit, interactionDistance) && !hideInteractUI)
         {
             if (hit.collider.gameObject == gameObject)
             {
                 isPlayerInRange = true;
                 interactUI.SetActive(true);
-
                 if (UserInput.instance.interactPressed && UserInput.instance.IsInGameMode)
                 {
                     OpenCheckpointUI();
-                    Debug.Log("OpenCheckpointUI");
                 }
             }
             else
@@ -85,25 +71,25 @@ public class CheckPoint : MonoBehaviour
             interactUI.SetActive(false);
         }
 
-        if (UserInput.instance.pauseMenuPressed && main_Panel.activeSelf)
+        // Handle UI navigation with Escape key
+        if (UserInput.instance.pauseMenuPressed)
         {
-            CloseCheckpointUI();
-        }
-        else if (UserInput.instance.pauseMenuPressed && travel_Panel.activeSelf)
-        {
-            travel_Panel.SetActive(false);
-            main_Panel.SetActive(true);
-        }
-        else if (UserInput.instance.pauseMenuPressed && upgrades_Panel.activeSelf)
-        {
-            upgrades_Panel.SetActive(false);
-            main_Panel.SetActive(true);
+            if (travel_Panel.activeSelf)
+            {
+                // If in travel panel, go back to main panel
+                travel_Panel.SetActive(false);
+                main_Panel.SetActive(true);
+            }
+            else if (main_Panel.activeSelf)
+            {
+                // If in main panel, close everything
+                CloseCheckpointUI();
+            }
         }
     }
 
     private void OpenCheckpointUI()
     {
-        Debug.Log(checkPointData.isVisited);
         if (!checkPointData.isVisited)
         {
             // Don't pause the game yet for first-time interaction
@@ -111,7 +97,6 @@ public class CheckPoint : MonoBehaviour
         }
         else
         {
-
             // For subsequent interactions, show UI immediately
             ShowCheckpointUI();
         }
@@ -120,12 +105,11 @@ public class CheckPoint : MonoBehaviour
     private IEnumerator PlayFirstTimeInteraction()
     {
         hideInteractUI = true;
-        //Desactivar game HUD
+        // Deactivate game HUD
         hud.SetActive(false);
-        //Desactivar la hud de la fogata que diu E per interactuar
+        // Deactivate the bonfire HUD that says E to interact
         interactUI.SetActive(false);
         UserInput.instance.switchActionMap(UserInput.ActionMap.InCinematic);
-  
 
         // Play the cinematic
         playableDirector.Play();
@@ -138,27 +122,46 @@ public class CheckPoint : MonoBehaviour
 
         // Now show the UI
         ShowCheckpointUI();
-        
     }
 
     private void ShowCheckpointUI()
     {
         hideInteractUI = true;
+
+        // Make sure travel panel is closed
+        travel_Panel.SetActive(false);
+
+        // Open main panel
         main_Panel.SetActive(true);
         interactUI.SetActive(false);
         hud.SetActive(false);
+
         PauseMenu.otherMenuOpen = true;
         UserInput.instance.switchActionMap(UserInput.ActionMap.InMenu);
         Time.timeScale = 0;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+
+        // Update the checkpoint name text
+        if (checkPointName != null)
+        {
+            checkPointName.text = checkPointData.checkpointName;
+        }
     }
 
+    // Public method to connect to UI buttons
+    public void ShowCheckpoints()
+    {
+        SetUpCheckpointList();
+    }
 
     private void CloseCheckpointUI()
     {
+        // Close all UI panels
         main_Panel.SetActive(false);
+        travel_Panel.SetActive(false);
 
+        // Restore game state
         hud.SetActive(true);
         PauseMenu.otherMenuOpen = false;
         UserInput.instance.switchActionMap(UserInput.ActionMap.InGame);
@@ -168,79 +171,48 @@ public class CheckPoint : MonoBehaviour
         hideInteractUI = false;
     }
 
-    public void OpenTravelUI()
-    {
-        main_Panel.SetActive(false);
-        travel_Panel.SetActive(true);
-    }
-
-    private void OpenUpgradesUI()
-    {
-        main_Panel.SetActive(false);
-        upgrades_Panel.SetActive(true);
-    }
-
     private void VisitCheckpoint()
     {
         checkPointData.isVisited = true;
         fireVFX.SetActive(true);
-        setUpTravelUI();
+        SetUpCheckpointList();
     }
-    private void setUpTravelUI()
+
+    // Called when a button is pressed to open the travel panel
+    public void OpenTravelUI()
+    {
+        main_Panel.SetActive(false);
+        travel_Panel.SetActive(true);
+        SetUpCheckpointList();
+    }
+
+    // Go back to main menu from travel UI
+    public void BackToMainMenu()
+    {
+        travel_Panel.SetActive(false);
+        main_Panel.SetActive(true);
+    }
+
+    private void SetUpCheckpointList()
     {
         // Clear existing buttons
-        foreach (Transform child in mapListParent)
-        {
-            Destroy(child.gameObject);
-        }
         foreach (Transform child in checkpointListParent)
         {
             Destroy(child.gameObject);
         }
 
-        // Get all checkpoints and organize them by map
+        // Get all checkpoints
         List<CheckPointSO> allCheckpoints = CheckPointManager.instance.GetAllCheckpoints();
-        checkpointsByMap.Clear();
+
+        // Sort checkpoints by order
+        allCheckpoints.Sort((a, b) => a.order.CompareTo(b.order));
+
+        // Create checkpoint buttons
         foreach (CheckPointSO checkpoint in allCheckpoints)
-        {
-            if (!checkpointsByMap.ContainsKey(checkpoint.map))
-            {
-                checkpointsByMap[checkpoint.map] = new List<CheckPointSO>();
-            }
-            checkpointsByMap[checkpoint.map].Add(checkpoint);
-        }
-
-        // Create map buttons
-        foreach (Map map in checkpointsByMap.Keys)
-        {
-            GameObject mapButtonObj = Instantiate(mapButtonPrefab, mapListParent);
-            Button mapButton = mapButtonObj.GetComponent<Button>();
-            TMPro.TextMeshProUGUI mapButtonText = mapButtonObj.GetComponentInChildren<TMPro.TextMeshProUGUI>();
-            mapButtonText.text = map.ToString();
-            mapButton.onClick.AddListener(() => ShowCheckpointsForMap(map));
-        }
-
-        // Show checkpoints for the first map by default
-        if (checkpointsByMap.Keys.Count > 0)
-        {
-            ShowCheckpointsForMap(checkpointsByMap.Keys.First());
-        }
-    }
-
-    private void ShowCheckpointsForMap(Map map)
-    {
-        // Clear existing checkpoint buttons
-        foreach (Transform child in checkpointListParent)
-        {
-            Destroy(child.gameObject);
-        }
-
-        // Create checkpoint buttons for the selected map
-        foreach (CheckPointSO checkpoint in checkpointsByMap[map])
         {
             GameObject buttonObj = Instantiate(checkpointButtonPrefab, checkpointListParent);
             Button button = buttonObj.GetComponent<Button>();
-            TMPro.TextMeshProUGUI buttonText = buttonObj.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+            TextMeshProUGUI buttonText = buttonObj.GetComponentInChildren<TextMeshProUGUI>();
 
             buttonText.text = checkpoint.checkpointName;
             buttonText.color = checkpoint.isVisited ? visitedColor : unvisitedColor;
@@ -281,7 +253,6 @@ public class CheckPoint : MonoBehaviour
         selectedCheckpointImage.gameObject.SetActive(false);
     }
 
-
     private void TravelToCheckpoint(CheckPointSO checkpoint)
     {
         if (checkpoint.isVisited)
@@ -300,15 +271,13 @@ public class CheckPoint : MonoBehaviour
 
             CheckPointManager.instance.SetCurrentCheckpoint(checkpoint);
 
-            // Close UI panels
-            travel_Panel.SetActive(false);
+            // Close all UI
             CloseCheckpointUI();
         }
     }
 
     public void SetAsRespawn()
     {
-        //Animacio de descançar o algun feedback al jugador
         CheckPointManager.instance.SetCurrentCheckpoint(checkPointData);
     }
 
@@ -317,9 +286,3 @@ public class CheckPoint : MonoBehaviour
         return checkPointData;
     }
 }
-
-
-//TODO:Particulas paradas en el menu.
-//TODO:El fuego se activa al salir del menu deveria ser al entrar
-//TODO:Ordenar mapas y checkpoints por orden de aparicion
-//TODO:Bloquear mapas no visitados

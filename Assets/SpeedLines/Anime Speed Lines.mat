@@ -42,5 +42,5 @@ Material:
     - _SpeedLinesRemap: 1
     - _SpeedLinesTiling: 300
     m_Colors:
-    - _Colour: {r: 0.7169812, g: 0.28746888, b: 0.71420217, a: 0.0034688115}
+    - _Colour: {r: 0.7169812, g: 0.28746888, b: 0.71420217, a: 0.0036566257}
   m_BuildTextureStacks: []

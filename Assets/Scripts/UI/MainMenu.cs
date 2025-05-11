@@ -54,6 +54,7 @@ public class MainMenu : MonoBehaviour
 
     private void Play()
     {
+        FMODUnity.RuntimeManager.PauseAllEvents(false);
         StartCoroutine(FadeOutAndPlay());
         if (!firstTime)
         {

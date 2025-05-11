@@ -59,7 +59,11 @@
 			<destination>{90cd1b30-52d4-4290-92ae-3008b2638539}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{88c7842e-8c72-4ca1-8794-a69f859d5dad}" />
+	<object class="EventAutomatableProperties" id="{88c7842e-8c72-4ca1-8794-a69f859d5dad}">
+		<property name="maximumDistance">
+			<value>50</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{70078c4f-16a0-48b2-ba11-0ad2679d4f29}" />
 	<object class="Timeline" id="{c76dc32b-41e3-4f82-8fd3-0cb9d9ad74af}">
 		<property name="isProxyEnabled">
@@ -101,6 +105,9 @@
 	</object>
 	<object class="MixerBusPanner" id="{bf03487e-0aad-4a15-9a2b-e0fb445fcf15}" />
 	<object class="SingleSound" id="{c2bf6e83-c8ff-4913-a392-5c3d3465fac9}">
+		<relationship name="modulators">
+			<destination>{d403e55b-8245-4a96-860b-4577028867c9}</destination>
+		</relationship>
 		<relationship name="audioFile">
 			<destination>{4b1f9840-989e-4915-a758-6c7a051f7cf0}</destination>
 		</relationship>
@@ -108,4 +115,12 @@
 	<object class="MixerBusFader" id="{64858a42-87b0-4302-9e39-a792256d0176}" />
 	<object class="MixerBusFader" id="{dc2ae487-22b0-4cce-a289-ea1e346835f8}" />
 	<object class="SpatialiserEffect" id="{ff52a03b-cb03-466b-a44c-935e3b913267}" />
+	<object class="RandomizerModulator" id="{d403e55b-8245-4a96-860b-4577028867c9}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>pitch</value>
+		</property>
+		<property name="amount">
+			<value>11.5</value>
+		</property>
+	</object>
 </objects>

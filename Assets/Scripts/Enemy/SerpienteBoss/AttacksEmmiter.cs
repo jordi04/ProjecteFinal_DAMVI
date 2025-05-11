@@ -1,3 +1,5 @@
+using FMOD.Studio;
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +11,10 @@ public class AttacksEmmiter : MonoBehaviour
     public void closeAttackEmmiter()
     {
         ManaSystem.instance.TakeDamage(snake.dañoMordida);
+        EventInstance instance = RuntimeManager.CreateInstance(snake.closeAttack);
+        instance.set3DAttributes(RuntimeUtils.To3DAttributes(snake.snakePosition));
+        instance.start();
+        instance.release();
     }
 
     public void rangeAttackEmmiter()
@@ -25,5 +31,10 @@ public class AttacksEmmiter : MonoBehaviour
             snake.charcoVenenoPrefab,
             snake.tiempoCharcoVeneno
             );
+
+        EventInstance instance = RuntimeManager.CreateInstance(snake.distAttack);
+        instance.set3DAttributes(RuntimeUtils.To3DAttributes(snake.snakePosition));
+        instance.start();
+        instance.release();
     }
 }

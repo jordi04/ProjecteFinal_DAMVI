@@ -169,39 +169,39 @@ MonoBehaviour:
   useAnimatorSpeed: 1
   attackSoundEvent:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: 1152412584
+      Data2: 1135742950
+      Data3: 739960732
+      Data4: -2080325317
+    Path: event:/SFX/Gobling_Attack
   damageSoundEvent:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: -1931652974
+      Data2: 1318437471
+      Data3: -1101735012
+      Data4: 122704169
+    Path: event:/SFX/Goblin_Hurt
   deathSoundEvent:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: 147224439
+      Data2: 1242127327
+      Data3: -1420516721
+      Data4: 1032295497
+    Path: event:/SFX/Goblin_Death
   idleSoundEvent:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: 31739491
+      Data2: 1261176494
+      Data3: -1144361294
+      Data4: 266489730
+    Path: event:/SFX/Goblin_Idle
   footstepSoundEvent:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: 31739491
+      Data2: 1261176494
+      Data3: -1144361294
+      Data4: 266489730
+    Path: event:/SFX/Goblin_Idle
   idleSoundInterval: 5
   idleSoundChance: 20
   damageFlashColor: {r: 1, g: 0, b: 0, a: 1}

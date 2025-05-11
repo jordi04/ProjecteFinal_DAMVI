@@ -2089,6 +2089,20 @@ MonoBehaviour:
       Data3: 479423915
       Data4: -648637844
     Path: event:/SFX/Serp_dead_01-01
+  distAttack:
+    Guid:
+      Data1: 1998347001
+      Data2: 1320231388
+      Data3: -947134568
+      Data4: -1234093619
+    Path: event:/SFX/Serp_AttackRange
+  closeAttack:
+    Guid:
+      Data1: -2105275595
+      Data2: 1270562451
+      Data3: 59461308
+      Data4: 1855945974
+    Path: event:/SFX/Serp_AttackClose
 --- !u!136 &4646064681022286694
 CapsuleCollider:
   m_ObjectHideFlags: 0

@@ -182,11 +182,11 @@ MonoBehaviour:
     Path: event:/SFX/Bolet_hurt_01-01
   deathSoundEvent:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: -356031287
+      Data2: 1285929367
+      Data3: 888455359
+      Data4: 2004823623
+    Path: event:/SFX/Mushroom_Death
   idleSoundEvent:
     Guid:
       Data1: -1636294290

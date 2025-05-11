@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.AI;
+using FMOD.Studio;
+using FMODUnity;
+using Unity.VisualScripting;
 
 public interface IDamageable
 {
@@ -140,16 +143,17 @@ public class EnemyController : MonoBehaviour, IDamageable
     [SerializeField] protected bool useAnimatorSpeed = true;
 
     [Header("Audio Settings")]
-    [SerializeField] protected string attackSoundEvent = "event:/Enemies/Attack";
-    [SerializeField] protected string damageSoundEvent = "event:/Enemies/Damage";
-    [SerializeField] protected string deathSoundEvent = "event:/Enemies/Death";
-    [SerializeField] protected string idleSoundEvent = "event:/Enemies/Idle";
-    [SerializeField] protected string footstepSoundEvent = "event:/Enemies/Footstep";
+    [SerializeField] protected EventReference attackSoundEvent;
+    [SerializeField] protected EventReference damageSoundEvent;
+    [SerializeField] protected EventReference deathSoundEvent;
+    [SerializeField] protected EventReference idleSoundEvent;
+    [SerializeField] protected EventReference footstepSoundEvent;
     [SerializeField] protected float idleSoundInterval = 5f;
     [SerializeField] protected float idleSoundChance = 20f;
 
     // For attack sounds that need to be interrupted
-    private FMOD.Studio.EventInstance attackEventInstance;
+    private EventInstance attackEventInstance;
+    private EventInstance idleEventInstance;
 
     [Header("Visual Effects")]
     [SerializeField] protected Color damageFlashColor = Color.red;
@@ -598,12 +602,22 @@ public class EnemyController : MonoBehaviour, IDamageable
         try
         {
             // Create event instances that need to be stopped/manipulated later
-            if (!string.IsNullOrEmpty(attackSoundEvent))
+            if (!attackSoundEvent.IsNull)
             {
                 attackEventInstance = FMODUnity.RuntimeManager.CreateInstance(attackSoundEvent);
                 if (!attackEventInstance.isValid())
                 {
                     Debug.LogWarning($"FMOD event {attackSoundEvent} not found. Sound will be disabled.");
+                    isSoundDisabled = true;
+                }
+            }
+
+            if (!idleSoundEvent.IsNull)
+            {
+                idleEventInstance = FMODUnity.RuntimeManager.CreateInstance(idleSoundEvent);
+                if (!idleEventInstance.isValid())
+                {
+                    Debug.LogWarning($"FMOD event {idleSoundEvent} not found. Sound will be disabled.");
                     isSoundDisabled = true;
                 }
             }
@@ -897,7 +911,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         {
             if (Random.Range(0f, 100f) < idleSoundChance)
             {
-                PlaySound(idleSoundEvent);
+                PlayIdleSound();
             }
             nextIdleSoundTime = Time.time + idleSoundInterval;
         }
@@ -1072,9 +1086,9 @@ public class EnemyController : MonoBehaviour, IDamageable
 
     protected virtual void ResetColor() => SetColor(originalColor);
 
-    protected virtual void PlaySound(string eventPath)
+    protected virtual void PlaySound(EventReference eventPath)
     {
-        if (isSoundDisabled || string.IsNullOrEmpty(eventPath)) return;
+        if (isSoundDisabled || eventPath.IsNull) return;
 
         try
         {
@@ -1088,9 +1102,36 @@ public class EnemyController : MonoBehaviour, IDamageable
         }
     }
 
+    protected virtual void PlayIdleSound()
+    {
+        if (isSoundDisabled || idleSoundEvent.IsNull) return;
+
+        try
+        {
+            // Check if idle sound is playing
+            if (!IsEventPlaying(idleEventInstance))
+            {
+                idleEventInstance.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(transform.position));
+                idleEventInstance.start();
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogWarning($"Error playing idle sound: {e.Message}");
+            isSoundDisabled = true;
+        }
+    }
+
+    public bool IsEventPlaying(FMOD.Studio.EventInstance instance)
+    {
+        PLAYBACK_STATE state;
+        instance.getPlaybackState(out state);
+        return state == PLAYBACK_STATE.PLAYING || state == PLAYBACK_STATE.STARTING;
+    }
+
     protected virtual void PlayAttackSound()
     {
-        if (isSoundDisabled || string.IsNullOrEmpty(attackSoundEvent)) return;
+        if (isSoundDisabled || attackSoundEvent.IsNull) return;
 
         try
         {
@@ -1136,7 +1177,7 @@ public class EnemyController : MonoBehaviour, IDamageable
 
     public void PlayFootstepSound()
     {
-        if (isSoundDisabled || string.IsNullOrEmpty(footstepSoundEvent)) return;
+        if (isSoundDisabled || footstepSoundEvent.IsNull) return;
 
         try
         {

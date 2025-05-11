@@ -81,6 +81,7 @@ public class PauseMenu : MonoBehaviour
     private void TogglePauseMenu()
     {
         isPaused = !isPaused;
+        FMODUnity.RuntimeManager.PauseAllEvents(isPaused);
         pauseMenuCanvas.SetActive(isPaused);
 
         if (isPaused)

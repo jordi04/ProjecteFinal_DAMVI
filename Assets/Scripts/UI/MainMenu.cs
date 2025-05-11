@@ -123,11 +123,6 @@ public class MainMenu : MonoBehaviour
         optionsMenuCanvas.SetActive(true);
     }
 
-    public void ShadowRenderer()
-    {
-        human.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
-    }
-
     public void EndTimeline()
     {
         PauseMenu.otherMenuOpen = false;

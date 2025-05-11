@@ -1,5 +1,194 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8781123414130636515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Bolet_idle_01-01
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Bolet_idle_01-01
+  Guid:
+    Data1: -1636294290
+    Data2: 1251719194
+    Data3: -16147827
+    Data4: 1351128551
+  Banks:
+  - {fileID: 557109491724218155}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-7847188501093176478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Click_medieval_01-04
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Click_medieval_01-04
+  Guid:
+    Data1: -136603325
+    Data2: 1257438838
+    Data3: 184575361
+    Data4: -279370797
+  Banks:
+  - {fileID: 557109491724218155}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-7581605396813958537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Fireball_explotion_03-01
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Fireball_explotion_03-01
+  Guid:
+    Data1: 1924687326
+    Data2: 1199102738
+    Data3: -481278567
+    Data4: 1941124763
+  Banks:
+  - {fileID: 557109491724218155}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-7569669769163328854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Bitxo_attack_03-01
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Bitxo_attack_03-01
+  Guid:
+    Data1: -363326104
+    Data2: 1270063470
+    Data3: -1265591117
+    Data4: 917913375
+  Banks:
+  - {fileID: 557109491724218155}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-6400057101073276930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Cavall_damage_02-01
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Cavall_damage_02-01
+  Guid:
+    Data1: -1914501916
+    Data2: 1297668990
+    Data3: 1736486079
+    Data4: 1992547429
+  Banks:
+  - {fileID: 557109491724218155}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-5434768476090967714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Fireball_throw_01-01
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Fireball_throw_01-01
+  Guid:
+    Data1: -737569595
+    Data2: 1240783356
+    Data3: -46587234
+    Data4: -1706978816
+  Banks:
+  - {fileID: 557109491724218155}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-4771679492625532552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Bolet_hurt_01-01
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Bolet_hurt_01-01
+  Guid:
+    Data1: 482734242
+    Data2: 1172930007
+    Data3: -536029259
+    Data4: -1183300489
+  Banks:
+  - {fileID: 557109491724218155}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-4017377726244176633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10,9 +199,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/shield
+  m_Name: event:/SFX/Shield
   m_EditorClassIdentifier: 
-  Path: event:/SFX/shield
+  Path: event:/SFX/Shield
   Guid:
     Data1: 1672996892
     Data2: 1200600190
@@ -22,6 +211,87 @@ MonoBehaviour:
   - {fileID: 557109491724218155}
   IsStream: 0
   Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-2808586741708291328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Passes_Cavall_02-01
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Passes_Cavall_02-01
+  Guid:
+    Data1: 1963610390
+    Data2: 1162122126
+    Data3: 1473397436
+    Data4: 715796701
+  Banks:
+  - {fileID: 557109491724218155}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-1746836666704931304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Serp_hurt_01-01
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Serp_hurt_01-01
+  Guid:
+    Data1: -199386614
+    Data2: 1240725424
+    Data3: -1690256250
+    Data4: -665546233
+  Banks:
+  - {fileID: 557109491724218155}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-827300839828406535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/CardsFalling_01-01
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/CardsFalling_01-01
+  Guid:
+    Data1: 1755419798
+    Data2: 1177556872
+    Data3: 887590839
+    Data4: -1426424339
+  Banks:
+  - {fileID: 557109491724218155}
+  IsStream: 0
+  Is3D: 0
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
@@ -47,12 +317,32 @@ MonoBehaviour:
   - {fileID: -4017377726244176633}
   - {fileID: 5744205625990858251}
   - {fileID: 124584966412069426}
+  - {fileID: -1746836666704931304}
+  - {fileID: 4534515880360703398}
+  - {fileID: -2808586741708291328}
+  - {fileID: 4582609516893184686}
+  - {fileID: 339700131182947236}
+  - {fileID: -7847188501093176478}
+  - {fileID: -7569669769163328854}
+  - {fileID: -8781123414130636515}
+  - {fileID: 4705133797620769852}
+  - {fileID: -827300839828406535}
+  - {fileID: -4771679492625532552}
+  - {fileID: 5656264363490033447}
+  - {fileID: 3968193697016875197}
+  - {fileID: -5434768476090967714}
+  - {fileID: 4983325308685768665}
+  - {fileID: 3556600433185931755}
+  - {fileID: -7581605396813958537}
+  - {fileID: -6400057101073276930}
+  - {fileID: 1810202137078841901}
+  - {fileID: 2511901683356000639}
   EditorParameters: []
   MasterBanks:
   - {fileID: 557109491724218155}
   StringsBanks:
   - {fileID: 3013371581036214418}
-  cacheTime: 638795645258292327
+  cacheTime: 638825761580563199
   cacheVersion: 131846
 --- !u!114 &124584966412069426
 MonoBehaviour:
@@ -64,14 +354,41 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/fireball-whoosh
+  m_Name: event:/SFX/Fireball-whoosh
   m_EditorClassIdentifier: 
-  Path: event:/SFX/fireball-whoosh
+  Path: event:/SFX/Fireball-whoosh
   Guid:
     Data1: 1554393332
     Data2: 1231125558
     Data3: -2081558614
     Data4: 1392034484
+  Banks:
+  - {fileID: 557109491724218155}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &339700131182947236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Cavall_IDLE_03-01
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Cavall_IDLE_03-01
+  Guid:
+    Data1: -115115232
+    Data2: 1279286399
+    Data3: 1867323786
+    Data4: 352872164
   Banks:
   - {fileID: 557109491724218155}
   IsStream: 0
@@ -96,11 +413,65 @@ MonoBehaviour:
   Path: The_Last_HiHo_Fmod/The_Last_HiHo/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638795645257533223
+  lastModified: 638825761580389059
   FileSizes:
   - Name: Desktop
-    Value: 2664064
+    Value: 3050016
   Exists: 1
+--- !u!114 &1810202137078841901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Bitxo_damage_01-01
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Bitxo_damage_01-01
+  Guid:
+    Data1: 1566117351
+    Data2: 1194195947
+    Data3: -1116525900
+    Data4: 505951255
+  Banks:
+  - {fileID: 557109491724218155}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &2511901683356000639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Click_medieval_01-05
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Click_medieval_01-05
+  Guid:
+    Data1: 1941764076
+    Data2: 1223428084
+    Data3: 648369586
+    Data4: 639979689
+  Banks:
+  - {fileID: 557109491724218155}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &3013371581036214418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,11 +487,200 @@ MonoBehaviour:
   Path: The_Last_HiHo_Fmod/The_Last_HiHo/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638795645258292327
+  lastModified: 638825761580563199
   FileSizes:
   - Name: Desktop
-    Value: 1012
+    Value: 2056
   Exists: 1
+--- !u!114 &3556600433185931755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Bitxo_death_04-01
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Bitxo_death_04-01
+  Guid:
+    Data1: 350558167
+    Data2: 1138735882
+    Data3: -1701639522
+    Data4: -1998080791
+  Banks:
+  - {fileID: 557109491724218155}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &3968193697016875197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Bolet_steps_02
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Bolet_steps_02
+  Guid:
+    Data1: 1594608834
+    Data2: 1095612821
+    Data3: -1565670475
+    Data4: 331187073
+  Banks:
+  - {fileID: 557109491724218155}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &4534515880360703398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Player_damage_01-01
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Player_damage_01-01
+  Guid:
+    Data1: -1777160689
+    Data2: 1232053558
+    Data3: 830054069
+    Data4: 638092954
+  Banks:
+  - {fileID: 557109491724218155}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &4582609516893184686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Bolet_attack_01-01
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Bolet_attack_01-01
+  Guid:
+    Data1: -2120612067
+    Data2: 1289442826
+    Data3: -300870978
+    Data4: -584242153
+  Banks:
+  - {fileID: 557109491724218155}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &4705133797620769852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Cavall_IDLE_04-01
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Cavall_IDLE_04-01
+  Guid:
+    Data1: 228436112
+    Data2: 1212393669
+    Data3: -1604255314
+    Data4: 15506401
+  Banks:
+  - {fileID: 557109491724218155}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &4983325308685768665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Serp_dead_01-01
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Serp_dead_01-01
+  Guid:
+    Data1: 1157112276
+    Data2: 1098929130
+    Data3: 479423915
+    Data4: -648637844
+  Banks:
+  - {fileID: 557109491724218155}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &5656264363490033447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Hitmarker_02-01
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Hitmarker_02-01
+  Guid:
+    Data1: -719036234
+    Data2: 1339777685
+    Data3: 209326748
+    Data4: 640814793
+  Banks:
+  - {fileID: 557109491724218155}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &5744205625990858251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,14 +691,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/bee-flying
+  m_Name: event:/SFX/Bee-flying
   m_EditorClassIdentifier: 
-  Path: event:/SFX/bee-flying
+  Path: event:/SFX/Bee-flying
   Guid:
-    Data1: -1648509623
-    Data2: 1108700872
-    Data3: 359864763
-    Data4: -778109431
+    Data1: -1070919954
+    Data2: 1256111959
+    Data3: -1693359700
+    Data4: 925327671
   Banks:
   - {fileID: 557109491724218155}
   IsStream: 0

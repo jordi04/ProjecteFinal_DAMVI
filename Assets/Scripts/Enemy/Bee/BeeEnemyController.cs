@@ -1,7 +1,9 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+#if UNITY_EDITOR
 using static UnityEditor.Profiling.RawFrameDataView;
+#endif
 
 public class BeeEnemyController : EnemyController
 {

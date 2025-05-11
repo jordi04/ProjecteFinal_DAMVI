@@ -110,6 +110,15 @@ public class ManaSystem : MonoBehaviour, IDamageable
     private IEnumerator HandleDeath()
     {
         isDead = true;
+
+        // Stop poison
+        if (dpsCoroutine != null)
+        {
+            StopCoroutine(dpsCoroutine);
+            dpsCoroutine = null;
+            remainingTime = 0; // Restart remaining time
+        }
+
         Time.timeScale = 0; // Pause the game
 
         // Instantiate the respawn UI

@@ -54,6 +54,7 @@ public class MainMenu : MonoBehaviour
 
     private void Play()
     {
+        FMODUnity.RuntimeManager.PauseAllEvents(false);
         StartCoroutine(FadeOutAndPlay());
         if (!firstTime)
         {
@@ -108,7 +109,7 @@ public class MainMenu : MonoBehaviour
 
         while (elapsedTime < fadeDuration)
         {
-            elapsedTime += Time.deltaTime;
+            elapsedTime += Time.unscaledDeltaTime;
             mainMenuCanvas.alpha = Mathf.Lerp(startAlpha, 0f, elapsedTime / fadeDuration);
             yield return null;
         }

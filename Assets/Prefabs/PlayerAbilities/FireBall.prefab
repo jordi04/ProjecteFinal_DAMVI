@@ -177,11 +177,11 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: 1554393332
-      Data2: 1231125558
-      Data3: -2081558614
-      Data4: 1392034484
-    Path: event:/SFX/fireball-whoosh
+      Data1: -737569595
+      Data2: 1240783356
+      Data3: -46587234
+      Data4: -1706978816
+    Path: event:/SFX/Fireball_throw_01-01
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0

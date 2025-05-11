@@ -26,6 +26,10 @@ public class ManaSystem : MonoBehaviour, IDamageable
     private float lastManaRatio = -1f;
     private bool isDead = false;
 
+    private Coroutine dpsCoroutine;
+    private float remainingTime;
+    private float actualDamage;
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -80,7 +84,24 @@ public class ManaSystem : MonoBehaviour, IDamageable
         return currentMana >= amount;
     }
 
-    
+    public void ActivateDPS(float duration, float damagePerSecond)
+    {
+        remainingTime = duration;
+        actualDamage = damagePerSecond;
+        if (dpsCoroutine == null)
+            dpsCoroutine = StartCoroutine(DPSCoroutine());
+    }
+
+    IEnumerator DPSCoroutine()
+    {
+        while (remainingTime > 0)
+        {
+            TakeDamage(actualDamage);
+            yield return new WaitForSeconds(1f);
+            remainingTime -= 1f;
+        }
+        dpsCoroutine = null;
+    }
 
     private IEnumerator HandleDeath()
     {
@@ -155,7 +176,6 @@ public class ManaSystem : MonoBehaviour, IDamageable
 
     public void TakeDamage(float amount)
     {
-        Debug.Log("ManaSystem.TakeDamage() called.");
         if (isDead) return; // Evitar múltiples muertes seguidas
 
         currentMana -= amount;

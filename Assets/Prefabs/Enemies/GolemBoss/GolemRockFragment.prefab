@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1666233158301983608
+--- !u!1 &5884134592401791162
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,48 +8,47 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4457929268554960612}
-  - component: {fileID: 2039365824979350139}
-  - component: {fileID: 8935947837921985148}
-  - component: {fileID: 4366577185404851531}
-  - component: {fileID: 651955638709387392}
+  - component: {fileID: 136381886682427655}
+  - component: {fileID: 6995563354514180318}
+  - component: {fileID: 2917030340994370402}
+  - component: {fileID: -393828969830650149}
   m_Layer: 0
-  m_Name: charco venenoso
+  m_Name: GolemRockFragment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4457929268554960612
+--- !u!4 &136381886682427655
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1666233158301983608}
+  m_GameObject: {fileID: 5884134592401791162}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 335.5757, y: 26.18144, z: 368.17426}
-  m_LocalScale: {x: 8.226, y: 0.8226, z: 8.226}
-  m_ConstrainProportionsScale: 0
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 96.825226, y: 20.571, z: 193.13283}
+  m_LocalScale: {x: 0.33, y: 0.33, z: 0.33}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &2039365824979350139
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!33 &6995563354514180318
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1666233158301983608}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &8935947837921985148
+  m_GameObject: {fileID: 5884134592401791162}
+  m_Mesh: {fileID: 7285641324128850035, guid: 7bd0188096ebcb4448ddf828979758ba, type: 3}
+--- !u!23 &2917030340994370402
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1666233158301983608}
+  m_GameObject: {fileID: 5884134592401791162}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -63,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 88f0c11c13631c84aa1a288d3eb2a834, type: 2}
+  - {fileID: 2100000, guid: 86839d5b740f5704585cb84f0197ecaf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -85,39 +84,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4366577185404851531
+--- !u!114 &-393828969830650149
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1666233158301983608}
+  m_GameObject: {fileID: 5884134592401791162}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80a30b983d703b7449a99d38f1aab6d5, type: 3}
+  m_Script: {fileID: 11500000, guid: c62183725a1f92442b88870e25b33164, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  danoPorSegundo: 5
-  duracion: 5
---- !u!64 &651955638709387392
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1666233158301983608}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
+  fragmentPrefab: {fileID: 5884134592401791162}
+  fragmentCount: 5
+  fragmentSpread: 3
+  fragmentDamageMultiplier: 0.5
+  impactEffect: {fileID: 0}
+  explosionRadius: 2
+  collisionLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}

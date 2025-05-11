@@ -1,10 +1,11 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using static EnemyController;
+using UnityEngine.AI;
 
-public class BossGolemEnemyController : EnemyController
+public class GolemBossEnemyController : EnemyController
 {
-    [Header("Boss Golem Settings")]
+    [Header("Golem Boss Settings")]
     [SerializeField] private float rockThrowCooldown = 5f;
     [SerializeField] private float enrageHealthThreshold = 0.3f; // 30% health
     [SerializeField] private float enragedDamageMultiplier = 1.5f;
@@ -12,206 +13,560 @@ public class BossGolemEnemyController : EnemyController
     [SerializeField] private GameObject enrageEffect;
     [SerializeField] private float specialAttackCooldown = 15f;
 
+    [Header("Rock Attack Settings")]
+    [SerializeField] private List<GameObject> availableRocks = new List<GameObject>(); // List of rocks in the scene
+    [SerializeField] private Transform rightHandAttachPoint;
+    [SerializeField] private float rockDamage = 25f;
+    [SerializeField] private float rockThrowForce = 20f;
+    [SerializeField] private float rockUpwardForce = 2f;
+    [SerializeField] private float rangedAttackMinDistance = 5f;
+    [SerializeField] private float rangedAttackMaxDistance = 15f;
+    [SerializeField] private float rockPickupRange = 3f;
+    [SerializeField] private float telekinesisMoveSpeed = 5f; // Speed at which rocks move to hand
+    [SerializeField] private GameObject telekinesisEffectPrefab; // Optional particle effect
+
+    [Header("Energy Ball Attack Settings")]
+    [SerializeField] private GameObject energyBallPrefab;
+    [SerializeField] private float energyBallDamage = 15f;
+    [SerializeField] private float energyBallThrowForce = 15f;
+    [SerializeField] private float meleeAttackRadius = 3f;
+
     private bool isEnraged = false;
     private float lastRockThrowTime = -100f;
     private float lastSpecialAttackTime = -100f;
     private bool isPerformingSpecialAttack = false;
+    private GameObject currentProjectile = null;
+    private AttackType currentAttackType = AttackType.None;
+    private GameObject targetRock = null;
+    private bool isMovingToRock = false;
+    private bool isTelekinesisActive = false;
+    private GameObject telekinesisEffect = null;
 
     protected override void Awake()
     {
         base.Awake();
-        // Additional initialization for Boss Golem
-    }
 
-    protected override void Update()
-    {
-        base.Update();
-
-        // Check for enrage state
-        if (!isEnraged && currentHealth <= maxHealth * enrageHealthThreshold)
+        // Ensure we have the required components
+        if (rightHandAttachPoint == null)
         {
-            EnterEnragedState();
+            Debug.LogError("Right hand attach point is missing! Please assign it in the inspector.");
         }
 
-        // Update animation states based on current behavior
-        UpdateAnimationState();
-    }
-
-    protected override void InitializeStrategies()
-    {
-        // Override to setup both ranged and melee attacks
-        if (targetPoint == null)
+        // Initialize rock list if empty by finding all rocks with appropriate tag
+        if (availableRocks.Count == 0)
         {
-            targetPoint = GameObject.FindGameObjectWithTag("Player")?.transform;
+            GameObject[] sceneRocks = GameObject.FindGameObjectsWithTag("GolemRock");
+            availableRocks.AddRange(sceneRocks);
+            Debug.Log($"Found {availableRocks.Count} rocks in the scene");
         }
 
-        // Setup movement strategy as NavMesh for boss
-        movementStrategy = CreateMovementStrategy();
-
-        if (movementStrategy != null && targetPoint != null)
-        {
-            movementStrategy.Initialize(transform, targetPoint);
-        }
-
-        // Setup both melee and ranged attacks
-        attackStrategy = new BossGolemAttack(targetPoint, this);
-
-        if (navAgent != null)
-        {
-            navAgent.speed = moveSpeed;
-            navAgent.stoppingDistance = stoppingDistance;
-            navAgent.angularSpeed = rotationSpeed * 100;
-            navAgent.isStopped = false;
-        }
+        // Initialize wandering
+        wanderPoint = transform.position;
+        nextWanderTime = Time.time + Random.Range(minWanderWaitTime, maxWanderWaitTime);
     }
-
-    protected override IEnemyMovement CreateMovementStrategy()
+    protected override void CheckPlayerRanges()
     {
-        // Create a specialized movement strategy for the golem boss
-        return new GolemMovementStrategy(
-            moveSpeed,
-            stoppingDistance,
-            faceTarget,
-            avoidObstacles,
-            detectionRange,
-            meleeRadius,
-            attackRange
-        );
-    }
+        if (target == null) return;
 
-    protected override void HandleAttack()
-    {
-        if (isDead || isTakingDamage || attackStrategy == null || target == null) return;
+        // Don't change states if currently attacking or using telekinesis
+        if (isAttacking || isTelekinesisActive) return;
 
         float distanceToTarget = Vector3.Distance(transform.position, target.position);
 
-        // Debug distance information
-        Debug.Log($"Golem distance to target: {distanceToTarget}, Melee radius: {meleeRadius}, Attack range: {attackRange}");
+        // Update detection flags
+        playerInSightRange = distanceToTarget <= playerDetectionRadius;
 
-        // Handle special attacks based on state and cooldowns
+        bool inMeleeRange = distanceToTarget <= meleeAttackRadius;
+        bool inRangedRange = distanceToTarget > rangedAttackMinDistance &&
+                             distanceToTarget <= rangedAttackMaxDistance &&
+                             availableRocks.Count > 0 &&
+                             Time.time > lastRockThrowTime + rockThrowCooldown;
+
+        // Golem can attack if in melee range OR in ranged range with rocks available
+        playerInAttackRange = inMeleeRange || inRangedRange;
+
+        // Only change states if not currently in a special action
+        if (currentState != EnemyState.Dead && currentState != EnemyState.Retreating && !isMovingToRock)
+        {
+            if (playerInAttackRange && currentState != EnemyState.Attacking && !isAttacking)
+            {
+                currentState = EnemyState.Attacking;
+                Debug.Log("Golem entered ATTACKING state");
+            }
+            else if (playerInSightRange && !playerInAttackRange && currentState != EnemyState.Chasing)
+            {
+                currentState = EnemyState.Chasing;
+                Debug.Log("Golem entered CHASING state");
+            }
+            else if (!playerInSightRange && !playerInAttackRange)
+            {
+                // Return to appropriate idle state when player leaves detection radius
+                if (movementType == MovementType.Patrol)
+                {
+                    currentState = EnemyState.Patrolling;
+                }
+                else
+                {
+                    currentState = EnemyState.Idle;
+                }
+                Debug.Log("Golem returned to IDLE/PATROL state");
+            }
+        }
+    }
+
+
+    // Override the state machine to handle the golem's unique behaviors
+    protected void StateMachine()
+    {
+        if (isDead) return;
+
+        switch (currentState)
+        {
+            case EnemyState.Idle:
+                HandleWandering();
+                break;
+
+            case EnemyState.Patrolling:
+                // For golem, patrolling is just wandering
+                HandleWandering();
+                break;
+
+            case EnemyState.Chasing:
+                // Only chase if not performing any special action
+                if (!isMovingToRock && !isTelekinesisActive && !isAttacking)
+                {
+                    if (navAgent != null && navAgent.enabled && navAgent.isOnNavMesh && target != null)
+                    {
+                        // Check if path is valid before setting destination
+                        NavMeshPath path = new NavMeshPath();
+                        if (navAgent.CalculatePath(target.position, path) && path.status != NavMeshPathStatus.PathInvalid)
+                        {
+                            navAgent.SetDestination(target.position);
+                            navAgent.isStopped = false; // Ensure agent is not stopped
+                        }
+                        else
+                        {
+                            // Path is invalid, try to find a valid position nearby
+                            NavMeshHit hit;
+                            if (NavMesh.SamplePosition(target.position, out hit, 10f, NavMesh.AllAreas))
+                            {
+                                navAgent.SetDestination(hit.position);
+                                navAgent.isStopped = false;
+                            }
+                        }
+                    }
+                }
+                break;
+
+            case EnemyState.Attacking:
+                // Handle the golem's attack logic
+                HandleAttack();
+                break;
+
+            case EnemyState.Retreating:
+                // Golem doesn't retreat, but just in case
+                HandleWandering();
+                break;
+
+            case EnemyState.Dead:
+                // Nothing to do when dead
+                break;
+        }
+
+        // Always check player ranges to update state
+        CheckPlayerRanges();
+    }
+
+    // Override Update to ensure our state machine is called properly
+    protected override void Update()
+    {
+        if (isDead) return;
+
+        // Call the parent's Update method but exclude the state machine part
+        // We'll handle the state machine differently for the golem
+        // This is a bit hacky but avoids modifying the base class
+
+        // Handle telekinesis rock movement if active
+        if (isTelekinesisActive && targetRock != null)
+        {
+            UpdateTelekinesisMovement();
+        }
+
+        // Run our custom state machine logic
+        StateMachine();
+
+        // Update animation states based on current behavior
+        UpdateAnimationState();
+
+        Debug.Log("Current State: " + currentState);
+    }
+
+    // This method is now primarily for visual effects before OnGrabRock is called from animation
+    private void UpdateTelekinesisMovement()
+    {
+        if (targetRock == null || rightHandAttachPoint == null) return;
+
+        // Move rock toward hand using telekinesis - this is mainly for visual effect
+        // before the animation event grabs the rock
+        float step = telekinesisMoveSpeed * Time.deltaTime;
+        targetRock.transform.position = Vector3.MoveTowards(
+            targetRock.transform.position,
+            rightHandAttachPoint.position,
+            step);
+
+        // If rock reaches hand position, we can optionally complete pickup
+        // but the animation event should handle this
+        if (Vector3.Distance(targetRock.transform.position, rightHandAttachPoint.position) < 0.1f)
+        {
+            // We don't need to call CompleteRockPickup() here anymore
+            // as the animation event will handle grabbing the rock
+
+            // Just clean up the telekinesis effect
+            if (telekinesisEffect != null)
+            {
+                Destroy(telekinesisEffect);
+                telekinesisEffect = null;
+            }
+
+            isTelekinesisActive = false;
+        }
+    }
+
+    private void CompleteRockPickup()
+    {
+        // The rock is now moved by the telekinesis system, but we'll keep this method
+        // in case we need to manually complete the pickup
+
+        if (targetRock == null) return;
+
+        // Note: We don't need to manually attach the rock here anymore
+        // because the OnGrabRock animation event will handle it
+
+        // Remove telekinesis effect if it exists
+        if (telekinesisEffect != null)
+        {
+            Destroy(telekinesisEffect);
+            telekinesisEffect = null;
+        }
+
+        currentProjectile = targetRock;
+        isTelekinesisActive = false;
+
+        // Note: We don't need to trigger RangeAttack again here
+        // as it's already triggered in StartTelekinesis
+
+        PlayAttackSound();
+    }
+
+    protected override void OnDrawGizmosSelected()
+    {
+        base.OnDrawGizmosSelected();
+
+        // Draw melee attack radius
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, meleeAttackRadius);
+
+        // Draw ranged attack min/max distance
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position, rangedAttackMinDistance);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, rangedAttackMaxDistance);
+
+        // Draw rock pickup range
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, rockPickupRange);
+
+        //player detection radius
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawWireSphere(transform.position, playerDetectionRadius);
+    }
+
+    [Header("Wandering Settings")]
+    [SerializeField] private float wanderRadius = 15f;
+    [SerializeField] private float minWanderWaitTime = 3f;
+    [SerializeField] private float maxWanderWaitTime = 8f;
+    [SerializeField] private float playerDetectionRadius = 20f;
+
+    private Vector3 wanderPoint;
+    private float nextWanderTime;
+    private bool isWandering = false;
+    
+    protected override void HandleAttack()
+    {
+        if (isDead) return;
+
+        // Check if player is in sight range
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+        // If no player or player is too far away, wander
+        if (player == null || (Vector3.Distance(transform.position, player.transform.position) > playerDetectionRadius))
+        {
+            // If we've lost our target, clear it
+            if (target != null)
+            {
+                target = null;
+                // If we were moving to a rock, cancel that action
+                if (isMovingToRock)
+                {
+                    isMovingToRock = false;
+                    targetRock = null;
+                }
+            }
+
+            // Handle wandering behavior
+            HandleWandering();
+            return;
+        }
+        else
+        {
+            // Player found, set as target
+            target = player.transform;
+            isWandering = false;
+        }
+
+        float distanceToTarget = Vector3.Distance(transform.position, target.position);
+
+        // If already attacking or using telekinesis, don't start a new attack
+        if (isAttacking || isTelekinesisActive) return;
+
+        // If moving to a rock, check if we've reached it
+        if (isMovingToRock && targetRock != null)
+        {
+            float distanceToRock = Vector3.Distance(transform.position, targetRock.transform.position);
+
+            // If we're close enough to the rock, grab it with telekinesis
+            if (distanceToRock <= rockPickupRange)
+            {
+                Debug.Log("Close enough to grab rock with telekinesis");
+                StartTelekinesis();
+                isMovingToRock = false;
+                return;
+            }
+
+            // Otherwise keep moving to the rock
+            if (navAgent != null && navAgent.enabled && navAgent.isOnNavMesh)
+            {
+                navAgent.SetDestination(targetRock.transform.position);
+            }
+            return;
+        }
+
+        // Check if we should perform a special attack (only when enraged)
         if (isEnraged && Time.time > lastSpecialAttackTime + specialAttackCooldown)
         {
             PerformSpecialAttack();
             return;
         }
 
-        // If in melee range, prioritize melee attack
-        if (distanceToTarget <= meleeRadius && Time.time > nextAttackTime)
+        // Prioritize ranged attacks if rocks are available and we're at appropriate distance
+        if (availableRocks.Count > 0 &&
+            distanceToTarget > rangedAttackMinDistance &&
+            distanceToTarget <= rangedAttackMaxDistance &&
+            Time.time > lastRockThrowTime + rockThrowCooldown)
         {
-            if (Random.Range(0f, 100f) < chanceToAttack)
+            FindNearestRock();
+            return;
+        }
+        // If in melee range and melee attack is off cooldown
+        else if (distanceToTarget <= meleeAttackRadius && Time.time > nextAttackTime)
+        {
+            // Higher chance to attack when player is close
+            float attackChance = isEnraged ? chanceToAttack * 1.5f : chanceToAttack;
+            if (Random.Range(0f, 100f) < attackChance)
             {
-                Debug.Log("Performing melee attack");
-                PerformMeleeAttack();
+                Debug.Log("Performing energy ball attack");
+                PerformEnergyBallAttack();
             }
             nextAttackTime = Time.time + 1f / attackRate;
         }
-        // If outside melee range but within attack range, use ranged attack
-        else if (distanceToTarget <= attackRange && distanceToTarget > meleeRadius &&
-                Time.time > lastRockThrowTime + rockThrowCooldown)
+        // If we have no rocks and are out of melee range, move toward the target
+        else if (navAgent != null && navAgent.enabled && navAgent.isOnNavMesh && distanceToTarget > meleeAttackRadius)
         {
-            Debug.Log("Performing ranged attack");
-            PerformRockThrow();
+            navAgent.SetDestination(target.position);
         }
     }
 
-    protected override void PerformAttack()
+    private void HandleWandering()
     {
-        if (isDead || isAttacking) return;
+        // If already in an action, don't wander
+        if (isAttacking || isTelekinesisActive) return;
 
-        isAttacking = true;
+        // Don't wander if we're already attacking or wandering
+        if (isWandering)
+        {
+            // Check if we've reached the wander point
+            if (navAgent != null && navAgent.enabled && navAgent.isOnNavMesh)
+            {
+                if (!navAgent.pathPending && navAgent.remainingDistance <= navAgent.stoppingDistance)
+                {
+                    // Reached destination, wait before wandering again
+                    if (Time.time >= nextWanderTime)
+                    {
+                        isWandering = false;
+                    }
+                }
+            }
+            return;
+        }
 
+        // Start a new wander if time has elapsed
+        if (Time.time >= nextWanderTime)
+        {
+            // Find a random point to wander to
+            Vector3 randomDirection = Random.insideUnitSphere * wanderRadius;
+            randomDirection += transform.position;
+
+            NavMeshHit navHit;
+            if (NavMesh.SamplePosition(randomDirection, out navHit, wanderRadius, NavMesh.AllAreas))
+            {
+                wanderPoint = navHit.position;
+
+                // Set destination
+                if (navAgent != null && navAgent.enabled && navAgent.isOnNavMesh)
+                {
+                    navAgent.SetDestination(wanderPoint);
+                    isWandering = true;
+
+                    // Set next wander time
+                    nextWanderTime = Time.time + Random.Range(minWanderWaitTime, maxWanderWaitTime);
+
+                    // Trigger move animation
+                    if (animator != null)
+                    {
+                        animator.SetTrigger("Move");
+                    }
+
+                    Debug.Log("Golem is wandering to: " + wanderPoint);
+                }
+            }
+        }
+    }
+
+    private void FindNearestRock()
+    {
+        if (availableRocks.Count == 0) return;
+
+        // Remove any null references (destroyed rocks)
+        availableRocks.RemoveAll(rock => rock == null);
+
+        if (availableRocks.Count == 0) return;
+
+        // Find the nearest rock
+        GameObject nearestRock = null;
+        float nearestDistance = float.MaxValue;
+
+        foreach (GameObject rock in availableRocks)
+        {
+            float distance = Vector3.Distance(transform.position, rock.transform.position);
+            if (distance < nearestDistance)
+            {
+                nearestDistance = distance;
+                nearestRock = rock;
+            }
+        }
+
+        if (nearestRock != null)
+        {
+            // Set target rock and move toward it
+            targetRock = nearestRock;
+            isMovingToRock = true;
+
+            if (navAgent != null && navAgent.enabled && navAgent.isOnNavMesh)
+            {
+                navAgent.SetDestination(targetRock.transform.position);
+                Debug.Log($"Moving to rock at {targetRock.transform.position}");
+            }
+        }
+    }
+
+    private void StartTelekinesis()
+    {
+        if (targetRock == null) return;
+
+        Debug.Log("Starting telekinesis with rock: " + targetRock.name);
+
+        // Remove the rock from available rocks
+        availableRocks.Remove(targetRock);
+
+        // Start telekinesis
+        isTelekinesisActive = true;
+
+        // Disable physics on rock for telekinesis movement
+        Rigidbody rockRb = targetRock.GetComponent<Rigidbody>();
+        if (rockRb != null)
+        {
+            rockRb.isKinematic = true;
+            rockRb.useGravity = false;
+        }
+
+        // Disable collider during telekinesis
+        Collider rockCollider = targetRock.GetComponent<Collider>();
+        if (rockCollider != null)
+        {
+            rockCollider.enabled = false;
+        }
+
+        // Create telekinesis effect if prefab is assigned
+        if (telekinesisEffectPrefab != null)
+        {
+            telekinesisEffect = Instantiate(telekinesisEffectPrefab, targetRock.transform.position, Quaternion.identity);
+            telekinesisEffect.transform.SetParent(targetRock.transform);
+        }
+
+        // Look at the rock during telekinesis
+        transform.LookAt(targetRock.transform);
+
+        // Stop movement while using telekinesis
+        if (navAgent != null)
+        {
+            navAgent.isStopped = true;
+        }
+
+        // Start the RangeAttack animation - this should trigger the animation events
         if (animator != null)
         {
-            // Decide which attack animation to play based on distance
-            float distance = movementStrategy.GetDistanceToTarget();
-            if (distance <= meleeRadius)
-            {
-                animator.SetBool("CloseAttack", true);
-                animator.SetBool("RangeAttack", false);
-            }
-            else
-            {
-                animator.SetBool("CloseAttack", false);
-                animator.SetBool("RangeAttack", true);
-                lastRockThrowTime = Time.time;
-            }
+            animator.SetTrigger("RangeAttack");
         }
 
-        PlayAttackSound();
-
-        if (attackChargeEffect != null)
-            StartCoroutine(ShowAttackEffect());
-
-        if (attackDelay > 0)
-        {
-            attackCoroutine = StartCoroutine(DelayedAttack());
-        }
-        else
-        {
-            if (attackStrategy != null && attackStrategy.CanAttack())
-                attackStrategy.Attack();
-            isAttacking = false;
-        }
-    }
-
-    private void PerformMeleeAttack()
-    {
-        if (isDead || isAttacking) return;
-
+        // Prepare for ranged attack
         isAttacking = true;
-
-        if (animator != null)
-        {
-            animator.SetBool("CloseAttack", true);
-            animator.SetBool("RangeAttack", false);
-        }
-
-        PlayAttackSound();
-
-        if (attackChargeEffect != null)
-            StartCoroutine(ShowAttackEffect());
-
-        if (attackDelay > 0)
-        {
-            attackCoroutine = StartCoroutine(DelayedMeleeAttack());
-        }
-        else
-        {
-            if (attackStrategy != null && attackStrategy is BossGolemAttack bossAttack)
-            {
-                bossAttack.MeleeAttackOnly();
-            }
-            isAttacking = false;
-        }
-    }
-
-    private void PerformRockThrow()
-    {
-        if (isDead || isAttacking) return;
-
-        isAttacking = true;
+        currentAttackType = AttackType.Ranged;
         lastRockThrowTime = Time.time;
 
+        Debug.Log("Started telekinesis on rock and triggered RangeAttack animation");
+    }
+
+
+    private void PerformEnergyBallAttack()
+    {
+        if (isDead || isAttacking) return;
+
+        isAttacking = true;
+        currentAttackType = AttackType.Melee;
+        if (navAgent != null)
+        {
+            navAgent.isStopped = true;
+        }
+        // Turn to face the target
+        if (target != null)
+        {
+            Vector3 lookDirection = target.position - transform.position;
+            lookDirection.y = 0; // Keep level
+            if (lookDirection != Vector3.zero)
+            {
+                transform.rotation = Quaternion.LookRotation(lookDirection);
+            }
+        }
+
+        // Trigger the CloseAttack animation which will call OnCreateEnergyBall and OnThrowEnergyBall via animation events
         if (animator != null)
         {
-            animator.SetBool("CloseAttack", false);
-            animator.SetBool("RangeAttack", true);
+            animator.SetTrigger("CloseAttack");
+            Debug.Log("Triggered CloseAttack animation");
         }
 
         PlayAttackSound();
-
-        if (attackDelay > 0)
-        {
-            attackCoroutine = StartCoroutine(DelayedRangedAttack());
-        }
-        else
-        {
-            if (attackStrategy != null && attackStrategy is BossGolemAttack bossAttack)
-            {
-                bossAttack.RangedAttackOnly();
-            }
-            isAttacking = false;
-        }
     }
 
     private void PerformSpecialAttack()
@@ -221,26 +576,184 @@ public class BossGolemEnemyController : EnemyController
         isAttacking = true;
         isPerformingSpecialAttack = true;
         lastSpecialAttackTime = Time.time;
+        currentAttackType = AttackType.Special;
+
+        if (navAgent != null)
+        {
+            navAgent.isStopped = true;
+        }
 
         // Special attack animation and logic
         StartCoroutine(SpecialAttackSequence());
     }
 
-    private IEnumerator DelayedMeleeAttack()
+    // Animation event method - called from RangeAttack animation
+    // This should be connected to the first event emitter in the RangeAttack animation
+    public void OnGrabRock()
     {
-        yield return new WaitForSeconds(attackDelay);
 
-        if (!isDead && attackStrategy != null && attackStrategy is BossGolemAttack bossAttack)
+        Debug.Log("OnGrabRock animation event fired");
+        if (targetRock == null)
         {
-            bossAttack.MeleeAttackOnly();
+            Debug.LogError("targetRock is null in OnGrabRock!");
+            return;
         }
 
+        // Move rock to hand
+        targetRock.transform.SetParent(rightHandAttachPoint);
+        targetRock.transform.localPosition = Vector3.zero;
+        targetRock.transform.localRotation = Quaternion.identity;
+
+        // Disable physics
+        Rigidbody rockRb = targetRock.GetComponent<Rigidbody>();
+        if (rockRb != null)
+        {
+            rockRb.isKinematic = true;
+        }
+
+        //make the enemy face the player
+        if (target != null)
+        {
+            Vector3 lookDirection = target.position - transform.position;
+            lookDirection.y = 0; // Keep level
+            if (lookDirection != Vector3.zero)
+            {
+                transform.rotation = Quaternion.LookRotation(lookDirection);
+            }
+        }
+
+        //atura el moviment quan ataca
+        if (navAgent != null)
+        {
+            navAgent.isStopped = true;
+        }
+        // Disable collider
+        Collider rockCollider = targetRock.GetComponent<Collider>();
+        if (rockCollider != null)
+        {
+            rockCollider.enabled = false;
+        }
+
+        currentProjectile = targetRock;
+        Debug.Log("Rock grabbed and attached to hand (animation event)");
+    }
+
+    // Animation event method - called from RangeAttack animation
+    public void OnThrowRock()
+    {
+        Debug.Log("OnThrowRock animation event fired");
+        if (currentProjectile == null)
+        {
+            Debug.LogError("currentProjectile is null in OnThrowRock!");
+            return;
+        }
+
+        ThrowProjectile(rockDamage, rockThrowForce);
+    }
+
+    // Animation event method - called from CloseAttack animation
+    public void OnCreateEnergyBall()
+    {
+        if (energyBallPrefab == null) return;
+
+        // Create energy ball and attach to hand
+        currentProjectile = Instantiate(energyBallPrefab, rightHandAttachPoint.position, rightHandAttachPoint.rotation);
+        currentProjectile.transform.SetParent(rightHandAttachPoint);
+
+        Debug.Log("Energy ball created and attached to hand");
+    }
+
+    // Animation event method - called from CloseAttack animation
+    public void OnThrowEnergyBall()
+    {
+        if (currentProjectile == null) return;
+
+        ThrowProjectile(energyBallDamage, energyBallThrowForce);
+    }
+
+    private void ThrowProjectile(float damage, float force)
+    {
+        if (currentProjectile == null) return;
+
+        // Store player position at the moment of throwing
+        Vector3 throwTargetPosition = target != null ? target.position : transform.position + transform.forward * 10f;
+
+        // Unparent the projectile
+        currentProjectile.transform.SetParent(null);
+
+        // Enable physics
+        Rigidbody projectileRb = currentProjectile.GetComponent<Rigidbody>();
+        if (projectileRb != null)
+        {
+            projectileRb.isKinematic = false;
+            projectileRb.useGravity = true;
+
+            // Calculate throw direction
+            Vector3 throwDirection = (throwTargetPosition - currentProjectile.transform.position).normalized;
+
+            // Apply force
+            projectileRb.AddForce(throwDirection * force + Vector3.up * rockUpwardForce, ForceMode.Impulse);
+        }
+
+        // Enable collider
+        Collider projectileCollider = currentProjectile.GetComponent<Collider>();
+        if (projectileCollider != null)
+        {
+            projectileCollider.enabled = true;
+        }
+
+        // Add damage component to projectile
+        GolemProjectile projectileScript = currentProjectile.GetComponent<GolemProjectile>();
+        if (projectileScript == null)
+        {
+            projectileScript = currentProjectile.AddComponent<GolemProjectile>();
+        }
+
+        // Apply enrage multiplier if needed
+        if (isEnraged)
+        {
+            damage *= enragedDamageMultiplier;
+        }
+
+        projectileScript.Initialize(damage, gameObject);
+
+        // Reset references
+        currentProjectile = null;
+        targetRock = null;
+    }
+
+    // Animation event method - called when attack animation ends
+    public void OnAttackAnimationEnd()
+    {
         isAttacking = false;
 
-        if (animator != null)
+        // Resume movement if needed
+        if (navAgent != null && currentState == EnemyState.Chasing)
         {
-            animator.SetBool("CloseAttack", false);
+            navAgent.isStopped = false;
         }
+        // If we still have a projectile attached (attack interrupted), destroy it if it's an energy ball
+        if (currentProjectile != null)
+        {
+            if (currentAttackType == AttackType.Melee)
+            {
+                // Energy ball can be destroyed
+                Destroy(currentProjectile);
+            }
+            else if (currentAttackType == AttackType.Ranged)
+            {
+                // Return rock to available rocks
+                if (!availableRocks.Contains(currentProjectile))
+                {
+                    availableRocks.Add(currentProjectile);
+                }
+                currentProjectile.transform.SetParent(null);
+            }
+
+            currentProjectile = null;
+        }
+
+        targetRock = null;
     }
 
     private IEnumerator SpecialAttackSequence()
@@ -252,11 +765,56 @@ public class BossGolemEnemyController : EnemyController
         // Play special attack animation/effects
         if (animator != null)
         {
-            animator.SetBool("CloseAttack", true);
-            animator.SetBool("RangeAttack", true); // Both true for special attack
+            animator.SetTrigger("CloseAttack");
         }
 
-        yield return new WaitForSeconds(1.5f); // Wind-up time
+        // Create multiple energy balls
+        int energyBallCount = 5;
+        GameObject[] energyBalls = new GameObject[energyBallCount];
+
+        yield return new WaitForSeconds(1f); // Wind-up time
+
+        for (int i = 0; i < energyBallCount; i++)
+        {
+            energyBalls[i] = Instantiate(energyBallPrefab, transform.position + Vector3.up * 2f, Quaternion.identity);
+        }
+
+        yield return new WaitForSeconds(0.5f);
+
+        // Throw all energy balls in a circular pattern
+        for (int i = 0; i < energyBallCount; i++)
+        {
+            if (energyBalls[i] != null)
+            {
+                // Calculate throw direction in a circular pattern
+                float angle = i * (360f / energyBallCount);
+                Vector3 direction = Quaternion.Euler(0, angle, 0) * transform.forward;
+
+                Rigidbody energyBallRb = energyBalls[i].GetComponent<Rigidbody>();
+                if (energyBallRb != null)
+                {
+                    energyBallRb.isKinematic = false;
+                    energyBallRb.AddForce(direction * energyBallThrowForce * 1.5f + Vector3.up * rockUpwardForce, ForceMode.Impulse);
+                }
+
+                Collider energyBallCollider = energyBalls[i].GetComponent<Collider>();
+                if (energyBallCollider != null)
+                {
+                    energyBallCollider.enabled = true;
+                }
+
+                GolemProjectile projectileScript = energyBalls[i].GetComponent<GolemProjectile>();
+                if (projectileScript == null)
+                {
+                    projectileScript = energyBalls[i].AddComponent<GolemProjectile>();
+                }
+
+                projectileScript.Initialize(energyBallDamage * 1.5f * (isEnraged ? enragedDamageMultiplier : 1f), gameObject);
+            }
+
+            // Small delay between throws for visual effect
+            yield return new WaitForSeconds(0.1f);
+        }
 
         // Perform area damage around the boss
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRange, attackableLayerMask);
@@ -275,7 +833,7 @@ public class BossGolemEnemyController : EnemyController
             if (rb != null && !rb.isKinematic)
             {
                 Vector3 direction = (hitCollider.transform.position - transform.position).normalized;
-                rb.AddForce(direction * meleeForce * 2 + Vector3.up * meleeUpwardForce, ForceMode.Impulse);
+                rb.AddForce(direction * meleeForce * 2 + Vector3.up * 2f, ForceMode.Impulse);
             }
         }
 
@@ -287,35 +845,6 @@ public class BossGolemEnemyController : EnemyController
 
         isAttacking = false;
         isPerformingSpecialAttack = false;
-
-        // Reset animation bools
-        if (animator != null)
-        {
-            animator.SetBool("CloseAttack", false);
-            animator.SetBool("RangeAttack", false);
-        }
-    }
-
-    protected override IEnumerator DelayedAttack()
-    {
-        yield return new WaitForSeconds(attackDelay);
-
-        if (!isDead && attackStrategy != null && attackStrategy.CanAttack())
-            attackStrategy.Attack();
-
-        isAttacking = false;
-    }
-
-    private IEnumerator DelayedRangedAttack()
-    {
-        yield return new WaitForSeconds(attackDelay);
-
-        if (!isDead && attackStrategy != null && attackStrategy is BossGolemAttack bossAttack)
-        {
-            bossAttack.RangedAttackOnly();
-        }
-
-        isAttacking = false;
     }
 
     private void EnterEnragedState()
@@ -333,11 +862,13 @@ public class BossGolemEnemyController : EnemyController
             enrageEffect.SetActive(true);
         }
 
-        // Update attack strategy damage multiplier
-        if (attackStrategy != null)
+        // Trigger a visual indication of enrage (could be animation trigger)
+        if (animator != null)
         {
-            attackStrategy.SetDamageMultiplier(damageMultiplier);
+            animator.SetTrigger("Enrage");
         }
+
+        Debug.Log("Golem boss entered enraged state!");
     }
 
     private void UpdateAnimationState()
@@ -347,13 +878,8 @@ public class BossGolemEnemyController : EnemyController
         if (isDead)
         {
             animator.SetBool("Death", true);
-            animator.SetBool("Idle", false);
-            animator.SetBool("LoopRunning", false);
-            animator.SetBool("FullRun", false);
             return;
         }
-
-        float distanceToTarget = target != null ? movementStrategy.GetDistanceToTarget() : float.MaxValue;
 
         // Check if navAgent is valid before using it
         bool isMoving = false;
@@ -362,28 +888,20 @@ public class BossGolemEnemyController : EnemyController
             isMoving = !navAgent.isStopped && navAgent.velocity.magnitude > 0.1f;
         }
 
-        // Set running animations based on speed and state
-        if (isMoving)
+        // If attacking, always set Move to 0 to prevent animation conflicts
+        if (isAttacking)
         {
-            animator.SetBool("Idle", false);
-
-            // Full run when enraged or far from target
-            if (isEnraged || distanceToTarget > attackRange * 1.5f)
-            {
-                animator.SetBool("FullRun", true);
-                animator.SetBool("LoopRunning", false);
-            }
-            else
-            {
-                animator.SetBool("LoopRunning", true);
-                animator.SetBool("FullRun", false);
-            }
+            //animator.SetTrigger("Move");
         }
         else
         {
-            animator.SetBool("Idle", true);
-            animator.SetBool("LoopRunning", false);
-            animator.SetBool("FullRun", false);
+            // Only set movement parameter when not attacking
+            float moveValue = 0;
+            if (isMoving)
+            {
+                moveValue = (isEnraged || isWandering) ? 2f : 1f;
+            }
+            animator.SetTrigger("Move");
         }
     }
 
@@ -392,181 +910,27 @@ public class BossGolemEnemyController : EnemyController
     {
         if (isDead) return;
 
+        // Clean up any telekinesis effects
+        if (telekinesisEffect != null)
+        {
+            Destroy(telekinesisEffect);
+        }
+
         // Set death animation
         if (animator != null)
         {
             animator.SetBool("Death", true);
-            animator.SetBool("CloseAttack", false);
-            animator.SetBool("RangeAttack", false);
-            animator.SetBool("LoopRunning", false);
-            animator.SetBool("FullRun", false);
-            animator.SetBool("Idle", false);
         }
 
         base.Die();
     }
 }
 
-// Custom movement strategy for the Golem Boss
-public class GolemMovementStrategy : NavMeshMovement
+// Enum for attack types
+public enum AttackType
 {
-    private float detectionRange;
-    private float meleeRange;
-    private float attackRange;
-    private bool isChasing = false;
-
-    public GolemMovementStrategy(float speed, float stopDistance, bool faceTarget, bool avoidObstacles,
-                               float detectionRange, float meleeRange, float attackRange)
-        : base(speed, stopDistance, faceTarget, avoidObstacles)
-    {
-        this.detectionRange = detectionRange;
-        this.meleeRange = meleeRange;
-        this.attackRange = attackRange;
-    }
-
-    public override void Move()
-    {
-        if (navAgent == null || !navAgent.enabled || !navAgent.isOnNavMesh || targetTransform == null) return;
-
-        float distanceToTarget = Vector3.Distance(enemyTransform.position, targetTransform.position);
-
-        // If player is within detection range, start chasing
-        if (distanceToTarget <= detectionRange)
-        {
-            isChasing = true;
-        }
-        // If player moves too far away, stop chasing
-        else if (distanceToTarget > detectionRange * 1.5f)
-        {
-            isChasing = false;
-            if (navAgent.isOnNavMesh)
-                navAgent.isStopped = true;
-            return;
-        }
-
-        if (isChasing)
-        {
-            // If within melee range, stop closer to the target
-            if (distanceToTarget <= meleeRange * 1.2f)
-            {
-                navAgent.stoppingDistance = meleeRange * 0.8f;
-            }
-            // If within attack range but outside melee range, stop at a medium distance
-            else if (distanceToTarget <= attackRange)
-            {
-                navAgent.stoppingDistance = attackRange * 0.7f;
-            }
-            // If outside attack range, use a smaller stopping distance to get closer
-            else
-            {
-                navAgent.stoppingDistance = stoppingDistance;
-            }
-
-            // Set destination to target position
-            navAgent.SetDestination(targetTransform.position);
-            navAgent.isStopped = false;
-        }
-    }
-}
-
-// Custom attack class for Boss Golem
-public class BossGolemAttack : IEnemyAttack
-{
-    private Transform target;
-    private EnemyController owner;
-    private float lastAttackTime = -100f;
-
-    private MeleeAttack meleeAttack;
-    private RangedAttack rangedAttack;
-
-    public BossGolemAttack(Transform target, EnemyController owner)
-    {
-        this.target = target;
-        this.owner = owner;
-
-        meleeAttack = new MeleeAttack(
-            owner.GetAttackDamage(),
-            owner.GetAttackRate(),
-            owner.GetAttackRange(),
-            owner.GetMeleeRadius(),
-            owner.GetAttackAngle(),
-            owner.GetAttackableLayerMask(),
-            owner.GetRequireLineOfSight(),
-            owner.GetUsePhysicsForMelee(),
-            owner.GetMeleeForce(),
-            owner.GetMeleeUpwardForce(),
-            owner.attackOrigin
-        );
-
-        rangedAttack = new RangedAttack(
-            owner.GetProjectilePrefab(),
-            owner.GetShootPoints(),
-            owner.GetProjectileSpeed(),
-            owner.GetAttackDamage(),
-            owner.GetAttackRate(),
-            owner.GetAttackRange(),
-            owner.GetBurstFire(),
-            owner.GetBurstCount(),
-            owner.GetBurstDelay(),
-            owner.GetUseRandomShootPoint(),
-            owner.GetProjectileSpread(),
-            owner.GetProjectileLifetime()
-        );
-
-        meleeAttack.Initialize(owner.transform, target);
-        rangedAttack.Initialize(owner.transform, target);
-    }
-
-    public void Initialize(Transform enemy, Transform target)
-    {
-        this.target = target;
-        meleeAttack.Initialize(enemy, target);
-        rangedAttack.Initialize(enemy, target);
-    }
-
-    public void SetTarget(Transform target)
-    {
-        this.target = target;
-        meleeAttack.SetTarget(target);
-        rangedAttack.SetTarget(target);
-    }
-
-    public bool CanAttack()
-    {
-        // Boss can attack if either melee or ranged can attack
-        return meleeAttack.CanAttack() || rangedAttack.CanAttack();
-    }
-
-    public void Attack()
-    {
-        float distance = Vector3.Distance(owner.transform.position, target.position);
-        if (distance <= owner.GetMeleeRadius())
-        {
-            if (meleeAttack.CanAttack())
-                meleeAttack.Attack();
-        }
-        else
-        {
-            if (rangedAttack.CanAttack())
-                rangedAttack.Attack();
-        }
-    }
-
-    public void MeleeAttackOnly()
-    {
-        if (meleeAttack.CanAttack())
-            meleeAttack.Attack();
-    }
-
-    public void RangedAttackOnly()
-    {
-        if (rangedAttack.CanAttack())
-            rangedAttack.Attack();
-    }
-
-    public void SetDamageMultiplier(float multiplier)
-    {
-        meleeAttack.SetDamageMultiplier(multiplier);
-        rangedAttack.SetDamageMultiplier(multiplier);
-    }
+    None,
+    Melee,
+    Ranged,
+    Special
 }

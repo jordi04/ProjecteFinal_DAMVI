@@ -136,7 +136,7 @@ MonoBehaviour:
   attackDamage: 10
   chanceToAttack: 100
   attackAngle: 45
-  attackOrigin: {fileID: 0}
+  attackOrigin: {fileID: 2764269078992518598}
   attackableLayerMask:
     serializedVersion: 2
     m_Bits: 320
@@ -167,11 +167,41 @@ MonoBehaviour:
   damageAnimTrigger: Damage
   deathAnimTrigger: Death
   useAnimatorSpeed: 1
-  attackSoundEvent: event:/Enemies/Attack
-  damageSoundEvent: event:/Enemies/Damage
-  deathSoundEvent: event:/Enemies/Death
-  idleSoundEvent: event:/Enemies/Idle
-  footstepSoundEvent: event:/Enemies/Footstep
+  attackSoundEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  damageSoundEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  deathSoundEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  idleSoundEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  footstepSoundEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   idleSoundInterval: 5
   idleSoundChance: 20
   damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
@@ -331,7 +361,7 @@ Transform:
   m_GameObject: {fileID: 8293427845615788729}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1, y: 1, z: 0}
+  m_LocalPosition: {x: 0.006, y: 1, z: 0.896}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -363,32 +393,32 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 5f9e5022a10413d419db60e7b3afd4cd,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071067
+      value: 0.49986905
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5f9e5022a10413d419db60e7b3afd4cd,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.7071068
+      value: -0.4996946
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5f9e5022a10413d419db60e7b3afd4cd,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.5003054
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5f9e5022a10413d419db60e7b3afd4cd,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0.5001308
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5f9e5022a10413d419db60e7b3afd4cd,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -89.98
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5f9e5022a10413d419db60e7b3afd4cd,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 90.05
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5f9e5022a10413d419db60e7b3afd4cd,
         type: 3}

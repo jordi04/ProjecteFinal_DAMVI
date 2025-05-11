@@ -16,14 +16,11 @@ public class DuendeMeleeAI : EnemyController
 
     protected override void Awake()
     {
-        // 1. Ejecutar Awake() del EnemyController
         base.Awake();
 
-        // 2. Configurar valores específicos del goblin
-        navAgent.stoppingDistance = rangoAtaque;
+        navAgent.stoppingDistance = rangoAtaque * 0.25f;
         navAgent.angularSpeed = 720f;
 
-        // 3. Inicializar con valores base del prefab
         attackDamage = baseDamage;
         maxHealth = baseHealth;
         moveSpeed = baseSpeed;
@@ -109,7 +106,6 @@ public class DuendeMeleeAI : EnemyController
         Gizmos.DrawWireSphere(puntoAtaque.position, rangoAtaque);
     }
 
-    // Sobrescribir métodos de multiplicación
     public override void SetDamageMultiplier(float multiplier)
     {
         base.SetDamageMultiplier(multiplier);

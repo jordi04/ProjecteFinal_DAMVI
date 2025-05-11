@@ -501,44 +501,74 @@ public class EnemyController : MonoBehaviour, IDamageable
     {
         if (isDead || isTakingDamage) return;
 
-        // Stop movement when attacking unless configured otherwise
-        if (!canAttackWhileMoving && navAgent != null && navAgent.enabled)
+        // Control de rotación del NavMeshAgent
+        if (navAgent != null)
         {
-            navAgent.SetDestination(transform.position);
+            // Desactivar rotación automática durante el ataque
+            navAgent.updateRotation = false;
+
+            // Detener movimiento si no puede atacar en movimiento
+            if (!canAttackWhileMoving && navAgent.enabled)
+            {
+                navAgent.SetDestination(transform.position);
+                navAgent.velocity = Vector3.zero; // Detener momentum inmediato
+            }
         }
 
-        // Face the target
+        // Rotación manual hacia el objetivo
         if (target != null && faceTarget)
         {
-            Vector3 direction = (target.position - transform.position).normalized;
-            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
-        }
+            Vector3 directionToTarget = (target.position - transform.position).normalized;
+            directionToTarget.y = 0; // Mantener rotación solo en eje Y
 
-        // Perform attack if cooldown is complete
-        if (Time.time > nextAttackTime)
-        {
-            if (Random.Range(0f, 100f) < chanceToAttack)
+            if (directionToTarget != Vector3.zero)
             {
-                if (requireLineOfSight)
+                // Rotación suave y precisa
+                Quaternion targetRotation = Quaternion.LookRotation(directionToTarget);
+                transform.rotation = Quaternion.RotateTowards(
+                    transform.rotation,
+                    targetRotation,
+                    rotationSpeed * Time.deltaTime * 100 // Acelerar rotación
+                );
+
+                // Forzar alineación final si está cerca
+                if (Quaternion.Angle(transform.rotation, targetRotation) < 2f)
                 {
-                    if (HasLineOfSightToTarget())
-                    {
-                        PerformAttack();
-                    }
-                }
-                else
-                {
-                    PerformAttack();
+                    transform.rotation = targetRotation;
                 }
             }
-            nextAttackTime = Time.time + 1f / attackRate;
         }
 
-        // Stop movement particles
-        if (moveParticles != null && moveParticles.isPlaying && !canAttackWhileMoving)
+        // Lógica de ataque
+        if (Time.time > nextAttackTime)
         {
-            moveParticles.Stop();
+            bool canExecuteAttack = Random.Range(0f, 100f) < chanceToAttack;
+            bool losCheck = !requireLineOfSight || HasLineOfSightToTarget();
+
+            if (canExecuteAttack && losCheck)
+            {
+                PerformAttack();
+                nextAttackTime = Time.time + 1f / attackRate;
+
+                // Pequeño empujón hacia adelante al atacar
+                if (!canAttackWhileMoving && navAgent != null)
+                {
+                    navAgent.Move(transform.forward * 0.1f); // Ayuda a alcanzar el rango
+                }
+            }
+        }
+
+        // Control de partículas
+        if (moveParticles != null)
+        {
+            if (!canAttackWhileMoving && moveParticles.isPlaying)
+            {
+                moveParticles.Stop();
+            }
+            else if (canAttackWhileMoving && !moveParticles.isPlaying)
+            {
+                moveParticles.Play();
+            }
         }
     }
 

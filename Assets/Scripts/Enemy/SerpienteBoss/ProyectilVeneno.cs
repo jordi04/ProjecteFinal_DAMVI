@@ -22,21 +22,20 @@ public class ProyectilVeneno : MonoBehaviour
         Invoke("DestruirProyectil", 5f);
     }
 
-    void Update()
+    private void Start()
     {
-        transform.position += direccion * velocidad * Time.deltaTime;
+        gameObject.GetComponent<Rigidbody>().velocity = direccion * velocidad;
     }
 
 
     private void OnTriggerEnter(Collider other)
     {
         if (impactoRealizado) return;
-
-        if (!other.gameObject.CompareTag("Enemy"))
-            DestruirProyectil();
-
+        
         if (other.gameObject.layer == 7)
             Destroy(this.gameObject);
+        else if (!other.gameObject.CompareTag("Enemy"))
+            DestruirProyectil();
     }
 
     void DestruirProyectil()

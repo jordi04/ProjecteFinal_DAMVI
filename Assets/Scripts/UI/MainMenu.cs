@@ -108,7 +108,7 @@ public class MainMenu : MonoBehaviour
 
         while (elapsedTime < fadeDuration)
         {
-            elapsedTime += Time.deltaTime;
+            elapsedTime += Time.unscaledDeltaTime;
             mainMenuCanvas.alpha = Mathf.Lerp(startAlpha, 0f, elapsedTime / fadeDuration);
             yield return null;
         }

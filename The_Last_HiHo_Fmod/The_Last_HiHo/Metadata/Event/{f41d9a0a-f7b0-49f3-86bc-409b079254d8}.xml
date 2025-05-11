@@ -101,11 +101,29 @@
 	</object>
 	<object class="MixerBusPanner" id="{73decc13-0333-46d3-a607-0bc5d9c1c6df}" />
 	<object class="SingleSound" id="{4a631aa2-4596-4a72-a218-1f177706b6b4}">
+		<relationship name="modulators">
+			<destination>{94ea889a-47f0-405d-ad49-de47f2d1aeb2}</destination>
+		</relationship>
 		<relationship name="audioFile">
 			<destination>{b539e15c-4433-409a-985e-477f1a16a0dd}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{d48fc94c-0fe1-4a74-a8d9-49a3bca60fec}" />
 	<object class="MixerBusFader" id="{15abd83a-0b72-46f9-a82b-aa091e4adffe}" />
-	<object class="SpatialiserEffect" id="{9ad2f18a-b5ff-4a6b-86ab-b79704798449}" />
+	<object class="SpatialiserEffect" id="{9ad2f18a-b5ff-4a6b-86ab-b79704798449}">
+		<property name="maximumDistance">
+			<value>100</value>
+		</property>
+		<property name="overrideRange">
+			<value>true</value>
+		</property>
+	</object>
+	<object class="RandomizerModulator" id="{94ea889a-47f0-405d-ad49-de47f2d1aeb2}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>pitch</value>
+		</property>
+		<property name="amount">
+			<value>8</value>
+		</property>
+	</object>
 </objects>

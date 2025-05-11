@@ -926,8 +926,6 @@ public class EnemyController : MonoBehaviour, IDamageable
         if (animator != null)
             animator.SetTrigger(attackAnimTrigger);
 
-        PlayAttackSound();
-
         if (attackChargeEffect != null)
             StartCoroutine(ShowAttackEffect());
 
@@ -957,6 +955,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         if (!isDead && attackStrategy != null && attackStrategy.CanAttack())
         {
             attackStrategy.Attack();
+            PlayAttackSound();
 
             // Retreat after attack for melee enemies
             if (attackType == AttackType.Melee && movementStrategy is MeleeMovement)
@@ -1093,7 +1092,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         try
         {
             // Play one-shot sound at the position of this enemy
-            FMODUnity.RuntimeManager.PlayOneShot(eventPath, transform.position);
+            RuntimeManager.PlayOneShot(eventPath, transform.position);
         }
         catch (System.Exception e)
         {

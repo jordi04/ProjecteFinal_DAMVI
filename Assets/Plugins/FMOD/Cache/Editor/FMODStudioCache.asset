@@ -122,14 +122,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/SFX/Cavall_damage_02-01
   Guid:
-    Data1: -1914501916
-    Data2: 1297668990
-    Data3: 1736486079
-    Data4: 1992547429
+    Data1: 1543909411
+    Data2: 1075914027
+    Data3: 788037764
+    Data4: 1371466054
   Banks:
   - {fileID: 557109491724218155}
   IsStream: 0
-  Is3D: 1
+  Is3D: 0
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
@@ -342,7 +342,7 @@ MonoBehaviour:
   - {fileID: 557109491724218155}
   StringsBanks:
   - {fileID: 3013371581036214418}
-  cacheTime: 638825761580563199
+  cacheTime: 638825835002135209
   cacheVersion: 131846
 --- !u!114 &124584966412069426
 MonoBehaviour:
@@ -413,10 +413,10 @@ MonoBehaviour:
   Path: The_Last_HiHo_Fmod/The_Last_HiHo/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638825761580389059
+  lastModified: 638825835001918690
   FileSizes:
   - Name: Desktop
-    Value: 3050016
+    Value: 3051008
   Exists: 1
 --- !u!114 &1810202137078841901
 MonoBehaviour:
@@ -487,7 +487,7 @@ MonoBehaviour:
   Path: The_Last_HiHo_Fmod/The_Last_HiHo/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638825761580563199
+  lastModified: 638825835002135209
   FileSizes:
   - Name: Desktop
     Value: 2056
@@ -560,14 +560,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/SFX/Player_damage_01-01
   Guid:
-    Data1: -1777160689
-    Data2: 1232053558
-    Data3: 830054069
-    Data4: 638092954
+    Data1: 188777774
+    Data2: 1174532426
+    Data3: 1627553688
+    Data4: -1975626961
   Banks:
   - {fileID: 557109491724218155}
   IsStream: 0
-  Is3D: 1
+  Is3D: 0
   IsOneShot: 1
   Parameters: []
   MinDistance: 1

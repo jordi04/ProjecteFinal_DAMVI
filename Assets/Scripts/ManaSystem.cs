@@ -3,6 +3,8 @@ using UnityEngine;
 using System;
 using UnityEngine.SceneManagement;
 using TMPro;
+using FMOD.Studio;
+using FMODUnity;
 
 public class ManaSystem : MonoBehaviour, IDamageable
 {
@@ -13,6 +15,8 @@ public class ManaSystem : MonoBehaviour, IDamageable
     [SerializeField] private float maxMana = 100f;
     [SerializeField] private float regenRate = 5f; // Mana per second
     [SerializeField] private float currentMana;
+    [SerializeField] private EventReference humanHurtSoundEffect;
+    [SerializeField] private EventReference horseHurtSoundEffect;
 
 
     [Header("Respawn UI")]
@@ -185,7 +189,12 @@ public class ManaSystem : MonoBehaviour, IDamageable
             currentMana = 0;
             OnManaDepleted?.Invoke();
             StartCoroutine(HandleDeath());
-        }*/ 
+        }*/
+
+        RuntimeManager.PlayOneShot(humanHurtSoundEffect);
+        if (UnityEngine.Random.Range(1, 100) <= 50)
+            RuntimeManager.PlayOneShot(horseHurtSoundEffect);
+
         Debug.Log("Damage taken");
         OnManaChanged?.Invoke(currentMana / maxMana);
         lastManaRatio = currentMana / maxMana;

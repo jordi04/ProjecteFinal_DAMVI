@@ -1,0 +1,143 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4151375026332395575
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6051882320857320865}
+  - component: {fileID: 5316044776071561809}
+  - component: {fileID: 5822573336148408292}
+  - component: {fileID: 7593531872698561014}
+  - component: {fileID: 4162301949056471322}
+  - component: {fileID: 414517652869589652}
+  - component: {fileID: 5635752969104804394}
+  m_Layer: 0
+  m_Name: SingletonGameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!4 &6051882320857320865
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4151375026332395575}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 380.90237, y: 14.939318, z: 88.327126}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5316044776071561809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4151375026332395575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94b2bc00442f269468a23e5a15b36254, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5822573336148408292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4151375026332395575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88b7aba017c0eb74793e2a7b4b524381, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerInput: {fileID: 0}
+--- !u!114 &7593531872698561014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4151375026332395575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59a46a4bd45e6e84a861099d142d38db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firstCheckPoint: {fileID: 11400000, guid: e513131a1af463840af580c097c6f157, type: 2}
+  checkPoints:
+  - {fileID: 11400000, guid: e513131a1af463840af580c097c6f157, type: 2}
+  - {fileID: 11400000, guid: ca22f4d68736b9940bbec9c320befa49, type: 2}
+--- !u!114 &4162301949056471322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4151375026332395575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb5719ef61e868a44a02d8bc90820962, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &414517652869589652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4151375026332395575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30bba1983f9d5254a985f602b08d5e0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilityIcons:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  cooldownOverlays:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+--- !u!114 &5635752969104804394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4151375026332395575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38c61724f5674bb4aa733a441fcf8a78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxMana: 100
+  regenRate: 5
+  currentMana: 0
+  humanHurtSoundEffect:
+    Guid:
+      Data1: 188777774
+      Data2: 1174532426
+      Data3: 1627553688
+      Data4: -1975626961
+    Path: event:/SFX/Player_damage_01-01
+  horseHurtSoundEffect:
+    Guid:
+      Data1: 1543909411
+      Data2: 1075914027
+      Data3: 788037764
+      Data4: 1371466054
+    Path: event:/SFX/Cavall_damage_02-01
+  respawnUIPrefab: {fileID: 245985033093070966, guid: af209c6d43d7f974495e88eeab1f76bd,
+    type: 3}

@@ -2,6 +2,10 @@ using UnityEngine;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
+using FMOD.Studio;
+using FMODUnity;
+using UnityEditor;
+using UnityEngine.UIElements;
 
 public class SerpienteBoss : MonoBehaviour
 {
@@ -28,6 +32,9 @@ public class SerpienteBoss : MonoBehaviour
     private bool isDead = false;
     private bool puedeAtacar = true;
     private bool estaActiva = false;
+
+    [SerializeField] EventReference hurtSound;
+    [SerializeField] EventReference deadSound;
 
     private void Start()
     {
@@ -96,6 +103,13 @@ public class SerpienteBoss : MonoBehaviour
             isDead = true;
             StartCoroutine(DeathSequence());
         }
+        if (!isDead)
+        {
+            EventInstance instance = RuntimeManager.CreateInstance(hurtSound);
+            instance.set3DAttributes(RuntimeUtils.To3DAttributes(snakePosition));
+            instance.start();
+            instance.release();
+        }
     }
 
     private IEnumerator DamageFlash()
@@ -108,6 +122,10 @@ public class SerpienteBoss : MonoBehaviour
     private IEnumerator DeathSequence()
     {
         yield return new WaitForSeconds(flashDuration);
+        EventInstance instance = RuntimeManager.CreateInstance(deadSound);
+        instance.set3DAttributes(RuntimeUtils.To3DAttributes(snakePosition));
+        instance.start();
+        instance.release();
         animator.SetTrigger("Die");
     }
 

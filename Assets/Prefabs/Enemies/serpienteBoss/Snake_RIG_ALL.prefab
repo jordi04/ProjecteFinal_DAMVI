@@ -2071,10 +2071,24 @@ MonoBehaviour:
   charcoVenenoPrefab: {fileID: 1666233158301983608, guid: e1f3cf9dffc5d92459b0be8239fbd9de,
     type: 3}
   tiempoCharcoVeneno: 5
-  life: 50
+  life: 250
   flashDuration: 0.2
   snakeRenderer: {fileID: 1689381725308702655}
   animator: {fileID: 2582097510389181932}
+  hurtSound:
+    Guid:
+      Data1: -199386614
+      Data2: 1240725424
+      Data3: -1690256250
+      Data4: -665546233
+    Path: event:/SFX/Serp_hurt_01-01
+  deadSound:
+    Guid:
+      Data1: 1157112276
+      Data2: 1098929130
+      Data3: 479423915
+      Data4: -648637844
+    Path: event:/SFX/Serp_dead_01-01
 --- !u!136 &4646064681022286694
 CapsuleCollider:
   m_ObjectHideFlags: 0

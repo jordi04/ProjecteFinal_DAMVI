@@ -1,5 +1,32 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-9132233448401253806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Goblin_Hurt
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Goblin_Hurt
+  Guid:
+    Data1: -1931652974
+    Data2: 1318437471
+    Data3: -1101735012
+    Data4: 122704169
+  Banks:
+  - {fileID: 557109491724218155}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-8712343084182677606
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72,6 +99,33 @@ MonoBehaviour:
     Data2: 1194195947
     Data3: -1116525900
     Data4: 505951255
+  Banks:
+  - {fileID: 557109491724218155}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-6640800235632881729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Gobling_Attack
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Gobling_Attack
+  Guid:
+    Data1: 1152412584
+    Data2: 1135742950
+    Data3: 739960732
+    Data4: -2080325317
   Banks:
   - {fileID: 557109491724218155}
   IsStream: 0
@@ -216,6 +270,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-5226507991914535562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Serp_AttackClose
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Serp_AttackClose
+  Guid:
+    Data1: -2105275595
+    Data2: 1270562451
+    Data3: 59461308
+    Data4: 1855945974
+  Banks:
+  - {fileID: 557109491724218155}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-4830165898568219562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -297,6 +378,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-3127296213146217222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Mushroom_Death
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Mushroom_Death
+  Guid:
+    Data1: -356031287
+    Data2: 1285929367
+    Data3: 888455359
+    Data4: 2004823623
+  Banks:
+  - {fileID: 557109491724218155}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-2854615604605002677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -351,6 +459,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-382038576167777854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Golem_Idle
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Golem_Idle
+  Guid:
+    Data1: 824857335
+    Data2: 1213381363
+    Data3: 1302707845
+    Data4: -1727839862
+  Banks:
+  - {fileID: 557109491724218155}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -391,12 +526,22 @@ MonoBehaviour:
   - {fileID: 4400789125631723432}
   - {fileID: -7085406630133151417}
   - {fileID: 746290162545683915}
+  - {fileID: 6185259710343782845}
+  - {fileID: -5226507991914535562}
+  - {fileID: 6733011345593192676}
+  - {fileID: 5577601051981013050}
+  - {fileID: 333915920892026278}
+  - {fileID: -9132233448401253806}
+  - {fileID: -6640800235632881729}
+  - {fileID: -3127296213146217222}
+  - {fileID: -382038576167777854}
+  - {fileID: 3799082570949329467}
   EditorParameters: []
   MasterBanks:
   - {fileID: 557109491724218155}
   StringsBanks:
   - {fileID: 3013371581036214418}
-  cacheTime: 638825835002135209
+  cacheTime: 638826062064308264
   cacheVersion: 131846
 --- !u!114 &124584966412069426
 MonoBehaviour:
@@ -425,6 +570,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &333915920892026278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Goblin_Death
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Goblin_Death
+  Guid:
+    Data1: 147224439
+    Data2: 1242127327
+    Data3: -1420516721
+    Data4: 1032295497
+  Banks:
+  - {fileID: 557109491724218155}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &557109491724218155
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -440,10 +612,10 @@ MonoBehaviour:
   Path: The_Last_HiHo_Fmod/The_Last_HiHo/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638825835001918690
+  lastModified: 638826062064113282
   FileSizes:
   - Name: Desktop
-    Value: 3051008
+    Value: 3157600
   Exists: 1
 --- !u!114 &746290162545683915
 MonoBehaviour:
@@ -595,11 +767,38 @@ MonoBehaviour:
   Path: The_Last_HiHo_Fmod/The_Last_HiHo/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638825835002135209
+  lastModified: 638826062064308264
   FileSizes:
   - Name: Desktop
-    Value: 2056
+    Value: 2502
   Exists: 1
+--- !u!114 &3799082570949329467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Serp_AttackRange
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Serp_AttackRange
+  Guid:
+    Data1: 1998347001
+    Data2: 1320231388
+    Data3: -947134568
+    Data4: -1234093619
+  Banks:
+  - {fileID: 557109491724218155}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &4400789125631723432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -627,6 +826,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &5577601051981013050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Golem_Hurt
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Golem_Hurt
+  Guid:
+    Data1: -1943930774
+    Data2: 1277908675
+    Data3: -1267096934
+    Data4: 2026387196
+  Banks:
+  - {fileID: 557109491724218155}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &5744205625990858251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -645,6 +871,60 @@ MonoBehaviour:
     Data2: 1256111959
     Data3: -1693359700
     Data4: 925327671
+  Banks:
+  - {fileID: 557109491724218155}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &6185259710343782845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Golem_Death
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Golem_Death
+  Guid:
+    Data1: -1728658921
+    Data2: 1176050896
+    Data3: 2050900670
+    Data4: -826368567
+  Banks:
+  - {fileID: 557109491724218155}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &6733011345593192676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Goblin_Idle
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Goblin_Idle
+  Guid:
+    Data1: 31739491
+    Data2: 1261176494
+    Data3: -1144361294
+    Data4: 266489730
   Banks:
   - {fileID: 557109491724218155}
   IsStream: 0

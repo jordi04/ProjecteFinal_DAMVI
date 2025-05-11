@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 1962792544705283915}
   m_Layer: 0
   m_Name: GolemRock
-  m_TagString: Untagged
+  m_TagString: GolemRock
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -56,7 +56,7 @@ MonoBehaviour:
   impactRadius: 1.5
   damageableLayers:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 320
   isRock: 1
   canBePickedUp: 1
 --- !u!33 &6995563354514180318

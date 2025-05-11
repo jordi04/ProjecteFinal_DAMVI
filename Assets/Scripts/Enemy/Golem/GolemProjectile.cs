@@ -113,6 +113,11 @@ public class GolemProjectile : MonoBehaviour
                 if (damageable != null)
                 {
                     damageable.TakeDamage(damage);
+                    //si es player fer-li mal
+                    if (collision.gameObject.CompareTag("Player"))
+                    {
+                        ManaSystem.instance.TakeDamage(damage);
+                    }
                 }
             }
 
@@ -141,11 +146,9 @@ public class GolemProjectile : MonoBehaviour
             float actualDamage = damage * Mathf.Clamp01(damageMultiplier);
 
             // Apply damage
-            IDamageable damageable = hit.GetComponent<IDamageable>();
-            if (damageable != null)
-            {
-                damageable.TakeDamage(actualDamage);
-            }
+            
+            ManaSystem.instance.TakeDamage(damage);
+
 
             // Add force to rigidbodies
             Rigidbody rb = hit.GetComponent<Rigidbody>();

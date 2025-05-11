@@ -825,7 +825,16 @@ public class GolemBossEnemyController : EnemyController
             IDamageable damageable = hitCollider.GetComponent<IDamageable>();
             if (damageable != null)
             {
-                damageable.TakeDamage(attackDamage * 2 * damageMultiplier);
+                //si no es player fer mal als colliders hit
+                if (!hitCollider.CompareTag("Player"))
+                {
+                    damageable.TakeDamage(attackDamage * 2 * damageMultiplier);
+                }
+            }
+            //si es player fer-li mal
+            if (hitCollider.CompareTag("Player"))
+            {
+                ManaSystem.instance.TakeDamage(attackDamage * 2 * damageMultiplier);
             }
 
             // Add force to push away

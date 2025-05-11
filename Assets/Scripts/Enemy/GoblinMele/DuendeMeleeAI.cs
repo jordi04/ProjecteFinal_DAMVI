@@ -18,17 +18,21 @@ public class DuendeMeleeAI : EnemyController
     {
         base.Awake();
 
-        navAgent.stoppingDistance = rangoAtaque * 0.25f;
-        navAgent.angularSpeed = 720f;
+        // Configuración de movimiento AGGRESIVA
+        navAgent.stoppingDistance = 0.1f; // ¡Que se pegue al jugador!
+        navAgent.radius = 0.2f; // Para colisiones más ajustadas
+        navAgent.angularSpeed = 0f; // Rotación manual total
+        navAgent.acceleration = 100f; // Aceleración de Fórmula 1
 
-        attackDamage = baseDamage;
-        maxHealth = baseHealth;
-        moveSpeed = baseSpeed;
+        // Stats brutales
+        attackDamage = baseDamage * 1.5f; // 50% más de daño
+        moveSpeed = baseSpeed * 2f; // El doble de rápido
+        tiempoEntreAtaques = 0.2f; // Ataque cada 0.2 segundos
 
-        Debug.Log("DuendeMeleeAI inicializado - " +
-                 $"Daño: {attackDamage}, " +
-                 $"Salud: {maxHealth}, " +
-                 $"Velocidad: {moveSpeed}");
+        Debug.Log("Goblin en modo DIOS - " +
+                 $"Daño: {attackDamage} | " +
+                 $"Velocidad: {moveSpeed} | " +
+                 $"Parada: {navAgent.stoppingDistance}");
     }
 
     protected override void Start()
@@ -62,25 +66,40 @@ public class DuendeMeleeAI : EnemyController
     IEnumerator AtaqueMelee()
     {
         puedeAtacar = false;
-        //animator.SetTrigger(attackAnimTrigger);
 
-        yield return new WaitForSeconds(0.3f);
+        // 1. Posicionamiento FORZADO
+        if (navAgent != null && navAgent.enabled)
+        {
+            navAgent.SetDestination(target.position); // Renovación constante del destino
+            navAgent.Move(transform.forward * 0.5f); // Empujón violento hacia adelante
+        }
 
+        // 2. Detección con parámetros EXTREMOS
         Collider[] objetivos = Physics.OverlapSphere(
-            puntoAtaque.position,
-            rangoAtaque,
-            attackableLayerMask
+            transform.position + transform.forward * 0.5f, // Offset frontal
+            rangoAtaque * 2f, // Radio duplicado
+            attackableLayerMask,
+            QueryTriggerInteraction.Collide // Incluir triggers
         );
 
+        // 3. Aplicación de daño SIN PIEDAD
         foreach (Collider col in objetivos)
         {
             if (col.CompareTag("Player"))
             {
-                col.GetComponent<IDamageable>()?.TakeDamage(attackDamage);
+                // Debug visual tipo "Mierda, me están matando"
+                Debug.DrawLine(transform.position, col.transform.position, Color.red, 1f);
+                col.GetComponent<IDamageable>()?.TakeDamage(attackDamage * 2); // Daño doble por si acaso
+
+                // Empujón físico al jugador (opcional)
+                Rigidbody rb = col.GetComponent<Rigidbody>();
+                if (rb != null) rb.AddForce(transform.forward * 10f, ForceMode.Impulse);
             }
         }
 
-        yield return new WaitForSeconds(tiempoEntreAtaques);
+        // 4. Animación y recuperación
+        animator.Play("AtaqueViolento", 0, 0f); // Saltar directamente al ataque
+        yield return new WaitForSeconds(0.1f); // ¡Casi instantáneo!
         puedeAtacar = true;
     }
 

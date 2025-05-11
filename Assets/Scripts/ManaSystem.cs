@@ -57,7 +57,7 @@ public class ManaSystem : MonoBehaviour, IDamageable
             }
         }
         
-        if (currentMana < 1)
+        if (currentMana < 1 && !isDead)
         {
             currentMana = 0;
             OnManaDepleted?.Invoke();
@@ -118,6 +118,7 @@ public class ManaSystem : MonoBehaviour, IDamageable
         if (respawnUIInstance != null)
         {
             Destroy(respawnUIInstance);
+            Debug.Log("Respawn UI destroyed");
         }
         ResetMana();
         Time.timeScale = 1;
@@ -158,12 +159,13 @@ public class ManaSystem : MonoBehaviour, IDamageable
         if (isDead) return; // Evitar múltiples muertes seguidas
 
         currentMana -= amount;
+        /*
         if (currentMana < 1)
         {
             currentMana = 0;
             OnManaDepleted?.Invoke();
             StartCoroutine(HandleDeath());
-        }
+        }*/ 
         Debug.Log("Damage taken");
         OnManaChanged?.Invoke(currentMana / maxMana);
         lastManaRatio = currentMana / maxMana;

@@ -32,6 +32,11 @@ public class GolemBossEnemyController : EnemyController
     [SerializeField] private float energyBallThrowForce = 15f;
     [SerializeField] private float meleeAttackRadius = 3f;
 
+    [Header("Death Instanced Objects")]
+    [SerializeField] private Transform coreSpawnPoint;
+    [SerializeField] private GameObject coreInstance;
+    [SerializeField] private GameObject tooltipEndGame;
+
     private bool isEnraged = false;
     private float lastRockThrowTime = -100f;
     private float lastSpecialAttackTime = -100f;
@@ -960,7 +965,17 @@ public class GolemBossEnemyController : EnemyController
         {
             animator.SetBool("Death", true);
         }
-
+        //Comencar a instanciar objectes on death
+        //Spawn tooltip per explicar 
+        if (tooltipEndGame != null)
+        {
+            tooltipEndGame.SetActive(true);
+        }
+        if (coreInstance != null)
+        {
+            coreInstance.SetActive(true);
+            coreInstance.transform.position = coreSpawnPoint.position;
+        }
         base.Die();
     }
 }

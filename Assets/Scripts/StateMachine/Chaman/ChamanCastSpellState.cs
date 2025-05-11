@@ -47,6 +47,7 @@ public class ChamanCastSpellState : ChamanBaseState
         if (animator != null)
             animator.CrossFade(RiseHandsHash, crossFadeDuration);
 
+
         agent.isStopped = true;
 
         if (playerTransform != null)

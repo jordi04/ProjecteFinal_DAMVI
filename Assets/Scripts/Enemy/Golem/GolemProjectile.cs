@@ -78,7 +78,40 @@ public class GolemProjectile : MonoBehaviour
             Destroy(gameObject, lifeTime);
         }
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        //si ja ha pegat no tornar-ho a fer
+        if (hasHit) return;
 
+        if (other.CompareTag("Player"))
+        {
+            hasHit = true;
+            // Create impact effect if specified
+            if (impactEffect != null)
+            {
+                Instantiate(impactEffect, other.transform.position, Quaternion.identity);
+            }
+            // Apply area damage
+            if (impactRadius > 0)
+            {
+                ApplyAreaDamage(other.transform.position);
+            }
+        }
+        else if (other.CompareTag("Ground"))
+        {
+            hasHit = true;
+            // Create impact effect if specified
+            if (impactEffect != null)
+            {
+                Instantiate(impactEffect, other.transform.position, Quaternion.identity);
+            }
+            // Apply area damage
+            if (impactRadius > 0)
+            {
+                ApplyAreaDamage(other.transform.position);
+            }
+        }
+    }
     private void OnCollisionEnter(Collision collision)
     {
         // For rocks that can be picked up, only apply damage when thrown (not pickupable)
@@ -146,8 +179,18 @@ public class GolemProjectile : MonoBehaviour
             float actualDamage = damage * Mathf.Clamp01(damageMultiplier);
 
             // Apply damage
-            
-            ManaSystem.instance.TakeDamage(damage);
+            if (hit.CompareTag("Player"))
+            {
+                ManaSystem.instance.TakeDamage(actualDamage);
+            }
+            else
+            {
+                IDamageable damageable = hit.GetComponent<IDamageable>();
+                if (damageable != null)
+                {
+                    damageable.TakeDamage(actualDamage);
+                }
+            }
 
 
             // Add force to rigidbodies

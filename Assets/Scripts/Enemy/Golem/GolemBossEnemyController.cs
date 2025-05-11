@@ -16,6 +16,7 @@ public class GolemBossEnemyController : EnemyController
     [Header("Rock Attack Settings")]
     [SerializeField] private List<GameObject> availableRocks = new List<GameObject>(); // List of rocks in the scene
     [SerializeField] private Transform rightHandAttachPoint;
+    [SerializeField] private Transform leftHandAttachPoint;
     [SerializeField] private float rockDamage = 25f;
     [SerializeField] private float rockThrowForce = 20f;
     [SerializeField] private float rockUpwardForce = 2f;
@@ -110,7 +111,7 @@ public class GolemBossEnemyController : EnemyController
                 {
                     currentState = EnemyState.Idle;
                 }
-                Debug.Log("Golem returned to IDLE/PATROL state");
+                //Debug.Log("Golem returned to IDLE/PATROL state");
             }
         }
     }
@@ -198,8 +199,19 @@ public class GolemBossEnemyController : EnemyController
 
         // Update animation states based on current behavior
         UpdateAnimationState();
-
-        Debug.Log("Current State: " + currentState);
+        /* No funciona correctament
+        if (isRotating)
+        {
+            // Rotate smoothly towards the target
+            Vector3 lookDirection = target.position - transform.position;
+            lookDirection.y = 0; // Keep level
+            if (lookDirection != Vector3.zero)
+            {
+                RotateSmooth(lookDirection);
+            }
+        }
+        */
+        //Debug.Log("Current State: " + currentState);
     }
 
     // This method is now primarily for visual effects before OnGrabRock is called from animation
@@ -292,7 +304,8 @@ public class GolemBossEnemyController : EnemyController
     private Vector3 wanderPoint;
     private float nextWanderTime;
     private bool isWandering = false;
-    
+    private bool isRotating;
+
     protected override void HandleAttack()
     {
         if (isDead) return;
@@ -555,9 +568,10 @@ public class GolemBossEnemyController : EnemyController
         {
             Vector3 lookDirection = target.position - transform.position;
             lookDirection.y = 0; // Keep level
+            
             if (lookDirection != Vector3.zero)
             {
-                transform.rotation = Quaternion.LookRotation(lookDirection);
+                isRotating = true;
             }
         }
 
@@ -569,6 +583,16 @@ public class GolemBossEnemyController : EnemyController
         }
 
         PlayAttackSound();
+    }
+
+    private void RotateSmooth(Vector3 lookDirection)
+    {
+        // Calculate the target rotation
+        Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
+
+        // Smoothly rotate towards the target
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation,
+                                             rotationSpeed * Time.deltaTime);
     }
 
     private void PerformSpecialAttack()
@@ -657,9 +681,10 @@ public class GolemBossEnemyController : EnemyController
     public void OnCreateEnergyBall()
     {
         if (energyBallPrefab == null) return;
-
+        //Trobam posicio intermitja entre la mà dreta i esquerra
+        Vector3 instantiatePos = Vector3.Lerp(rightHandAttachPoint.position, leftHandAttachPoint.position, 0.5f);
         // Create energy ball and attach to hand
-        currentProjectile = Instantiate(energyBallPrefab, rightHandAttachPoint.position, rightHandAttachPoint.rotation);
+        currentProjectile = Instantiate(energyBallPrefab, instantiatePos, rightHandAttachPoint.rotation);
         currentProjectile.transform.SetParent(rightHandAttachPoint);
 
         Debug.Log("Energy ball created and attached to hand");
@@ -758,8 +783,11 @@ public class GolemBossEnemyController : EnemyController
         targetRock = null;
     }
 
+    //This is the melee attack with the energy ball
     private IEnumerator SpecialAttackSequence()
     {
+        
+
         // Stop movement during special attack
         if (navAgent != null)
             navAgent.isStopped = true;

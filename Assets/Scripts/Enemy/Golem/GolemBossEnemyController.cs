@@ -55,6 +55,7 @@ public class GolemBossEnemyController : EnemyController
         // Initialize rock list if empty by finding all rocks with appropriate tag
         if (availableRocks.Count == 0)
         {
+            //no funciona
             GameObject[] sceneRocks = GameObject.FindGameObjectsWithTag("GolemRock");
             availableRocks.AddRange(sceneRocks);
             Debug.Log($"Found {availableRocks.Count} rocks in the scene");
@@ -310,6 +311,7 @@ public class GolemBossEnemyController : EnemyController
                 if (isMovingToRock)
                 {
                     isMovingToRock = false;
+                    //potser dona errors !!!!
                     targetRock = null;
                 }
             }
@@ -723,7 +725,7 @@ public class GolemBossEnemyController : EnemyController
     }
 
     // Animation event method - called when attack animation ends
-    public void OnAttackAnimationEnd()
+    public void OnAttackAnimationEnd() //Té errors !!!!
     {
         isAttacking = false;
 
@@ -735,7 +737,7 @@ public class GolemBossEnemyController : EnemyController
         // If we still have a projectile attached (attack interrupted), destroy it if it's an energy ball
         if (currentProjectile != null)
         {
-            if (currentAttackType == AttackType.Melee)
+            if (currentAttackType == AttackType.Melee) 
             {
                 // Energy ball can be destroyed
                 Destroy(currentProjectile);
@@ -749,7 +751,7 @@ public class GolemBossEnemyController : EnemyController
                 }
                 currentProjectile.transform.SetParent(null);
             }
-
+            //no entenc currentProjectile
             currentProjectile = null;
         }
 

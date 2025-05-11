@@ -20,6 +20,7 @@ public class CheckPoint : MonoBehaviour
 
     [Header("UI Main")]
     [SerializeField] private GameObject main_Panel;
+    [SerializeField] private GameObject travel_Panel;
     [SerializeField] private TextMeshProUGUI checkPointName;
 
     [Header("Checkpoints List")]
@@ -46,13 +47,13 @@ public class CheckPoint : MonoBehaviour
 
     private void Update()
     {
+        // Player interaction check
         if (Physics.Raycast(GameManager.instance.mainCamera.transform.position, GameManager.instance.mainCamera.transform.forward, out RaycastHit hit, interactionDistance) && !hideInteractUI)
         {
             if (hit.collider.gameObject == gameObject)
             {
                 isPlayerInRange = true;
                 interactUI.SetActive(true);
-
                 if (UserInput.instance.interactPressed && UserInput.instance.IsInGameMode)
                 {
                     OpenCheckpointUI();
@@ -70,9 +71,20 @@ public class CheckPoint : MonoBehaviour
             interactUI.SetActive(false);
         }
 
-        if (UserInput.instance.pauseMenuPressed && main_Panel.activeSelf)
+        // Handle UI navigation with Escape key
+        if (UserInput.instance.pauseMenuPressed)
         {
-            CloseCheckpointUI();
+            if (travel_Panel.activeSelf)
+            {
+                // If in travel panel, go back to main panel
+                travel_Panel.SetActive(false);
+                main_Panel.SetActive(true);
+            }
+            else if (main_Panel.activeSelf)
+            {
+                // If in main panel, close everything
+                CloseCheckpointUI();
+            }
         }
     }
 
@@ -115,17 +127,20 @@ public class CheckPoint : MonoBehaviour
     private void ShowCheckpointUI()
     {
         hideInteractUI = true;
+
+        // Make sure travel panel is closed
+        travel_Panel.SetActive(false);
+
+        // Open main panel
         main_Panel.SetActive(true);
         interactUI.SetActive(false);
         hud.SetActive(false);
+
         PauseMenu.otherMenuOpen = true;
         UserInput.instance.switchActionMap(UserInput.ActionMap.InMenu);
         Time.timeScale = 0;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-
-        // Update the checkpoint list
-        SetUpCheckpointList();
 
         // Update the checkpoint name text
         if (checkPointName != null)
@@ -134,9 +149,19 @@ public class CheckPoint : MonoBehaviour
         }
     }
 
+    // Public method to connect to UI buttons
+    public void ShowCheckpoints()
+    {
+        SetUpCheckpointList();
+    }
+
     private void CloseCheckpointUI()
     {
+        // Close all UI panels
         main_Panel.SetActive(false);
+        travel_Panel.SetActive(false);
+
+        // Restore game state
         hud.SetActive(true);
         PauseMenu.otherMenuOpen = false;
         UserInput.instance.switchActionMap(UserInput.ActionMap.InGame);
@@ -151,6 +176,21 @@ public class CheckPoint : MonoBehaviour
         checkPointData.isVisited = true;
         fireVFX.SetActive(true);
         SetUpCheckpointList();
+    }
+
+    // Called when a button is pressed to open the travel panel
+    public void OpenTravelUI()
+    {
+        main_Panel.SetActive(false);
+        travel_Panel.SetActive(true);
+        SetUpCheckpointList();
+    }
+
+    // Go back to main menu from travel UI
+    public void BackToMainMenu()
+    {
+        travel_Panel.SetActive(false);
+        main_Panel.SetActive(true);
     }
 
     private void SetUpCheckpointList()
@@ -230,6 +270,8 @@ public class CheckPoint : MonoBehaviour
             }
 
             CheckPointManager.instance.SetCurrentCheckpoint(checkpoint);
+
+            // Close all UI
             CloseCheckpointUI();
         }
     }

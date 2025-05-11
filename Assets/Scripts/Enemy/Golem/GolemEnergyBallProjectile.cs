@@ -156,7 +156,7 @@ public class GolemEnergyBallProjectile : MonoBehaviour
     {
         // Find all colliders in the impact radius
         Collider[] colliders = Physics.OverlapSphere(center, impactRadius, damageableLayers);
-
+        Debug.Log("EnergyBallCrashed2" + colliders);    
         foreach (Collider hit in colliders)
         {
             // Skip the owner

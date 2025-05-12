@@ -630,17 +630,23 @@ public class GolemBossEnemyController : EnemyController
     // This should be connected to the first event emitter in the RangeAttack animation
     public void OnGrabRock()
     {
-        Debug.Log("OnGrabRock animation event fired");
-        if (targetRock == null)
-        {
-            Debug.LogError("targetRock is null in OnGrabRock!");
-            return;
-        }
+        if (targetRock == null) return;
 
         // Move rock to hand
         targetRock.transform.SetParent(rightHandAttachPoint);
         targetRock.transform.localPosition = Vector3.zero;
         targetRock.transform.localRotation = Quaternion.identity;
+
+        // Notify the rock it's been picked up
+        GolemProjectile rockProjectile = targetRock.GetComponent<GolemProjectile>();
+        if (rockProjectile != null)
+        {
+            rockProjectile.OnPickedUp();
+        }
+
+        currentProjectile = targetRock;
+
+        Debug.Log("OnGrabRock animation event fired");
 
         // Disable physics
         Rigidbody rockRb = targetRock.GetComponent<Rigidbody>();

@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc62ac8de8f53e8458bdbffdeb603af3, type: 3}
-  m_Name: EntradaCova
+  m_Name: Cova
   m_EditorClassIdentifier: 
-  checkpointName: Entrada Cova
+  checkpointName: Cova
   checkPointImage: {fileID: 0}
   order: 4
   isVisited: 0

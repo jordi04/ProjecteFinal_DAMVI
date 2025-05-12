@@ -1,12 +1,18 @@
 using FMODUnity;
 using UnityEngine;
 using UnityEngine.AI;
+using static EnemyController;
 
-public class Chaman : MonoBehaviour
+public class Chaman : MonoBehaviour, IDamageable
 {
     [SerializeField] NavMeshAgent agent;
     [SerializeField] Animator animator;
     Transform playerTransform;
+
+    [Header("Life Settings")]
+    [SerializeField] float maxHealth = 100f;
+    [SerializeField] float currentHealth = 100f;
+    private bool isDead = false;
 
     [Header("Detection Settings")]
     [SerializeField] float playerDetectionRange = 10f;
@@ -112,6 +118,11 @@ public class Chaman : MonoBehaviour
 
     void Update()
     {
+        if (currentHealth <= 0)
+        {
+            //Die();
+            return;
+        }
         // Debug: Force spell cast if requested
         if (forceSpellCast)
         {
@@ -136,5 +147,62 @@ public class Chaman : MonoBehaviour
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, spawnRadius);
+    }
+
+   /*
+    private void Die()
+    {
+        if (isDead) return;
+        isDead = true;
+
+        StopAllCoroutines();
+
+        FMODUnity.RuntimeManager.PlayOneShot("event:/deathSound", transform.position);
+
+        if (deathEffect != null)
+            Instantiate(deathEffect, transform.position, Quaternion.identity);
+
+        if (agent != null)
+            agent.enabled = false;
+
+
+        StartCoroutine(DeathSequence());
+    }
+
+    
+    private IEnumerator DeathSequence()
+    {
+        yield return new WaitForSeconds(destroyDelay);
+
+        if (spawner != null)
+        {
+            spawner.EnemyEliminated(gameObject);
+        }
+
+        Destroy(enemyRoot);
+    }
+   */
+    
+
+    //Implementació de interficie damageable
+
+    public void TakeDamage(float damageAmount)
+    {
+        currentHealth -= damageAmount;
+    }
+
+    public float GetCurrentHealth()
+    {
+        return currentHealth;
+    }
+
+    public float GetMaxHealth()
+    {
+        return maxHealth;
+    }
+
+    public bool IsDead()
+    {
+        return isDead;
     }
 }

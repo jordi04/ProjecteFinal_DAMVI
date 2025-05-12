@@ -192,6 +192,8 @@ public class CheckPoint : MonoBehaviour
     {
         travel_Panel.SetActive(false);
         main_Panel.SetActive(true);
+        Cursor.lockState = CursorLockMode.Locked; 
+        Cursor.visible = false;
     }
 
     private void SetUpCheckpointList()

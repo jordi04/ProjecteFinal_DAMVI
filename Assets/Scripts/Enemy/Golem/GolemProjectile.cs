@@ -6,11 +6,14 @@ public class GolemProjectile : MonoBehaviour
 {
     [Header("Projectile Settings")]
     [SerializeField] private float defaultDamage = 25f;
-    [SerializeField] private float lifeTime = 5f;
     [SerializeField] private GameObject impactEffect;
     [SerializeField] private float impactRadius = 1.5f;
     [SerializeField] private LayerMask damageableLayers;
     [SerializeField] private bool isRock = true; // Set to true for rocks, false for energy balls
+
+    [Header("Rock Settings")]
+    [SerializeField] private bool resetPositionAfterThrow = true; // Whether to reset rock to original position after throw
+    [SerializeField] private float resetDelay = 5f; // Time after impact before resetting rock position
 
     // Private members
     private float damage;
@@ -19,12 +22,19 @@ public class GolemProjectile : MonoBehaviour
     private bool isInitialized = false;
     private Rigidbody rb;
     private Collider col;
+    private Vector3 originalPosition;
+    private Quaternion originalRotation;
+    private bool isResetting = false;
 
     // For rocks that are picked up and thrown by the golem
     public bool canBePickedUp = true;
 
     private void Awake()
     {
+        // Store original position and rotation
+        originalPosition = transform.position;
+        originalRotation = transform.rotation;
+
         // Get required components
         rb = GetComponent<Rigidbody>();
         col = GetComponent<Collider>();
@@ -35,8 +45,9 @@ public class GolemProjectile : MonoBehaviour
             // By default, make sure physics are enabled for rocks in the scene
             if (rb != null)
             {
-                rb.isKinematic = false;
-                rb.useGravity = true;
+                rb.isKinematic = true; // Make kinematic until thrown
+                rb.useGravity = false;
+                rb.constraints = RigidbodyConstraints.FreezeAll; // Freeze all constraints to prevent movement
             }
 
             if (col != null)
@@ -55,11 +66,10 @@ public class GolemProjectile : MonoBehaviour
             damage = defaultDamage;
         }
 
-        // Destroy the projectile after lifeTime seconds if it hasn't hit anything
-        // Only start the timer if this is a thrown object (energy balls or thrown rocks)
-        if (!canBePickedUp || !isRock)
+        // For energy balls (non-rocks), we can still destroy them after a while
+        if (!isRock)
         {
-            Destroy(gameObject, lifeTime);
+            Destroy(gameObject, 5f); // Default lifetime for energy balls
         }
     }
 
@@ -74,14 +84,69 @@ public class GolemProjectile : MonoBehaviour
         {
             canBePickedUp = false;
 
-            // Start lifetime destruction countdown
-            Destroy(gameObject, lifeTime);
+            // Unfreeze the rock for physics when thrown
+            if (rb != null)
+            {
+                rb.isKinematic = false;
+                rb.useGravity = true;
+                rb.constraints = RigidbodyConstraints.None; // Remove constraints when thrown
+            }
         }
     }
+
+    // Call this when the golem picks up the rock
+    public void OnPickedUp()
+    {
+        if (rb != null)
+        {
+            rb.isKinematic = true;
+            rb.useGravity = false;
+        }
+
+        if (col != null)
+        {
+            col.enabled = false; // Disable collider while held
+        }
+
+        // Cancel any reset in progress
+        CancelInvoke("ResetRock");
+        isResetting = false;
+    }
+
+    // Reset the rock to its original position
+    private void ResetRock()
+    {
+        if (!isRock) return;
+
+        isResetting = true;
+
+        // Detach from any parent
+        transform.SetParent(null);
+
+        // Reset position and rotation
+        transform.position = originalPosition;
+        transform.rotation = originalRotation;
+
+        // Reset physics state
+        if (rb != null)
+        {
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            rb.isKinematic = true;
+            rb.useGravity = false;
+            rb.constraints = RigidbodyConstraints.FreezeAll;
+        }
+
+        // Reset flags
+        hasHit = false;
+        canBePickedUp = true;
+        isResetting = false;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        //si ja ha pegat no tornar-ho a fer
-        if (hasHit) return;
+        // Skip if already hit or if rock can still be picked up
+        if (hasHit || (isRock && canBePickedUp)) return;
 
         if (other.CompareTag("Player"))
         {
@@ -96,6 +161,17 @@ public class GolemProjectile : MonoBehaviour
             {
                 ApplyAreaDamage(other.transform.position);
             }
+
+            // For rocks, schedule reset instead of destroying
+            if (isRock && resetPositionAfterThrow)
+            {
+                Invoke("ResetRock", resetDelay);
+            }
+            else if (!isRock)
+            {
+                // Only destroy energy balls
+                Destroy(gameObject);
+            }
         }
         else if (other.CompareTag("Ground"))
         {
@@ -103,15 +179,27 @@ public class GolemProjectile : MonoBehaviour
             // Create impact effect if specified
             if (impactEffect != null)
             {
-                Instantiate(impactEffect, other.transform.position, Quaternion.identity);
+                Instantiate(impactEffect, transform.position, Quaternion.identity);
             }
             // Apply area damage
             if (impactRadius > 0)
             {
-                ApplyAreaDamage(other.transform.position);
+                ApplyAreaDamage(transform.position);
+            }
+
+            // For rocks, schedule reset instead of destroying
+            if (isRock && resetPositionAfterThrow)
+            {
+                Invoke("ResetRock", resetDelay);
+            }
+            else if (!isRock)
+            {
+                // Only destroy energy balls
+                Destroy(gameObject);
             }
         }
     }
+
     private void OnCollisionEnter(Collision collision)
     {
         // For rocks that can be picked up, only apply damage when thrown (not pickupable)
@@ -154,10 +242,14 @@ public class GolemProjectile : MonoBehaviour
                 }
             }
 
-            // Destroy energy balls on impact, but only destroy rocks if they were thrown
-            if (!isRock || (isRock && !canBePickedUp))
+            // For rocks, schedule reset instead of destroying
+            if (isRock && resetPositionAfterThrow)
             {
-                // Destroy the projectile
+                Invoke("ResetRock", resetDelay);
+            }
+            else if (!isRock)
+            {
+                // Only destroy energy balls
                 Destroy(gameObject);
             }
         }
@@ -191,7 +283,6 @@ public class GolemProjectile : MonoBehaviour
                     damageable.TakeDamage(actualDamage);
                 }
             }
-
 
             // Add force to rigidbodies
             Rigidbody rb = hit.GetComponent<Rigidbody>();

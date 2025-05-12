@@ -10,11 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc62ac8de8f53e8458bdbffdeb603af3, type: 3}
-  m_Name: Village
+  m_Name: Serp
   m_EditorClassIdentifier: 
-  checkpointName: Village
-  checkPointImage: {fileID: 21300000, guid: 6720d35f6d9b9ba42811d616a272ceae, type: 3}
-  map: 0
-  order: 1
-  isVisited: 1
+  checkpointName: Serp
+  checkPointImage: {fileID: 21300000, guid: de59b6c238916b34d88c05e42c6bfb41, type: 3}
+  order: 3
+  isVisited: 0
   checkPointTransform: {fileID: 0}

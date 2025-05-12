@@ -79,7 +79,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 50
   Length: 0
 --- !u!114 &-8712343084182677606
 MonoBehaviour:
@@ -214,7 +214,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 50
   Length: 0
 --- !u!114 &-7233909313181311296
 MonoBehaviour:
@@ -285,7 +285,7 @@ MonoBehaviour:
   Path: The_Last_HiHo_Fmod/The_Last_HiHo/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638826099881704674
+  lastModified: 638826078660051396
   FileSizes:
   - Name: Desktop
     Value: 2502
@@ -342,7 +342,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 50
   Length: 0
 --- !u!114 &-6187082634788295443
 MonoBehaviour:
@@ -369,7 +369,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 50
   Length: 0
 --- !u!114 &-5983155493132318752
 MonoBehaviour:
@@ -558,7 +558,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 50
   Length: 0
 --- !u!114 &-4871367589858359926
 MonoBehaviour:
@@ -585,7 +585,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 50
   Length: 0
 --- !u!114 &-4830165898568219562
 MonoBehaviour:
@@ -639,7 +639,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 50
   Length: 0
 --- !u!114 &-4387644187926304605
 MonoBehaviour:
@@ -693,7 +693,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 50
   Length: 0
 --- !u!114 &-4017377726244176633
 MonoBehaviour:
@@ -737,10 +737,10 @@ MonoBehaviour:
   Path: The_Last_HiHo_Fmod/The_Last_HiHo/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638826099881603301
+  lastModified: 638826078659858792
   FileSizes:
   - Name: Desktop
-    Value: 3157568
+    Value: 3158656
   Exists: 1
 --- !u!114 &-3664688296341654496
 MonoBehaviour:
@@ -875,7 +875,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 50
   Length: 0
 --- !u!114 &-2242302075707841911
 MonoBehaviour:
@@ -902,7 +902,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 50
   Length: 0
 --- !u!114 &-1911890170535173789
 MonoBehaviour:
@@ -929,7 +929,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 50
   Length: 0
 --- !u!114 &-382038576167777854
 MonoBehaviour:
@@ -1013,7 +1013,7 @@ MonoBehaviour:
   - {fileID: -3848064766329631794}
   StringsBanks:
   - {fileID: -6952094662385167324}
-  cacheTime: 638826099881704674
+  cacheTime: 638826078660051396
   cacheVersion: 131846
 --- !u!114 &124584966412069426
 MonoBehaviour:
@@ -1094,7 +1094,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 50
   Length: 0
 --- !u!114 &557109491724218155
 MonoBehaviour:
@@ -1168,7 +1168,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 50
   Length: 0
 --- !u!114 &884711148806813980
 MonoBehaviour:
@@ -1303,7 +1303,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 50
   Length: 0
 --- !u!114 &2884664464120331683
 MonoBehaviour:
@@ -1377,7 +1377,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 50
   Length: 0
 --- !u!114 &3799082570949329467
 MonoBehaviour:
@@ -1431,7 +1431,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 50
   Length: 0
 --- !u!114 &4313877425620158489
 MonoBehaviour:
@@ -1458,7 +1458,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 50
   Length: 0
 --- !u!114 &4370886198247285084
 MonoBehaviour:
@@ -1538,8 +1538,8 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 1
   Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
+  MinDistance: 0
+  MaxDistance: 50
   Length: 0
 --- !u!114 &5577601051981013050
 MonoBehaviour:
@@ -1593,7 +1593,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 50
   Length: 0
 --- !u!114 &5744205625990858251
 MonoBehaviour:
@@ -1674,7 +1674,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 50
   Length: 0
 --- !u!114 &6733011345593192676
 MonoBehaviour:
@@ -1755,7 +1755,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 50
   Length: 0
 --- !u!114 &7637280900164462685
 MonoBehaviour:
@@ -1836,7 +1836,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 50
   Length: 0
 --- !u!114 &7729885510741009374
 MonoBehaviour:
@@ -1863,7 +1863,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 50
   Length: 0
 --- !u!114 &7731240148472376688
 MonoBehaviour:
@@ -1944,7 +1944,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 50
   Length: 0
 --- !u!114 &8813441327007330224
 MonoBehaviour:

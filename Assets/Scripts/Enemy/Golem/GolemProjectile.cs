@@ -114,6 +114,7 @@ public class GolemProjectile : MonoBehaviour
     }
 
     // Reset the rock to its original position
+    /*
     private void ResetRock()
     {
         if (!isRock) return;
@@ -141,7 +142,7 @@ public class GolemProjectile : MonoBehaviour
         hasHit = false;
         canBePickedUp = true;
         isResetting = false;
-    }
+    }*/
 
     private void OnTriggerEnter(Collider other)
     {
@@ -161,17 +162,8 @@ public class GolemProjectile : MonoBehaviour
             {
                 ApplyAreaDamage(other.transform.position);
             }
-
-            // For rocks, schedule reset instead of destroying
-            if (isRock && resetPositionAfterThrow)
-            {
-                Invoke("ResetRock", resetDelay);
-            }
-            else if (!isRock)
-            {
-                // Only destroy energy balls
-                Destroy(gameObject);
-            }
+            Destroy(gameObject);
+            
         }
         else if (other.CompareTag("Ground"))
         {
@@ -241,17 +233,7 @@ public class GolemProjectile : MonoBehaviour
                     }
                 }
             }
-
-            // For rocks, schedule reset instead of destroying
-            if (isRock && resetPositionAfterThrow)
-            {
-                Invoke("ResetRock", resetDelay);
-            }
-            else if (!isRock)
-            {
-                // Only destroy energy balls
-                Destroy(gameObject);
-            }
+            Destroy(gameObject);
         }
     }
 

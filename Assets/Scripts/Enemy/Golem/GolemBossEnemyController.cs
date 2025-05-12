@@ -103,7 +103,7 @@ public class GolemBossEnemyController : EnemyController
         // Only change states if not currently in a special action
         if (currentState != EnemyState.Dead && currentState != EnemyState.Retreating && !isMovingToRock)
         {
-            if (playerInAttackRange && currentState != EnemyState.Attacking && !isAttacking)
+            if (playerInAttackRange && currentState != EnemyState.Attacking)
             {
                 currentState = EnemyState.Attacking;
                 Debug.Log("Golem entered ATTACKING state");
@@ -124,11 +124,9 @@ public class GolemBossEnemyController : EnemyController
                 {
                     currentState = EnemyState.Idle;
                 }
-                //Debug.Log("Golem returned to IDLE/PATROL state");
             }
         }
     }
-
 
     // Override the state machine to handle the golem's unique behaviors
     protected void StateMachine()
@@ -306,7 +304,6 @@ public class GolemBossEnemyController : EnemyController
     private float nextWanderTime;
     private bool isWandering = false;
     private bool isRotating;
-
     protected override void HandleAttack()
     {
         if (isDead) return;
@@ -325,7 +322,6 @@ public class GolemBossEnemyController : EnemyController
                 if (isMovingToRock)
                 {
                     isMovingToRock = false;
-                    //potser dona errors !!!!
                     targetRock = null;
                 }
             }
@@ -343,7 +339,13 @@ public class GolemBossEnemyController : EnemyController
 
         float distanceToTarget = Vector3.Distance(transform.position, target.position);
 
-        // If already attacking or using telekinesis, don't start a new attack
+        // Reset movement restrictions if not currently in a critical attack state
+        if (navAgent != null && !isAttacking && !isTelekinesisActive)
+        {
+            navAgent.isStopped = false;
+        }
+
+        // If already attacking or using telekinesis, return
         if (isAttacking || isTelekinesisActive) return;
 
         // If moving to a rock, check if we've reached it
@@ -384,7 +386,7 @@ public class GolemBossEnemyController : EnemyController
             FindNearestRock();
             return;
         }
-        // If in melee range and melee attack is off cooldown
+        // If in melee range or no rocks available, do melee attack
         else if (distanceToTarget <= meleeAttackRadius && Time.time > nextAttackTime)
         {
             // Higher chance to attack when player is close
@@ -397,8 +399,10 @@ public class GolemBossEnemyController : EnemyController
             nextAttackTime = Time.time + 1f / attackRate;
         }
         // If we have no rocks and are out of melee range, move toward the target
-        else if (navAgent != null && navAgent.enabled && navAgent.isOnNavMesh && distanceToTarget > meleeAttackRadius)
+        else if (navAgent != null && navAgent.enabled && navAgent.isOnNavMesh)
         {
+            // Ensure we're not stopping movement
+            navAgent.isStopped = false;
             navAgent.SetDestination(target.position);
         }
     }
@@ -769,19 +773,26 @@ public class GolemBossEnemyController : EnemyController
     }
 
     // Animation event method - called when attack animation ends
-    public void OnAttackAnimationEnd() //Té errors !!!!
+    public void OnAttackAnimationEnd()
     {
         isAttacking = false;
 
-        // Resume movement if needed
-        if (navAgent != null && currentState == EnemyState.Chasing)
+        // Always attempt to resume movement
+        if (navAgent != null)
         {
             navAgent.isStopped = false;
+
+            // If we have a target, set destination to continue chasing
+            if (target != null)
+            {
+                navAgent.SetDestination(target.position);
+            }
         }
-        // If we still have a projectile attached (attack interrupted), destroy it if it's an energy ball
+
+        // Clean up projectile handling (rest of the method remains the same)
         if (currentProjectile != null)
         {
-            if (currentAttackType == AttackType.Melee) 
+            if (currentAttackType == AttackType.Melee)
             {
                 // Energy ball can be destroyed
                 Destroy(currentProjectile);
@@ -795,7 +806,6 @@ public class GolemBossEnemyController : EnemyController
                 }
                 currentProjectile.transform.SetParent(null);
             }
-            //no entenc currentProjectile
             currentProjectile = null;
         }
 

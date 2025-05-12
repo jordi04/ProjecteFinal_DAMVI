@@ -91,7 +91,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 92c8a728fdb610c468de79af4f83ff73,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -697.18
+      value: -537.3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 92c8a728fdb610c468de79af4f83ff73,
         type: 3}
@@ -101,7 +101,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 92c8a728fdb610c468de79af4f83ff73,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 652.52
+      value: 642.2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 92c8a728fdb610c468de79af4f83ff73,
         type: 3}
@@ -1443,11 +1443,11 @@ MonoBehaviour:
   useAnimatorSpeed: 1
   attackSoundEvent:
     Guid:
-      Data1: -737569595
-      Data2: 1240783356
-      Data3: -46587234
-      Data4: -1706978816
-    Path: event:/SFX/Fireball_throw_01-01
+      Data1: 1672996892
+      Data2: 1200600190
+      Data3: 48515722
+      Data4: -151106996
+    Path: event:/SFX/Shield
   damageSoundEvent:
     Guid:
       Data1: -1943930774
@@ -1477,7 +1477,7 @@ MonoBehaviour:
       Data4: -1727839862
     Path: event:/SFX/Golem_Idle
   idleSoundInterval: 5
-  idleSoundChance: 20
+  idleSoundChance: 30
   damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
   attackChargeEffect: {fileID: 0}
   moveParticles: {fileID: 0}
@@ -1507,15 +1507,20 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   rightHandAttachPoint: {fileID: 8890312316682597946}
   leftHandAttachPoint: {fileID: 6457554573122750334}
   rockDamage: 25
   rockThrowForce: 50
-  rockUpwardForce: 10
+  rockUpwardForce: 7
   rangedAttackMinDistance: 17
-  rangedAttackMaxDistance: 40
-  rockPickupRange: 43
-  telekinesisMoveSpeed: 10
+  rangedAttackMaxDistance: 50
+  rockPickupRange: 30
+  telekinesisMoveSpeed: 15
   telekinesisEffectPrefab: {fileID: 0}
   energyBallPrefab: {fileID: 5884134592401791162, guid: 56678f0003d1d6a4e972903f34f3c420,
     type: 3}
@@ -1525,12 +1530,12 @@ MonoBehaviour:
   coreSpawnPoint: {fileID: 0}
   coreInstance: {fileID: 0}
   tooltipEndGame: {fileID: 0}
-  rotationSpeed: 5
+  rotationSpeed: 2
   minRotationAngle: 5
   wanderRadius: 20
   minWanderWaitTime: 3
   maxWanderWaitTime: 8
-  playerDetectionRadius: 50
+  playerDetectionRadius: 60
 --- !u!136 &1095741892029059411
 CapsuleCollider:
   m_ObjectHideFlags: 0

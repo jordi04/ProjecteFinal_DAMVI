@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 814, y: 51}
+  m_AnchoredPosition: {x: 814, y: -7}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4816192395615446596
@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press Space to Skip
+  m_text: "Clica espai per saltar l'informaci\xF3"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5e89fd204f51cf640845fbbe8e0e8c7a, type: 2}
   m_sharedMaterial: {fileID: -2552997350605475384, guid: 5e89fd204f51cf640845fbbe8e0e8c7a,
@@ -129,7 +129,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -269.33264, y: 72.34979, z: 71.38818, w: -96.67609}
+  m_margin: {x: -286.1399, y: 72.34979, z: 53.0531, w: -96.67609}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -781,8 +781,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 643, y: 39.2722}
-  m_SizeDelta: {x: 400, y: 263.4556}
+  m_AnchoredPosition: {x: 641, y: 0}
+  m_SizeDelta: {x: 400, y: 399.5231}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6487610401109035819
 CanvasRenderer:

@@ -7035,7 +7035,13 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 34309aec0ca74aa409fefeba1901e0e7, type: 2}
+      objectReference: {fileID: 2100000, guid: 5ee21eaabbde505478d8d5432b8ece34, type: 2}
+    - target: {fileID: -5754084199372789682, guid: 937bb16a00600f746979736588bd212f,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 7877660919398893259, guid: 2d28dffd1eb3e1b48ba7a4635975240c,
+        type: 3}
     - target: {fileID: 919132149155446097, guid: 937bb16a00600f746979736588bd212f,
         type: 3}
       propertyPath: m_Name
@@ -7106,18 +7112,14 @@ MonoBehaviour:
   hud: {fileID: 0}
   interactUI: {fileID: 4178328979767391317}
   main_Panel: {fileID: 8611744939740785959}
-  checkPointName: {fileID: 3662354661318392823}
   travel_Panel: {fileID: 6613798606473554971}
-  mapListParent: {fileID: 8828694713562284056}
+  checkPointName: {fileID: 3662354661318392823}
   checkpointListParent: {fileID: 1738161016217668647}
-  mapButtonPrefab: {fileID: 2301751790281448505, guid: d517307716fb07e4c95ade8a4bd485eb,
-    type: 3}
   checkpointButtonPrefab: {fileID: 2301751790281448505, guid: d517307716fb07e4c95ade8a4bd485eb,
     type: 3}
   selectedCheckpointImage: {fileID: 1267853327201806905}
   visitedColor: {r: 0.34204203, g: 0.30936277, b: 0.8301887, a: 1}
   unvisitedColor: {r: 0.7169812, g: 0.3077608, b: 0.3077608, a: 1}
-  upgrades_Panel: {fileID: 0}
   fireVFX: {fileID: 4362510230151399872}
   playableDirector: {fileID: 8602186572262437348}
 --- !u!135 &3925300445395883089

@@ -21,8 +21,14 @@ public class DuendeMeleeAI : EnemyController
     {
         base.Awake();
 
+        // Configurar parámetros específicos del goblin
+        attackType = AttackType.Melee;
+        movementType = MovementType.NavMesh;
+        attackRange = rangoAtaque;
+        attackRate = 1f / tiempoEntreAtaques;
+
         navAgent = GetComponent<NavMeshAgent>();
-        jugador = GameObject.FindGameObjectWithTag("Player")?.transform; // Null-check seguro
+        jugador = GameObject.FindGameObjectWithTag("Player")?.transform;
 
         if (navAgent != null)
         {
@@ -30,17 +36,24 @@ public class DuendeMeleeAI : EnemyController
             navAgent.angularSpeed = 720f;
             navAgent.autoBraking = false;
             navAgent.acceleration = 50f;
+            navAgent.updateRotation = false; // Desactivamos rotación automática
         }
-
-        Debug.Log("Goblin inicializado - Velocidad: " + navAgent?.speed);
     }
 
-    void Update()
+    protected override void Update()
     {
+        base.Update(); // Importante mantener la lógica base
+
         if (isDead || jugador == null) return;
 
         ActualizarDestino();
-        GestionarAtaque();
+        GestionarMovimientoAnimacion();
+        RotarHaciaJugador();
+
+        if (puedeAtacar && Vector3.Distance(transform.position, jugador.position) <= rangoAtaque)
+        {
+            StartCoroutine(AtaqueMelee());
+        }
     }
 
     void ActualizarDestino()
@@ -52,11 +65,26 @@ public class DuendeMeleeAI : EnemyController
         }
     }
 
-    void GestionarAtaque()
+    void GestionarMovimientoAnimacion()
     {
-        if (puedeAtacar && Vector3.Distance(transform.position, jugador.position) <= rangoAtaque)
+        if (animator != null)
         {
-            StartCoroutine(AtaqueMelee());
+            bool isMoving = navAgent.velocity.magnitude > 0.1f;
+            animator.SetBool("IsWalking", isMoving);
+        }
+    }
+
+    void RotarHaciaJugador()
+    {
+        if (jugador == null) return;
+
+        Vector3 direccion = (jugador.position - transform.position).normalized;
+        direccion.y = 0f;
+
+        if (direccion.sqrMagnitude > 0.001f)
+        {
+            Quaternion rotacionDeseada = Quaternion.LookRotation(direccion);
+            transform.rotation = Quaternion.Slerp(transform.rotation, rotacionDeseada, Time.deltaTime * 10f);
         }
     }
 
@@ -64,22 +92,21 @@ public class DuendeMeleeAI : EnemyController
     {
         puedeAtacar = false;
 
-        // Bloqueo de movimiento
+        if (animator != null)
+            animator.SetTrigger("Attack");
+
         if (navAgent != null)
         {
             navAgent.isStopped = true;
             navAgent.velocity = Vector3.zero;
-            navAgent.updatePosition = false; // Previene actualizaciones de posición
         }
 
-        // Rotación hacia el jugador
         Vector3 direccion = (jugador.position - transform.position).normalized;
         direccion.y = 0;
         transform.rotation = Quaternion.LookRotation(direccion);
 
         yield return new WaitForSeconds(0.2f);
 
-        // Detección de daño con verificación de componentes
         if (puntoAtaque != null)
         {
             Collider[] objetivos = Physics.OverlapSphere(
@@ -100,12 +127,10 @@ public class DuendeMeleeAI : EnemyController
 
         yield return new WaitForSeconds(tiempoEntreAtaques);
 
-        // Reactivación de movimiento
         if (navAgent != null)
         {
             navAgent.isStopped = false;
-            navAgent.updatePosition = true;
-            navAgent.SetDestination(jugador.position); // Actualizar destino
+            navAgent.SetDestination(jugador.position);
         }
 
         puedeAtacar = true;

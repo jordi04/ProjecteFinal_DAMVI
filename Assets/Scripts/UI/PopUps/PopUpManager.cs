@@ -82,7 +82,7 @@ public class PopUpManager : MonoBehaviour
 
         isActive = true;
 
-        Debug.Log("ShowPopUp called with message: " + settings.message);
+        //Debug.Log("ShowPopUp called with message: " + settings.message);
 
         // Apply settings
         if (messageText != null)
@@ -153,7 +153,7 @@ public class PopUpManager : MonoBehaviour
 
     private IEnumerator FadeIn()
     {
-        Debug.Log("Starting fade in, initial alpha: " + panelCanvasGroup.alpha);
+        //Debug.Log("Starting fade in, initial alpha: " + panelCanvasGroup.alpha);
         float elapsedTime = 0f;
 
         while (elapsedTime < fadeInDuration)
@@ -164,12 +164,12 @@ public class PopUpManager : MonoBehaviour
         }
 
         panelCanvasGroup.alpha = 1f;
-        Debug.Log("Fade in complete, final alpha: " + panelCanvasGroup.alpha);
+        //Debug.Log("Fade in complete, final alpha: " + panelCanvasGroup.alpha);
     }
 
     private IEnumerator FadeOut()
     {
-        Debug.Log("Starting fade out, initial alpha: " + panelCanvasGroup.alpha);
+        //Debug.Log("Starting fade out, initial alpha: " + panelCanvasGroup.alpha);
         float elapsedTime = 0f;
 
         while (elapsedTime < fadeOutDuration)
@@ -182,7 +182,7 @@ public class PopUpManager : MonoBehaviour
         panelCanvasGroup.alpha = 0f;
         popupPanel.SetActive(false);
         isActive = false;
-        Debug.Log("Fade out complete, panel deactivated");
+        //Debug.Log("Fade out complete, panel deactivated");
 
         // Release FMOD sound instance safely
         try

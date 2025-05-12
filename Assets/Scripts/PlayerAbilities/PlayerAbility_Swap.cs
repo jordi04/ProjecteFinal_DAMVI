@@ -10,6 +10,7 @@ public class PlayerAbility_Swap : PlayerAbility
     [SerializeField] private Color highlightColor = Color.red;
     [SerializeField] private float effectIntensityMultiplier = 1.0f;
     [SerializeField] private bool autoCastWhenCharged = true; // New serialized field to toggle auto-cast
+    [SerializeField] private float yOffset = 0.5f; // Offset for the player's position when swapping
 
     private float chargeTime = 0f;
     private GameObject lastHitObject;
@@ -217,8 +218,9 @@ public class PlayerAbility_Swap : PlayerAbility
             playerCC.enabled = false;
         }
         // Perform the swap
-        GameManager.instance.player.transform.position = objectPos;
-        lastHitObject.transform.position = playerPos;
+        GameManager.instance.player.transform.position = new Vector3(objectPos.x, objectPos.y - yOffset, objectPos.z);
+        //SI coment aquesta linia ara l'objecte seguirà al seu lloc
+        //lastHitObject.transform.position = playerPos;
         // Re-enable physics components
         if (playerRb != null)
         {

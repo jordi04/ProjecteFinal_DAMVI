@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Playables;
 using Cinemachine;
+using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class MainMenu : MonoBehaviour
     [SerializeField] MeshRenderer human;
     [SerializeField] Button playButton;
     [SerializeField] Button optionsButton;
+    [SerializeField] Button playAgainButton;
+
     [SerializeField] Button exitButton;
 
     [SerializeField] CanvasGroup mainMenuCanvas;
@@ -41,6 +44,7 @@ public class MainMenu : MonoBehaviour
         mainMenuCanvas.blocksRaycasts = true;
         playButton.onClick.AddListener(Play);
         optionsButton.onClick.AddListener(OpenOptionsMenu);
+        playAgainButton.onClick.AddListener(RestartGame);
         exitButton.onClick.AddListener(ExitGame);
         Time.timeScale = 0;
     }
@@ -49,6 +53,7 @@ public class MainMenu : MonoBehaviour
     {
         playButton.onClick.RemoveListener(Play);
         optionsButton.onClick.RemoveListener(OpenOptionsMenu);
+        playAgainButton.onClick.RemoveListener(RestartGame);
         exitButton.onClick.RemoveListener(ExitGame);
     }
 
@@ -97,6 +102,11 @@ public class MainMenu : MonoBehaviour
         yield return new WaitForSecondsRealtime(2f);
         Time.timeScale = 1f;
         gameObject.SetActive(false);
+    }
+
+    void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     private IEnumerator FadeOutAndExit()

@@ -15,5 +15,5 @@ MonoBehaviour:
   checkpointName: Serp
   checkPointImage: {fileID: 21300000, guid: de59b6c238916b34d88c05e42c6bfb41, type: 3}
   order: 3
-  isVisited: 0
+  isVisited: 1
   checkPointTransform: {fileID: 0}

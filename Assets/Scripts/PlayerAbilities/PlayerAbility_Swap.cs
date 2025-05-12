@@ -10,7 +10,7 @@ public class PlayerAbility_Swap : PlayerAbility
     [SerializeField] private Color highlightColor = Color.red;
     [SerializeField] private float effectIntensityMultiplier = 1.0f;
     [SerializeField] private bool autoCastWhenCharged = true; // New serialized field to toggle auto-cast
-    [SerializeField] private float yOffset = 0.5f; // Offset for the player's position when swapping
+    [SerializeField] private float yOffset = -10.5f; // Offset for the player's position when swapping
 
     private float chargeTime = 0f;
     private GameObject lastHitObject;

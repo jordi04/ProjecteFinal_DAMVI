@@ -84,7 +84,8 @@ public class DuendeMeleeAI : EnemyController
         if (direccion.sqrMagnitude > 0.001f)
         {
             Quaternion rotacionDeseada = Quaternion.LookRotation(direccion);
-            transform.rotation = Quaternion.Slerp(transform.rotation, rotacionDeseada, Time.deltaTime * 10f);
+            Quaternion ajuste = Quaternion.Euler(0, 90, 0); // Ajuste de rotación positiva
+            transform.rotation = Quaternion.Slerp(transform.rotation, rotacionDeseada * ajuste, Time.deltaTime * 10f);
         }
     }
 
@@ -103,7 +104,9 @@ public class DuendeMeleeAI : EnemyController
 
         Vector3 direccion = (jugador.position - transform.position).normalized;
         direccion.y = 0;
-        transform.rotation = Quaternion.LookRotation(direccion);
+        Quaternion rotacionDeseada = Quaternion.LookRotation(direccion);
+        Quaternion ajuste = Quaternion.Euler(0, 90, 0); // Ajuste de rotación positiva
+        transform.rotation = rotacionDeseada * ajuste;
 
         yield return new WaitForSeconds(0.2f);
 

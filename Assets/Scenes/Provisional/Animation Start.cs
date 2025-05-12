@@ -27,6 +27,8 @@ public class AnimationStart : MonoBehaviour
         if (!hasTriggered && other.CompareTag("Player"))
         {
             hasTriggered = true;
+            cinematicCamera.Priority = 21;
+            UserInput.instance.switchActionMap(UserInput.ActionMap.InMenu);
             StartCoroutine(StartCinematic());
         }
     }
@@ -36,8 +38,8 @@ public class AnimationStart : MonoBehaviour
         yield return StartCoroutine(FadeToBlack());
 
         // Move Player to this object's position and rotation
-        player.position = transform.position;
-        player.rotation = transform.rotation;
+        //player.position = transform.position;
+        //player.rotation = transform.rotation;
 
         playableDirector.Play();
 

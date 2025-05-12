@@ -85,7 +85,7 @@ public class ToggleKinematicBehaviour : MonoBehaviour
 
 
 
-    public void LaunchSpell()
+    public void ThrowSpell()
     {
         if (spellPrefab == null || spellSpawnPoint == null) return;
 

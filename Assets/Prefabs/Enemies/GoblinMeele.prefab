@@ -160,7 +160,7 @@ MonoBehaviour:
   retreatAfterAttackDistance: 3
   circlingDistance: 5
   circlingSpeed: 1
-  animator: {fileID: 0}
+  animator: {fileID: 6115901861146080712}
   idleAnimTrigger: Idle
   moveAnimTrigger: Move
   attackAnimTrigger: Attack

@@ -5,12 +5,21 @@ using System.Collections;
 public class MushroomAI : EnemyController
 {
     [Header("Jump Settings")]
-    [SerializeField] float jumpRange = 3f;
-    [SerializeField] float jumpForce = 8f;
-    [SerializeField] float jumpCooldown = 2f;
+    [SerializeField] float jumpRange = 27f;         // Distancia para activar salto
+    [SerializeField] float jumpForce = 20f;        // Fuerza total del salto
+    [SerializeField] float jumpCooldown = 2f;      // Tiempo entre saltos
+    [SerializeField] float jumpHeight = 0.5f;      // Altura del salto
+    [SerializeField] float horizontalMultiplier = 3f; // Control distancia horizontal
+
+    [Header("Contact Damage")]
+    [SerializeField] float contactDamage = 10f;    // Daño por contacto
+    [SerializeField] float contactCooldown = 0.5f; // Tiempo entre daños
 
     [Header("Visual Settings")]
-    [SerializeField] Renderer mushroomRenderer;
+    [SerializeField] Renderer mushroomRenderer;    // Referencia visual
+
+    private float lastContactTime;
+    private bool isJumping;
 
     protected override void Awake()
     {
@@ -18,32 +27,57 @@ public class MushroomAI : EnemyController
         attackType = AttackType.Melee;
 
         base.Awake();
+        ConfigureComponents();
+    }
 
-        enemyRigidbody.isKinematic = false;
-        enemyRigidbody.interpolation = RigidbodyInterpolation.Interpolate;
+    void ConfigureComponents()
+    {
+        // Configuración física
+        if (enemyRigidbody != null)
+        {
+            enemyRigidbody.isKinematic = false;
+            enemyRigidbody.interpolation = RigidbodyInterpolation.Interpolate;
+            enemyRigidbody.mass = 1.5f;
+            enemyRigidbody.drag = 1f;
+        }
 
-        if (enemyRenderer == null)
+        // Configuración visual
+        if (enemyRenderer == null && mushroomRenderer != null)
             enemyRenderer = mushroomRenderer;
+
+        // Configuración del NavMeshAgent
+        NavMeshAgent agent = GetComponent<NavMeshAgent>();
+        agent.stoppingDistance = 0.1f;
+        agent.angularSpeed = 720f;
+        agent.acceleration = 50f;
     }
 
     protected override void InitializeStrategies()
     {
         movementStrategy = new JumpingMovement(
             moveSpeed,
-            stoppingDistance,
+            jumpRange,
             faceTarget,
             avoidObstacles,
             jumpRange,
             jumpForce,
             jumpCooldown,
+            jumpHeight,
+            horizontalMultiplier,
+            attackableLayerMask,
             this
         );
+    }
 
-        attackStrategy = new MeleeContactAttack(
-            attackDamage,
-            attackRate,
-            attackRange
-        );
+    // Daño por contacto continuo
+    void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player") &&
+            Time.time > lastContactTime + contactCooldown)
+        {
+            collision.gameObject.GetComponent<IDamageable>()?.TakeDamage(contactDamage);
+            lastContactTime = Time.time;
+        }
     }
 
     protected override void Update()
@@ -51,84 +85,115 @@ public class MushroomAI : EnemyController
         base.Update();
         if (isDead) return;
 
+        ((JumpingMovement)movementStrategy).UpdateRotation(target);
         ((JumpingMovement)movementStrategy).CheckJump(enemyRigidbody, target);
-    }
-
-    protected override IEnumerator DeathSequence()
-    {
-        Deactivate();
-
-        if (spawner != null && spawner is EnemySpawner enemySpawner)
-            enemySpawner.EnemyEliminated(gameObject);
-
-        yield return base.DeathSequence();
-        Destroy(gameObject);
     }
 
     protected class JumpingMovement : NavMeshMovement
     {
+        private MushroomAI mushroom;
         private float jumpRange;
         private float jumpForce;
         private float jumpCooldown;
+        private float jumpHeight;
+        private float horizontalMultiplier;
         private bool canJump = true;
-        private MonoBehaviour owner;
 
-        public JumpingMovement(float speed, float stopDistance, bool faceTarget, bool avoidObstacles,
-                             float jumpRange, float jumpForce, float jumpCooldown, MonoBehaviour owner)
-            : base(speed, stopDistance, faceTarget, avoidObstacles)
+        public JumpingMovement(
+            float speed,
+            float stopDistance,
+            bool faceTarget,
+            bool avoidObstacles,
+            float jumpRange,
+            float jumpForce,
+            float jumpCooldown,
+            float jumpHeight,
+            float horizontalMultiplier,
+            LayerMask attackMask,
+            MushroomAI mushroom) : base(speed, stopDistance, faceTarget, avoidObstacles)
         {
+            this.mushroom = mushroom;
             this.jumpRange = jumpRange;
             this.jumpForce = jumpForce;
             this.jumpCooldown = jumpCooldown;
-            this.owner = owner;
+            this.jumpHeight = jumpHeight;
+            this.horizontalMultiplier = horizontalMultiplier;
+        }
+
+        public void UpdateRotation(Transform target)
+        {
+            if (target != null && Agent != null)
+            {
+                Vector3 direction = (target.position - Agent.transform.position).normalized;
+                direction.y = 0;
+
+                if (direction != Vector3.zero)
+                {
+                    Quaternion targetRot = Quaternion.LookRotation(direction);
+                    Agent.transform.rotation = Quaternion.RotateTowards(
+                        Agent.transform.rotation,
+                        targetRot,
+                        720f * Time.deltaTime
+                    );
+                }
+            }
         }
 
         public void CheckJump(Rigidbody rb, Transform target)
         {
-            if (target != null && canJump && GetDistanceToTarget() <= jumpRange)
+            if (canJump && target != null &&
+                Vector3.Distance(rb.position, target.position) <= jumpRange)
             {
-                owner.StartCoroutine(PerformJump(rb, target));
+                mushroom.StartCoroutine(PerformJump(rb, target));
             }
         }
 
         private IEnumerator PerformJump(Rigidbody rb, Transform target)
         {
-            if (target == null) yield break;
             canJump = false;
-            if (Agent != null) Agent.isStopped = true;
+            mushroom.isJumping = true;
 
+            // Desactivar control del agente
+            Agent.isStopped = true;
+            Agent.updatePosition = false;
+
+            // Calcular dirección del salto
             Vector3 jumpDirection = (target.position - rb.position).normalized;
-            jumpDirection.y = 1f;
-            rb.AddForce(jumpDirection * jumpForce, ForceMode.Impulse);
+            jumpDirection = new Vector3(
+                jumpDirection.x * horizontalMultiplier,
+                jumpHeight,
+                jumpDirection.z * horizontalMultiplier
+            );
 
-            yield return new WaitForSeconds(0.5f);
-            if (Agent != null) Agent.isStopped = false;
+            // Rotación y fuerza
+            rb.rotation = Quaternion.LookRotation(jumpDirection);
+            rb.AddForce(jumpDirection * jumpForce, ForceMode.VelocityChange);
+
+            // Tiempo en aire dinámico
+            float airTime = Mathf.Clamp(jumpForce * 0.03f, 0.5f, 1f);
+            yield return new WaitForSeconds(airTime);
+
+            // Reactivar agente
+            Agent.Warp(rb.position);
+            Agent.stoppingDistance = 0.1f;
+            Agent.updatePosition = true;
+            Agent.isStopped = false;
+            Agent.SetDestination(target.position);
 
             yield return new WaitForSeconds(jumpCooldown);
             canJump = true;
+            mushroom.isJumping = false;
         }
     }
 
-    protected class MeleeContactAttack : IEnemyAttack
+    void OnDrawGizmosSelected()
     {
-        private float damage;
-        private float attackCooldown;
-        private float attackRange;
-        private float lastAttackTime;
-        private float damageMultiplier = 1f;
+        // Gizmo de rango de salto
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, jumpRange);
 
-        public MeleeContactAttack(float damage, float cooldown, float distance)
-        {
-            this.damage = damage;
-            this.attackCooldown = cooldown;
-            this.attackRange = distance;
-        }
-
-        public void Initialize(Transform enemy, Transform target) { }
-        public void SetTarget(Transform target) { }
-
-        public bool CanAttack() => Time.time > lastAttackTime + attackCooldown;
-        public void Attack() => lastAttackTime = Time.time;
-        public void SetDamageMultiplier(float multiplier) => damageMultiplier = multiplier;
+        // Gizmo de daño por contacto
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, 0.5f);
     }
 }

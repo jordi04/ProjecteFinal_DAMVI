@@ -33,11 +33,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Iddle
-      takeName: Goblin|Action
+      name: Goblin|Warrior|Warrior|Run
+      takeName: Goblin|Warrior|Warrior|Run
       internalID: 5106913737875549711
-      firstFrame: 1
-      lastFrame: 176
+      firstFrame: 0
+      lastFrame: 94
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

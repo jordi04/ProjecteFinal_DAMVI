@@ -4,60 +4,57 @@ using System.Collections;
 
 public class DuendeMeleeAI : EnemyController
 {
-    [Header("Configuración Específica")]
-    [SerializeField] float rangoAtaque = 0.25f;
-    [SerializeField] float tiempoEntreAtaques = 0.5f;
-
-    [Header("Referencias")]
+    [Header("Configuración Melee")]
+    [SerializeField] float rangoAtaque = 0.5f;
+    [SerializeField] float tiempoEntreAtaques = 1f;
     [SerializeField] Transform puntoAtaque;
 
-    [SerializeField] float stoppingDistancePersonalizada = 1.5f;
+    [Header("Movimiento")]
+    [SerializeField] float actualizarDestinoIntervalo = 0.5f;
+
+    private Transform jugador;
+    private NavMeshAgent navAgent;
     private bool puedeAtacar = true;
+    private float tiempoSiguienteActualizacion;
 
     protected override void Awake()
     {
         base.Awake();
 
-        // Configuración de movimiento AGGRESIVA
-        navAgent.stoppingDistance = 0.1f; // ¡Que se pegue al jugador!
-        navAgent.radius = 0.2f; // Para colisiones más ajustadas
-        navAgent.angularSpeed = 0f; // Rotación manual total
-        navAgent.acceleration = 100f; // Aceleración de Fórmula 1
+        navAgent = GetComponent<NavMeshAgent>();
+        jugador = GameObject.FindGameObjectWithTag("Player")?.transform; // Null-check seguro
 
-        // Stats brutales
-        attackDamage = baseDamage * 1.5f; // 50% más de daño
-        moveSpeed = baseSpeed * 2f; // El doble de rápido
-        tiempoEntreAtaques = 0.2f; // Ataque cada 0.2 segundos
+        if (navAgent != null)
+        {
+            navAgent.stoppingDistance = rangoAtaque * 0.8f;
+            navAgent.angularSpeed = 720f;
+            navAgent.autoBraking = false;
+            navAgent.acceleration = 50f;
+        }
 
-        Debug.Log("Goblin en modo DIOS - " +
-                 $"Daño: {attackDamage} | " +
-                 $"Velocidad: {moveSpeed} | " +
-                 $"Parada: {navAgent.stoppingDistance}");
+        Debug.Log("Goblin inicializado - Velocidad: " + navAgent?.speed);
     }
 
-    protected override void Start()
+    void Update()
     {
-        base.Start(); 
-    }
+        if (isDead || jugador == null) return;
 
-    void ConfigurarComponentesAdicionales()
-    {
-        navAgent.angularSpeed = 720f;
-        navAgent.speed = moveSpeed;
-    }
-
-    protected override void Update()
-    {
-        base.Update();
-
-        if (IsDead() || target == null) return;
-
+        ActualizarDestino();
         GestionarAtaque();
+    }
+
+    void ActualizarDestino()
+    {
+        if (Time.time >= tiempoSiguienteActualizacion)
+        {
+            navAgent?.SetDestination(jugador.position);
+            tiempoSiguienteActualizacion = Time.time + actualizarDestinoIntervalo;
+        }
     }
 
     void GestionarAtaque()
     {
-        if (Vector3.Distance(transform.position, target.position) <= rangoAtaque && puedeAtacar)
+        if (puedeAtacar && Vector3.Distance(transform.position, jugador.position) <= rangoAtaque)
         {
             StartCoroutine(AtaqueMelee());
         }
@@ -67,84 +64,59 @@ public class DuendeMeleeAI : EnemyController
     {
         puedeAtacar = false;
 
-        // 1. Posicionamiento FORZADO
-        if (navAgent != null && navAgent.enabled)
+        // Bloqueo de movimiento
+        if (navAgent != null)
         {
-            navAgent.SetDestination(target.position); // Renovación constante del destino
-            navAgent.Move(transform.forward * 0.5f); // Empujón violento hacia adelante
+            navAgent.isStopped = true;
+            navAgent.velocity = Vector3.zero;
+            navAgent.updatePosition = false; // Previene actualizaciones de posición
         }
 
-        // 2. Detección con parámetros EXTREMOS
-        Collider[] objetivos = Physics.OverlapSphere(
-            transform.position + transform.forward * 0.5f, // Offset frontal
-            rangoAtaque * 2f, // Radio duplicado
-            attackableLayerMask,
-            QueryTriggerInteraction.Collide // Incluir triggers
-        );
+        // Rotación hacia el jugador
+        Vector3 direccion = (jugador.position - transform.position).normalized;
+        direccion.y = 0;
+        transform.rotation = Quaternion.LookRotation(direccion);
 
-        // 3. Aplicación de daño SIN PIEDAD
-        foreach (Collider col in objetivos)
+        yield return new WaitForSeconds(0.2f);
+
+        // Detección de daño con verificación de componentes
+        if (puntoAtaque != null)
         {
-            if (col.CompareTag("Player"))
-            {
-                // Debug visual tipo "Mierda, me están matando"
-                Debug.DrawLine(transform.position, col.transform.position, Color.red, 1f);
-                col.GetComponent<IDamageable>()?.TakeDamage(attackDamage * 2); // Daño doble por si acaso
+            Collider[] objetivos = Physics.OverlapSphere(
+                puntoAtaque.position,
+                rangoAtaque,
+                attackableLayerMask
+            );
 
-                // Empujón físico al jugador (opcional)
-                Rigidbody rb = col.GetComponent<Rigidbody>();
-                if (rb != null) rb.AddForce(transform.forward * 10f, ForceMode.Impulse);
+            foreach (Collider col in objetivos)
+            {
+                if (col != null && col.CompareTag("Player"))
+                {
+                    IDamageable damageable = col.GetComponent<IDamageable>();
+                    damageable?.TakeDamage(attackDamage);
+                }
             }
         }
 
-        // 4. Animación y recuperación
-        animator.Play("AtaqueViolento", 0, 0f); // Saltar directamente al ataque
-        yield return new WaitForSeconds(0.1f); // ¡Casi instantáneo!
+        yield return new WaitForSeconds(tiempoEntreAtaques);
+
+        // Reactivación de movimiento
+        if (navAgent != null)
+        {
+            navAgent.isStopped = false;
+            navAgent.updatePosition = true;
+            navAgent.SetDestination(jugador.position); // Actualizar destino
+        }
+
         puedeAtacar = true;
     }
 
-    public override void TakeDamage(float cantidad)
+    void OnDrawGizmosSelected()
     {
-        if (IsDead()) return;
-
-        base.TakeDamage(cantidad);
-        StartCoroutine(EfectoDanoPersonalizado());
-    }
-
-    IEnumerator EfectoDanoPersonalizado()
-    {
-        SetColor(Color.cyan);
-        yield return new WaitForSeconds(flashDuration);
-        if (!IsDead()) ResetColor();
-    }
-
-    protected override void OnDrawGizmosSelected()
-    {
-        base.OnDrawGizmosSelected();
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(puntoAtaque.position, rangoAtaque);
-    }
-
-    public override void SetDamageMultiplier(float multiplier)
-    {
-        base.SetDamageMultiplier(multiplier);
-        attackDamage = baseDamage * multiplier;
-    }
-
-    public override void SetHealthMultiplier(float multiplier)
-    {
-        base.SetHealthMultiplier(multiplier);
-        maxHealth = baseHealth * multiplier;
-        currentHealth = maxHealth;
-    }
-
-    public override void SetSpeedMultiplier(float multiplier)
-    {
-        base.SetSpeedMultiplier(multiplier);
-        moveSpeed = baseSpeed * multiplier;
-        if (navAgent != null)
+        Gizmos.color = Color.red;
+        if (puntoAtaque != null)
         {
-            navAgent.speed = moveSpeed;
+            Gizmos.DrawWireSphere(puntoAtaque.position, rangoAtaque);
         }
     }
 }

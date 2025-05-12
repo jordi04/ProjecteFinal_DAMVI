@@ -1,0 +1,125 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &7745057087417330510
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 781749635704255442, guid: 616a9cdba9279364b8be6ad16e8e23c1,
+        type: 3}
+      propertyPath: m_Name
+      value: PopUpArea_AnchorPointTutorial Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 3250444291659434483, guid: 616a9cdba9279364b8be6ad16e8e23c1,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 208.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3250444291659434483, guid: 616a9cdba9279364b8be6ad16e8e23c1,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 19.884647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3250444291659434483, guid: 616a9cdba9279364b8be6ad16e8e23c1,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 388.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3250444291659434483, guid: 616a9cdba9279364b8be6ad16e8e23c1,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3250444291659434483, guid: 616a9cdba9279364b8be6ad16e8e23c1,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3250444291659434483, guid: 616a9cdba9279364b8be6ad16e8e23c1,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3250444291659434483, guid: 616a9cdba9279364b8be6ad16e8e23c1,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3250444291659434483, guid: 616a9cdba9279364b8be6ad16e8e23c1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3250444291659434483, guid: 616a9cdba9279364b8be6ad16e8e23c1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3250444291659434483, guid: 616a9cdba9279364b8be6ad16e8e23c1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5575393015688966441, guid: 616a9cdba9279364b8be6ad16e8e23c1,
+        type: 3}
+      propertyPath: boxSize.x
+      value: 76.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5575393015688966441, guid: 616a9cdba9279364b8be6ad16e8e23c1,
+        type: 3}
+      propertyPath: boxSize.y
+      value: 13.99
+      objectReference: {fileID: 0}
+    - target: {fileID: 5575393015688966441, guid: 616a9cdba9279364b8be6ad16e8e23c1,
+        type: 3}
+      propertyPath: boxSize.z
+      value: 50.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 5575393015688966441, guid: 616a9cdba9279364b8be6ad16e8e23c1,
+        type: 3}
+      propertyPath: popUpSettings.message
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 5575393015688966441, guid: 616a9cdba9279364b8be6ad16e8e23c1, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 781749635704255442, guid: 616a9cdba9279364b8be6ad16e8e23c1,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1361441071216953161}
+  m_SourcePrefab: {fileID: 100100000, guid: 616a9cdba9279364b8be6ad16e8e23c1, type: 3}
+--- !u!1 &7035376075875080348 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 781749635704255442, guid: 616a9cdba9279364b8be6ad16e8e23c1,
+    type: 3}
+  m_PrefabInstance: {fileID: 7745057087417330510}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1361441071216953161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7035376075875080348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1062bd167475ecb428ce1e39f2364ddb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerTag: Player
+  triggerOnce: 1
+  detectionInterval: 0.2
+  popUpSettings:
+    message: This is a popup message!
+    pauseGameOnShow: 0
+    autoHide: 1
+    autoHideDuration: 5
+    minTimeBeforeSkip: 0.5
+  boxSize: {x: 76.1, y: 15.8, z: 49.3}
+  gizmoColor: {r: 1, g: 0.5, b: 0, a: 0.3}
+  drawSolidGizmo: 0

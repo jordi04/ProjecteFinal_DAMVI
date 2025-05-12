@@ -88,7 +88,7 @@ MonoBehaviour:
   delayBetweenEnemiesSpawn: 0.5
   player: {fileID: 0}
   spawnEffectPrefab: {fileID: 0}
-  enemySpawnDelay: 1.5
+  enemySpawnDelay: 0.5
   destroyEffectAfterSpawn: 1
   useRandomPositionInArea: 1
   spawnAreaRadius: 2

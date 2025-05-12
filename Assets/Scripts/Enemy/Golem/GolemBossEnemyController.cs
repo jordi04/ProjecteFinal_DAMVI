@@ -37,6 +37,14 @@ public class GolemBossEnemyController : EnemyController
     [SerializeField] private GameObject coreInstance;
     [SerializeField] private GameObject tooltipEndGame;
 
+    [Header("Rotation Settings")]
+    [SerializeField] private float rotationSpeed = 5f; // Controls how quickly the golem rotates
+    [SerializeField] private float minRotationAngle = 5f; // Minimum angle difference to consider rotation complete
+
+    private bool isRotatingTowardsTarget = false;
+    private Quaternion targetRotation;
+
+
     private bool isEnraged = false;
     private float lastRockThrowTime = -100f;
     private float lastSpecialAttackTime = -100f;
@@ -189,35 +197,23 @@ public class GolemBossEnemyController : EnemyController
     {
         if (isDead) return;
 
-        // Call the parent's Update method but exclude the state machine part
-        // We'll handle the state machine differently for the golem
-        // This is a bit hacky but avoids modifying the base class
-
         // Handle telekinesis rock movement if active
         if (isTelekinesisActive && targetRock != null)
         {
             UpdateTelekinesisMovement();
         }
 
-        // Run our custom state machine logic
-        StateMachine();
+        // Only run state machine if not currently rotating towards a target
+        if (!isRotatingTowardsTarget)
+        {
+            // Run our custom state machine logic
+            StateMachine();
+        }
 
         // Update animation states based on current behavior
         UpdateAnimationState();
-        /* No funciona correctament
-        if (isRotating)
-        {
-            // Rotate smoothly towards the target
-            Vector3 lookDirection = target.position - transform.position;
-            lookDirection.y = 0; // Keep level
-            if (lookDirection != Vector3.zero)
-            {
-                RotateSmooth(lookDirection);
-            }
-        }
-        */
-        //Debug.Log("Current State: " + currentState);
     }
+
 
     // This method is now primarily for visual effects before OnGrabRock is called from animation
     private void UpdateTelekinesisMovement()
@@ -499,7 +495,6 @@ public class GolemBossEnemyController : EnemyController
             }
         }
     }
-
     private void StartTelekinesis()
     {
         if (targetRock == null) return;
@@ -509,53 +504,56 @@ public class GolemBossEnemyController : EnemyController
         // Remove the rock from available rocks
         availableRocks.Remove(targetRock);
 
-        // Start telekinesis
-        isTelekinesisActive = true;
+        // First rotate towards the rock, then start telekinesis
+        StartCoroutine(RotateTowardsTargetCoroutine(targetRock.transform.position, () => {
+            // This code executes after rotation is complete
 
-        // Disable physics on rock for telekinesis movement
-        Rigidbody rockRb = targetRock.GetComponent<Rigidbody>();
-        if (rockRb != null)
-        {
-            rockRb.isKinematic = true;
-            rockRb.useGravity = false;
-        }
+            // Start telekinesis
+            isTelekinesisActive = true;
 
-        // Disable collider during telekinesis
-        Collider rockCollider = targetRock.GetComponent<Collider>();
-        if (rockCollider != null)
-        {
-            rockCollider.enabled = false;
-        }
+            // Disable physics on rock for telekinesis movement
+            Rigidbody rockRb = targetRock.GetComponent<Rigidbody>();
+            if (rockRb != null)
+            {
+                rockRb.isKinematic = true;
+                rockRb.useGravity = false;
+            }
 
-        // Create telekinesis effect if prefab is assigned
-        if (telekinesisEffectPrefab != null)
-        {
-            telekinesisEffect = Instantiate(telekinesisEffectPrefab, targetRock.transform.position, Quaternion.identity);
-            telekinesisEffect.transform.SetParent(targetRock.transform);
-        }
+            // Disable collider during telekinesis
+            Collider rockCollider = targetRock.GetComponent<Collider>();
+            if (rockCollider != null)
+            {
+                rockCollider.enabled = false;
+            }
 
-        // Look at the rock during telekinesis
-        transform.LookAt(targetRock.transform);
+            // Create telekinesis effect if prefab is assigned
+            if (telekinesisEffectPrefab != null)
+            {
+                telekinesisEffect = Instantiate(telekinesisEffectPrefab, targetRock.transform.position, Quaternion.identity);
+                telekinesisEffect.transform.SetParent(targetRock.transform);
+            }
 
-        // Stop movement while using telekinesis
-        if (navAgent != null)
-        {
-            navAgent.isStopped = true;
-        }
+            // Stop movement while using telekinesis
+            if (navAgent != null)
+            {
+                navAgent.isStopped = true;
+            }
 
-        // Start the RangeAttack animation - this should trigger the animation events
-        if (animator != null)
-        {
-            animator.SetTrigger("RangeAttack");
-        }
+            // Start the RangeAttack animation - this should trigger the animation events
+            if (animator != null)
+            {
+                animator.SetTrigger("RangeAttack");
+            }
 
-        // Prepare for ranged attack
-        isAttacking = true;
-        currentAttackType = AttackType.Ranged;
-        lastRockThrowTime = Time.time;
+            // Prepare for ranged attack
+            isAttacking = true;
+            currentAttackType = AttackType.Ranged;
+            lastRockThrowTime = Time.time;
 
-        Debug.Log("Started telekinesis on rock and triggered RangeAttack animation");
+            Debug.Log("Started telekinesis on rock and triggered RangeAttack animation");
+        }));
     }
+
 
 
     private void PerformEnergyBallAttack()
@@ -564,40 +562,50 @@ public class GolemBossEnemyController : EnemyController
 
         isAttacking = true;
         currentAttackType = AttackType.Melee;
+
         if (navAgent != null)
         {
             navAgent.isStopped = true;
         }
-        // Turn to face the target
+
+        // First rotate towards the target, then perform the attack
         if (target != null)
         {
-            Vector3 lookDirection = target.position - transform.position;
-            lookDirection.y = 0; // Keep level
-            
-            if (lookDirection != Vector3.zero)
-            {
-                isRotating = true;
-            }
+            StartCoroutine(RotateTowardsTargetCoroutine(target.position, () => {
+                // This code executes after rotation is complete
+                if (animator != null)
+                {
+                    animator.SetTrigger("CloseAttack");
+                    Debug.Log("Triggered CloseAttack animation after smooth rotation");
+                }
+                PlayAttackSound();
+            }));
         }
-
-        // Trigger the CloseAttack animation which will call OnCreateEnergyBall and OnThrowEnergyBall via animation events
-        if (animator != null)
+        else
         {
-            animator.SetTrigger("CloseAttack");
-            Debug.Log("Triggered CloseAttack animation");
+            // No target, just play animation
+            if (animator != null)
+            {
+                animator.SetTrigger("CloseAttack");
+            }
+            PlayAttackSound();
         }
-
-        PlayAttackSound();
     }
 
-    private void RotateSmooth(Vector3 lookDirection)
+
+    private bool RotateSmooth(Vector3 lookDirection)
     {
         // Calculate the target rotation
-        Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
+        targetRotation = Quaternion.LookRotation(lookDirection);
 
         // Smoothly rotate towards the target
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation,
-                                             rotationSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
+        // Calculate the angle difference between current and target rotation
+        float angleDifference = Quaternion.Angle(transform.rotation, targetRotation);
+
+        // Return true if rotation is complete (angle difference is small enough)
+        return angleDifference <= minRotationAngle;
     }
 
     private void PerformSpecialAttack()
@@ -622,7 +630,6 @@ public class GolemBossEnemyController : EnemyController
     // This should be connected to the first event emitter in the RangeAttack animation
     public void OnGrabRock()
     {
-
         Debug.Log("OnGrabRock animation event fired");
         if (targetRock == null)
         {
@@ -642,22 +649,6 @@ public class GolemBossEnemyController : EnemyController
             rockRb.isKinematic = true;
         }
 
-        //make the enemy face the player
-        if (target != null)
-        {
-            Vector3 lookDirection = target.position - transform.position;
-            lookDirection.y = 0; // Keep level
-            if (lookDirection != Vector3.zero)
-            {
-                transform.rotation = Quaternion.LookRotation(lookDirection);
-            }
-        }
-
-        //atura el moviment quan ataca
-        if (navAgent != null)
-        {
-            navAgent.isStopped = true;
-        }
         // Disable collider
         Collider rockCollider = targetRock.GetComponent<Collider>();
         if (rockCollider != null)
@@ -666,8 +657,16 @@ public class GolemBossEnemyController : EnemyController
         }
 
         currentProjectile = targetRock;
+
+        // Rotate towards player if target exists
+        if (target != null)
+        {
+            StartCoroutine(RotateTowardsTargetCoroutine(target.position));
+        }
+
         Debug.Log("Rock grabbed and attached to hand (animation event)");
     }
+
 
     // Animation event method - called from RangeAttack animation
     public void OnThrowRock()
@@ -695,12 +694,26 @@ public class GolemBossEnemyController : EnemyController
         Debug.Log("Energy ball created and attached to hand");
     }
 
-    // Animation event method - called from CloseAttack animation
+    // Fix for the CS0428 error in the OnThrowEnergyBall method
     public void OnThrowEnergyBall()
     {
         if (currentProjectile == null) return;
 
-        ThrowProjectile(energyBallDamage, energyBallThrowForce);
+        // Corrected the syntax for accessing the Rigidbody component
+        Rigidbody energyBallRb = currentProjectile.GetComponent<Rigidbody>();
+        if (energyBallRb != null)
+        {
+            energyBallRb.isKinematic = false;
+        }
+
+        // Corrected the call to GetComponent and Initialize
+        GolemEnergyBallProjectile energyBallInstance = currentProjectile.GetComponent<GolemEnergyBallProjectile>();
+        if (energyBallInstance != null)
+        {
+            energyBallInstance.OnThrow(energyBallThrowForce, transform.forward);
+        }
+
+        Debug.Log("Energy ball thrown.");
     }
 
     private void ThrowProjectile(float damage, float force)
@@ -816,7 +829,7 @@ public class GolemBossEnemyController : EnemyController
 
         yield return new WaitForSeconds(0.5f);
 
-        // Throw all energy balls in a circular pattern
+        // Throw all energy balls in a circular!!!!! pattern it should only throw one!!!!
         for (int i = 0; i < energyBallCount; i++)
         {
             if (energyBalls[i] != null)
@@ -829,7 +842,10 @@ public class GolemBossEnemyController : EnemyController
                 if (energyBallRb != null)
                 {
                     energyBallRb.isKinematic = false;
-                    energyBallRb.AddForce(direction * energyBallThrowForce * 1.5f + Vector3.up * rockUpwardForce, ForceMode.Impulse);
+                    energyBalls[i].GetComponent<GolemEnergyBallProjectile>().OnThrow(energyBallThrowForce, direction);
+                    Debug.Log("Energy ball thrown in direction: " + direction);
+
+                    //energyBallRb.AddForce(direction * energyBallThrowForce * 1.5f + Vector3.up * rockUpwardForce, ForceMode.Impulse);
                 }
 
                 Collider energyBallCollider = energyBalls[i].GetComponent<Collider>();
@@ -947,6 +963,35 @@ public class GolemBossEnemyController : EnemyController
             }
             animator.SetTrigger("Move");
         }
+    }
+    //Així rotarà bé entre animacions
+    private IEnumerator RotateTowardsTargetCoroutine(Vector3 targetPosition, System.Action onComplete = null)
+    {
+        isRotatingTowardsTarget = true;
+
+        // Calculate direction to look at (ignoring Y axis for level rotation)
+        Vector3 lookDirection = targetPosition - transform.position;
+        lookDirection.y = 0; // Keep rotation level
+
+        if (lookDirection == Vector3.zero)
+        {
+            isRotatingTowardsTarget = false;
+            if (onComplete != null) onComplete();
+            yield break;
+        }
+
+        // Rotate until we're facing the target
+        bool rotationComplete = false;
+        while (!rotationComplete && !isDead)
+        {
+            rotationComplete = RotateSmooth(lookDirection);
+            yield return null;
+        }
+
+        isRotatingTowardsTarget = false;
+
+        // Call the completion callback if provided
+        if (onComplete != null) onComplete();
     }
 
 

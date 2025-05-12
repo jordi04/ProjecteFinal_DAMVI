@@ -22,7 +22,7 @@ public class GolemEnergyBallProjectile : MonoBehaviour
     [SerializeField] private LayerMask groundLayer; // Layer for ground detection
     [SerializeField] private float explosionForce = 10f;
 
-    [Header("Player Knockback")]
+    [Header("Player Knockback (ficar-ho a zero per desactivar)")]
     [SerializeField] private float knockbackStrength = 10f;
     [SerializeField] private float knockbackDuration = 0.3f;
     [SerializeField] private AnimationCurve knockbackCurve = AnimationCurve.EaseInOut(0, 1, 1, 0);
@@ -76,9 +76,11 @@ public class GolemEnergyBallProjectile : MonoBehaviour
     }
 
     // Called when the golem throws the energy ball
+    //this method is not called with the animation nor the golem, 
     public void OnThrow(float throwForce, Vector3 direction)
     {
         // Detach from parent
+        Debug.Log("thrown, detaching from parent");
         transform.SetParent(null);
         isAttached = false;
 

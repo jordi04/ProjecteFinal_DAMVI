@@ -1441,11 +1441,41 @@ MonoBehaviour:
   damageAnimTrigger: Damage
   deathAnimTrigger: Death
   useAnimatorSpeed: 1
-  attackSoundEvent: event:/Enemies/Attack
-  damageSoundEvent: event:/Enemies/Damage
-  deathSoundEvent: event:/Enemies/Death
-  idleSoundEvent: event:/Enemies/Idle
-  footstepSoundEvent: event:/Enemies/Footstep
+  attackSoundEvent:
+    Guid:
+      Data1: -737569595
+      Data2: 1240783356
+      Data3: -46587234
+      Data4: -1706978816
+    Path: event:/SFX/Fireball_throw_01-01
+  damageSoundEvent:
+    Guid:
+      Data1: -1943930774
+      Data2: 1277908675
+      Data3: -1267096934
+      Data4: 2026387196
+    Path: event:/SFX/Golem_Hurt
+  deathSoundEvent:
+    Guid:
+      Data1: -1728658921
+      Data2: 1176050896
+      Data3: 2050900670
+      Data4: -826368567
+    Path: event:/SFX/Golem_Death
+  idleSoundEvent:
+    Guid:
+      Data1: 824857335
+      Data2: 1213381363
+      Data3: 1302707845
+      Data4: -1727839862
+    Path: event:/SFX/Golem_Idle
+  footstepSoundEvent:
+    Guid:
+      Data1: 824857335
+      Data2: 1213381363
+      Data3: 1302707845
+      Data4: -1727839862
+    Path: event:/SFX/Golem_Idle
   idleSoundInterval: 5
   idleSoundChance: 20
   damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
@@ -1492,6 +1522,9 @@ MonoBehaviour:
   energyBallDamage: 20
   energyBallThrowForce: 15
   meleeAttackRadius: 10
+  coreSpawnPoint: {fileID: 0}
+  coreInstance: {fileID: 0}
+  tooltipEndGame: {fileID: 0}
   wanderRadius: 20
   minWanderWaitTime: 3
   maxWanderWaitTime: 8

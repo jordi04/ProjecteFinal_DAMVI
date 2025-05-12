@@ -101,11 +101,24 @@
 	</object>
 	<object class="MixerBusPanner" id="{a7b78a00-9748-44d6-8024-75d6aff008ca}" />
 	<object class="SingleSound" id="{89724a94-00a9-465c-9f6a-c7e75be6c35e}">
+		<property name="volume">
+			<value>-5.5</value>
+		</property>
+		<property name="pitch">
+			<value>-7</value>
+		</property>
 		<relationship name="audioFile">
 			<destination>{9f887c19-1d60-4ab7-a607-281423fedf72}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{d5932c90-a5f1-4f4c-b506-16db368325bc}" />
 	<object class="MixerBusFader" id="{341aacbf-cdcc-4e36-aa3a-8934b0b4e949}" />
-	<object class="SpatialiserEffect" id="{cf273da8-6440-4b38-b168-96a498dc37e0}" />
+	<object class="SpatialiserEffect" id="{cf273da8-6440-4b38-b168-96a498dc37e0}">
+		<property name="maximumDistance">
+			<value>100</value>
+		</property>
+		<property name="overrideRange">
+			<value>true</value>
+		</property>
+	</object>
 </objects>

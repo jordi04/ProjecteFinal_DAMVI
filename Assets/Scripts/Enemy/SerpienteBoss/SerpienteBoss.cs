@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 
 public class SerpienteBoss : MonoBehaviour
 {
-    [SerializeField] Transform snakePosition;
+    [SerializeField] public Transform snakePosition;
     public Transform objetivo;
     public GameObject proyectilVenenoPrefab;
     public Transform puntoDisparo;
@@ -35,6 +35,9 @@ public class SerpienteBoss : MonoBehaviour
 
     [SerializeField] EventReference hurtSound;
     [SerializeField] EventReference deadSound;
+    [SerializeField] public EventReference distAttack;
+    [SerializeField] public EventReference closeAttack;
+
 
     private void Start()
     {

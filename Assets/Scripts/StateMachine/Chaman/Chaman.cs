@@ -1,3 +1,4 @@
+using FMODUnity;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -23,6 +24,10 @@ public class Chaman : MonoBehaviour
     [Header("Debug")]
     [SerializeField] bool debugStateSwitching = true;
     [SerializeField] bool forceSpellCast = false;
+
+    [SerializeField] EventReference deathSound;
+    [SerializeField] EventReference takeDamageSound;
+
 
     StateMachine stateMachine;
 
@@ -77,6 +82,7 @@ public class Chaman : MonoBehaviour
             bool spellReady = castSpellState.IsSpellReady();
             bool playerInRange = runAwayState.IsPlayerInRange();
             bool transition = (spellReady && playerInRange) || forceSpellCast;
+            RuntimeManager.PlayOneShot(deathSound, transform.position);//Como reproducir el sonido de la muerte
 
             if (debugStateSwitching)
             {

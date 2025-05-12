@@ -10,11 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc62ac8de8f53e8458bdbffdeb603af3, type: 3}
-  m_Name: Hell Yea
+  m_Name: FinalBossCheckpoint
   m_EditorClassIdentifier: 
-  checkpointName: Hell Yea
+  checkpointName: Final Cova
   checkPointImage: {fileID: 0}
-  map: 2
-  order: 9
+  order: 5
   isVisited: 0
   checkPointTransform: {fileID: 0}

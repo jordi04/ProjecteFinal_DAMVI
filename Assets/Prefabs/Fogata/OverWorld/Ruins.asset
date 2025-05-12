@@ -10,11 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc62ac8de8f53e8458bdbffdeb603af3, type: 3}
-  m_Name: Hell 1
+  m_Name: Ruins
   m_EditorClassIdentifier: 
-  checkpointName: Hell 1
+  checkpointName: Ruines
   checkPointImage: {fileID: 0}
-  map: 2
-  order: 7
+  order: 2
   isVisited: 0
   checkPointTransform: {fileID: 0}

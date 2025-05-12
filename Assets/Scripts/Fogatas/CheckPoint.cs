@@ -181,6 +181,7 @@ public class CheckPoint : MonoBehaviour
     // Called when a button is pressed to open the travel panel
     public void OpenTravelUI()
     {
+        Debug.Log("OpenTravelUI called");
         main_Panel.SetActive(false);
         travel_Panel.SetActive(true);
         SetUpCheckpointList();

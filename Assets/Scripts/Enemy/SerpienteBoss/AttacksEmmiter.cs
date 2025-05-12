@@ -65,5 +65,5 @@ public class AttacksEmmiter : MonoBehaviour
             UserInput.instance.switchActionMap(UserInput.ActionMap.InGame);
         }
     }
-    }
+    
 }
